@@ -41,9 +41,7 @@
 
 <<<<<<< HEAD
 ![브레인스토밍](/README.assets/image-20220304120640693.png)
-=======
-![image-20220304120640693](C:\Users\SSAFY\Desktop\second_semestry\Bigdata_Project\BigdataPJT\S06P21E203\README.assets\mindmap.png)
->>>>>>> 06a1a467c75f60c4aa5e94d7e003ffc423a93b16
+
 
 - 상품 유사도 추천
 - 사용자 성별 기반 상품 추천
