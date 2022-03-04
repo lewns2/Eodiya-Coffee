@@ -39,7 +39,7 @@
 
 생각해본 추천 방법들
 
-![브레인스토밍](/README.assets/image-20220304120640693.png)
+![브레인스토밍](/README.assets/mindmap.png)
 
 
 - 상품 유사도 추천
