@@ -39,7 +39,7 @@
 
 생각해본 추천 방법들
 
-![image-20220304120640693](C:\Users\SSAFY\Desktop\second_semestry\Bigdata_Project\BigdataPJT\S06P21E203\README.assets\image-20220304120640693.png)
+![브레인스토밍](/README.assets/image-20220304120640693.png)
 
 - 상품 유사도 추천
 - 사용자 성별 기반 상품 추천
