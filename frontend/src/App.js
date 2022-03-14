@@ -1,6 +1,6 @@
-// import Register from './pages/Register';
-// import Mypage from './pages/Mypage';
-// import Login from './pages/Login';
+import Register from './pages/Register';
+import Mypage from './pages/Mypage';
+import Login from './pages/Login';
 import React from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 
@@ -20,11 +20,11 @@ const App = () => {
         </li>
       </ul>
       <hr />
-      {/* <Routes>
+      <Routes>
         <Route exact path="/login" element={<Login/>} />
         <Route exact path="/mypage" element={<Mypage/>} />
         <Route exact path="/signin" element={<Register/>} />
-      </Routes>   */}
+      </Routes>  
     </div>
   );
 };
