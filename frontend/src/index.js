@@ -5,12 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import Register from './pages/Register';
+import Mypage from './pages/Mypage';
+import Login from './pages/Login';
 ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
       <Routes>
-        <Route path='/register' element ={<Register/>} />
-        <Route path='/' element={<App/>}/>
+        <Route exact path='/' element={<App/>}>
+          <Route path="login" element={<Login/>} />
+          <Route path="mypage" element={<Mypage/>} />
+          <Route path="signin" element={<Register/>} />
+        </Route>
       </Routes>
     </React.StrictMode>
   </BrowserRouter>

@@ -3,11 +3,11 @@ import DatePicker from 'react-datepicker';
 
 import "react-datepicker/dist/react-datepicker.css"
 
-function calender() {
+function Calender() {
     const [startDate, setStartDate] = useState(new Date());
     return(
         <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
     );
 };
 
-export default calender;
+export default Calender;

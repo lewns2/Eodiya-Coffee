@@ -1,8 +1,8 @@
-import Signin from './pages/Signin';
-import Mypage from './pages/Mypage';
-import Login from './pages/Login';
+// import Register from './pages/Register';
+// import Mypage from './pages/Mypage';
+// import Login from './pages/Login';
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 
 
 const App = () => {
@@ -20,9 +20,11 @@ const App = () => {
         </li>
       </ul>
       <hr />
-      <Route path="/login" exact={true} component={Login} />
-      <Route path="/mypage" component={Mypage} />
-      <Route path="/signin" component={Signin} />
+      {/* <Routes>
+        <Route exact path="/login" element={<Login/>} />
+        <Route exact path="/mypage" element={<Mypage/>} />
+        <Route exact path="/signin" element={<Register/>} />
+      </Routes>   */}
     </div>
   );
 };
