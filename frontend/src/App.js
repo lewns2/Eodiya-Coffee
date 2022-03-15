@@ -1,6 +1,7 @@
 import Register from './pages/Register';
 import Mypage from './pages/Mypage';
 import Login from './pages/Login';
+import Side from './components/Side';
 import React from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ const App = () => {
         <Route exact path="/mypage" element={<Mypage/>} />
         <Route exact path="/signin" element={<Register/>} />
       </Routes>  
+      <Side />
     </div>
   );
 };
