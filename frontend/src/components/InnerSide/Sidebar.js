@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import '../styles/Sidebar.css';
+import '../../styles/Sidebar.css'
 
 export const Sidebar = ({width, height, children}) => {
     const [xPosition, setX] = useState(-width);
@@ -33,7 +33,7 @@ export const Sidebar = ({width, height, children}) => {
                     style={{
                         transform: `translate(${width}px, 20vh)`
                     }}
-                    > 토글
+                    > >
                 </button>
                 <div className="content">{children}</div>
             </div>
