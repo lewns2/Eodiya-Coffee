@@ -33,7 +33,7 @@ const Map=()=>{
   
       return (
           <div>
-              <div id="map" style={{width:"100vw", height:"95vh"}}></div>
+              <div id="map" style={{width:"50vw", height:"50vh"}}></div>
               <p id ="result">asd</p>
           </div>
       )
