@@ -1,0 +1,25 @@
+*,body,html{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+.Navbar{
+    height:70px;
+    background-color: blueviolet;
+}
+.Map{
+    position: relative;
+    overflow: hidden;
+}
+.Leftbar{
+    top:0;
+    position:absolute;
+    z-index:30;
+    left:0;
+}
+.Rightbar{
+    top:0;
+    position:absolute;
+    z-index:30;
+    right:-300px;
+}
