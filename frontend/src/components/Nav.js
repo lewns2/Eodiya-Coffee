@@ -4,13 +4,14 @@ import { useState } from 'react';
 import Mypage from '../pages/Mypage';
 import Login from '../pages/Login';
 import Signin from '../pages/Signin';
+import '../styles/Navbar.css'
 
 function Nav() {
     const [LoginIsOpen, setLoginOpen] = useState(false);
     const [MypageIsOpen, setMypageOpen] = useState(false);
     const [SigninIsOpen, setSigninIsOpen] = useState(false);
     return (
-        <div>
+        <div className='Navbar'>
             <header>
                 <h1>EoDIYA COFFEE</h1>
                 <nav className='Nav'>
@@ -30,7 +31,6 @@ function Nav() {
                             
                     </div>
                 </nav>
-                <hr/>
             </header>
         </div>
     );

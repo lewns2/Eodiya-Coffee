@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import '../../styles/Sidebar.css'
 
-export const Sidebar = ({width, height, children}) => {
+export const RightSidebar = ({width, height, children}) => {
     const [xPosition, setX] = useState(-width);
 
     const toggleMenu = () => {
@@ -27,18 +27,18 @@ export const Sidebar = ({width, height, children}) => {
                     minHeight: height,
                 }}
             >
+                <div className="content">{children}</div>
                 <button 
                     onClick={() => toggleMenu()}
-                    className="toggle-menu"
+                    className="toggle-menu2"
                     style={{
-                        transform: `translate(${width}px, 20vh)`
+                        transform: `translate(-10px, 20vh)`
                     }}
-                    > &gt;
+                    > &lt;
                 </button>
-                <div className="content">{children}</div>
             </div>
         </Fragment>
     );
 }
 
-export default Sidebar;
+export default RightSidebar;

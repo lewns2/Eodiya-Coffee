@@ -1,4 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
+import LeftSide from './LeftSide';
+import RightSide from './RightSide';
 
 const Map=()=>{
   const { kakao } = window;
@@ -32,9 +34,11 @@ const Map=()=>{
   
   
       return (
-          <div>
-              <div id="map" style={{width:"50vw", height:"50vh"}}></div>
+          <div className='Map'>
+              <div id="map" style={{width:"100vw", height:"90vh"}}></div>
               <p id ="result">asd</p>
+              <LeftSide/>
+              <RightSide/>
           </div>
       )
   }

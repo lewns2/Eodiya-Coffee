@@ -66,7 +66,7 @@ function Login() {
         alert('findPW');
     }
     return (
-        <div>
+        <div className='Login'>
             <form onSubmit={handleSubmit}>
                 <label>아이디: <input type="text" value={userId} onChange={handleIdChange}/></label>
                 <label>비밀번호: <input type="text" value={userPW} onChange={handlePWChange}/></label>

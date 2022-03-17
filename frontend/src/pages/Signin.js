@@ -11,7 +11,7 @@ const Register =(props) =>{
   // register이용해서 아이디란 라벨에 붙은 input 생성, required 필수입력, pattern: 조건 만족, 
   // pattern: /^\S+@\S+$/i
   return (
-    <div className='regist'>
+    <div className='regist Signin'>
       <form onSubmit={handleSubmit(onSubmit)}>
       <input type="text" placeholder="아이디" {...register("아이디", {required: true, maxLength: 80})} /> 
       <input type="password" placeholder="비밀번호" {...register("비밀번호", {required: true, minLength: 6, maxLength: 100})} /> <br/>

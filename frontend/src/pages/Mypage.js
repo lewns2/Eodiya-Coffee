@@ -7,7 +7,7 @@ class Mypage extends Component {
 
     render() {
         return (
-            <div>
+            <div className='Mypage'>
                 <label> My Page</label>
                 <form>
                     <input type="text" name="userid" placeholder='아이디'></input>
