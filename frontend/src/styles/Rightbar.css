@@ -1,0 +1,6 @@
+.Rightbar{
+    top:100px;
+    position:absolute;
+    z-index:30;
+    right:100px;
+}
