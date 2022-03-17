@@ -14,14 +14,7 @@ const App = () => {
   return (
     <div>
       <Nav/>
-      {/* <Routes>
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/mypage" element={<Mypage />} />
-        <Route exact path="/signin" element={<Signin />} />
-      </Routes>  */}
       <Map/>
-      {/* <LeftSide/>
-      <RightSide/> */}
     </div>
   );
 };
