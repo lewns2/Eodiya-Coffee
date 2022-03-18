@@ -23,3 +23,9 @@
     z-index:30;
     right:-300px;
 }
+.SearchByCategory{
+    top:100px;
+    position:absolute;
+    z-index:999;
+    left:0;
+}
