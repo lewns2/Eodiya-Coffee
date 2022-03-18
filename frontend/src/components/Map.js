@@ -16,7 +16,7 @@ const Map=()=>{
 
     //지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
-    const [keyword, setKeyword] = useState("");
+    const [searchKeyword, setSearchKeyword] = useState("광화문");
 
     useEffect(()=>{
       //지도 생성 및 객체 리턴
@@ -46,11 +46,12 @@ const Map=()=>{
     });
 
     // +
+    console.log("Map : ", searchKeyword, "로 변경되었음.")
     // 장소 검색 객체를 생성
     const ps = new window.kakao.maps.services.Places();
 
     // 키워드로 장소를 검색
-    ps.keywordSearch(keyword, placesSearchCB);
+    ps.keywordSearch(searchKeyword, placesSearchCB);
 
     // 키워드 검색 완료 시 호출되는 콜백함수
     function placesSearchCB(data, status, pagination) {
@@ -93,14 +94,9 @@ const Map=()=>{
               >
                   asd
               </p>
-              <LeftSide/>
+              <LeftSide setSearchKeyword={setSearchKeyword}/>
               <RightSide/>
-              <Searchbar
-                setKeyword={setKeyword}
-              ></Searchbar>
-              <h1>{keyword}</h1>
-              
           </div>
       )
-  }
+}
 export default Map;
