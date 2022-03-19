@@ -1,8 +1,16 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 
 const Searchbar = (props) => {
     const [inputText, setInputText] = useState("");
     const [place, setplace] = useState("");
+
+    useEffect(() => {
+        console.log("Searchbar : ", place, '로 변경되었음.')
+        return () => {
+            props.setKeyword(place);
+        };
+
+    }, [place])
 
     const onChange = (e) => {
         setInputText(e.target.value);
@@ -24,7 +32,7 @@ const Searchbar = (props) => {
                     value={inputText}
                 >
                 </input>
-                <button type="submit" onClick={() => props.setKeyword(place)}>검색</button>
+                <button type="submit">검색</button>
             </form>
             <h1>{place}</h1>
         </Fragment>

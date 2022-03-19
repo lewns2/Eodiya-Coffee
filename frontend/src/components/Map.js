@@ -1,7 +1,6 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
-import Searchbar from './InnerSide/Searchbar';
 
 
 const { kakao } = window;
@@ -16,7 +15,7 @@ const Map=()=>{
 
     //지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
-    const [searchKeyword, setSearchKeyword] = useState("광화문");
+    const [searchKeyword, setSearchKeyword] = useState("");
 
     useEffect(()=>{
       //지도 생성 및 객체 리턴

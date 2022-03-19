@@ -8,8 +8,10 @@ const LeftSide = (props) => {
     const [keyword, setKeyword] = useState("");
 
     useEffect(() => {
-        console.log("SearchBar : ",keyword, '로 변경되었음.')
-
+        console.log("LeftSide : ", keyword, '로 변경되었음.')
+        return() => {
+            props.setSearchKeyword(keyword);
+        }
     }, [keyword])
 
     return (
