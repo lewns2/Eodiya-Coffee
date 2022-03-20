@@ -1,4 +1,52 @@
 import React, {useState} from 'react';
+import axios from 'axios';
+
+function Login() {
+    const [userId, setUserId] = useState('')
+    const [userPW, setUserPW] = useState('')
+
+    const handleIdChange = (event) => {
+        setUserId(() =>event.target.value);
+    }
+    const handlePWChange = (event) => {
+        setUserPW(() =>event.target.value);
+    }
+    const handleSubmit = (event) => {
+        alert('A name was submitted: ' + userId +" "+ userPW);
+        axios.post( 'url', 
+            { 
+                userId: userId, 
+                userPW: userPW 
+            }, 
+            { 
+            headers:{ 
+                'Content-type': 'application/json', 
+                'Accept': 'application/json' 
+                } 
+                } 
+            ) 
+            .then((response) => { window.localStorage.setItem("JWTtoken", JSON.stringify(response.data)); }) 
+            .catch((response) => { console.log('Error!') });
+    }
+    const handlefindId = () =>{
+        alert('findId');
+    }
+    const handlefindPW = () =>{
+        alert('findPW');
+    }
+    return (
+        <div className='Login'>
+            <form onSubmit={handleSubmit}>
+                <label>아이디: <input type="text" value={userId} onChange={handleIdChange}/></label>
+                <label>비밀번호: <input type="text" value={userPW} onChange={handlePWChange}/></label>
+                <hr/>
+                <a onClick={handlefindId}>아이디 찾기</a><span> / </span><a onClick={handlefindPW}>비밀번호 찾기</a>
+                <input type="submit" value="Submit"/>
+            </form>
+        </div>
+    );
+}
+export default Login;
 
 // class Login extends React.Component {
 //     constructor(props) {
@@ -44,37 +92,3 @@ import React, {useState} from 'react';
 //     }
 // }
 // export default Login;
-
-function Login() {
-    const [userId, setUserId] = useState('')
-    const [userPW, setUserPW] = useState('')
-
-    const handleIdChange = (event) => {
-        setUserId(() =>event.target.value);
-    }
-    const handlePWChange = (event) => {
-        setUserPW(() =>event.target.value);
-    }
-    const handleSubmit = (event) => {
-        alert('A name was submitted: ' + userId +" "+ userPW);
-        event.preventDefault();
-    }
-    const handlefindId = () =>{
-        alert('findId');
-    }
-    const handlefindPW = () =>{
-        alert('findPW');
-    }
-    return (
-        <div className='Login'>
-            <form onSubmit={handleSubmit}>
-                <label>아이디: <input type="text" value={userId} onChange={handleIdChange}/></label>
-                <label>비밀번호: <input type="text" value={userPW} onChange={handlePWChange}/></label>
-                <hr/>
-                <a onClick={handlefindId}>아이디 찾기</a><span> / </span><a onClick={handlefindPW}>비밀번호 찾기</a>
-                <input type="submit" value="Submit"/>
-            </form>
-        </div>
-    );
-}
-export default Login;
