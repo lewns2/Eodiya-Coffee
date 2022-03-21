@@ -2,13 +2,15 @@ import React, { useState, Fragment, useEffect } from 'react';
 
 const Searchbar = (props) => {
     const [inputText, setInputText] = useState("");
-    const [place, setplace] = useState("");
+    const [place, setplace] = useState(props.setKeyword);
 
     useEffect(() => {
         console.log("Searchbar : ", place, '로 변경되었음.')
-        return () => {
-            props.setKeyword(place);
-        };
+        props.setKeyword(place);
+        // return () => {
+        //     props.setKeyword(place);
+        // };
+        
 
     }, [place])
 

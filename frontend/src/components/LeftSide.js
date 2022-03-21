@@ -5,13 +5,14 @@ import Recommend from './InnerSide/Recommend';
 
 const LeftSide = (props) => {
 
-    const [keyword, setKeyword] = useState("");
+    const [keyword, setKeyword] = useState(props.setSearchKeyword);
 
     useEffect(() => {
         console.log("LeftSide : ", keyword, '로 변경되었음.')
-        return() => {
-            props.setSearchKeyword(keyword);
-        }
+        props.setSearchKeyword(keyword);
+        // return() => {
+        //     props.setSearchKeyword(keyword);
+        // }
     }, [keyword])
 
     return (
