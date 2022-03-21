@@ -1,10 +1,21 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
+import axios from 'axios';
 const Register =(props) =>{
   const { register, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
-   
+  const onSubmit = data => {
+    axios.post( 'url', 
+      data,
+      { 
+        headers:{ 
+          'Content-type': 'application/json', 
+          'Accept': 'application/json' 
+        } 
+      } 
+      ) 
+      .then((response) => { }) 
+      .catch((response) => { console.log('Error!') });
+    }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>닉네임

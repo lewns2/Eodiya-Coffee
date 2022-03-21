@@ -15,8 +15,8 @@ function Login() {
         alert('A name was submitted: ' + userId +" "+ userPW);
         axios.post( 'url', 
             { 
-                userId: userId, 
-                userPW: userPW 
+                user_email: userId, 
+                password: userPW 
             }, 
             { 
             headers:{ 
