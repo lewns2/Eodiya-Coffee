@@ -5,9 +5,9 @@ from django.conf import settings
 
 # Create your models here.
 class User(AbstractUser):
-    user_email = models.CharField(max_length=128)
-    user_nickname = models.CharField(max_length=64)
-    password = models.CharField(max_length=255)
+    # user_email = models.CharField(max_length=128)
+    # user_nickname = models.CharField(max_length=64)
+    # password = models.CharField(max_length=255)
     birthday = models.CharField(max_length=32)
     gender = models.CharField(max_length=16)
     
