@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-function Login() {
+function Login(props) {
     const [userId, setUserId] = useState('')
     const [userPW, setUserPW] = useState('')
 
@@ -13,7 +13,8 @@ function Login() {
     }
     const handleSubmit = (event) => {
         alert('A name was submitted: ' + userId +" "+ userPW);
-        axios.post( 'url', 
+        handleCloseModal();
+        axios.post( '/accounts/login', 
             { 
                 user_email: userId, 
                 password: userPW 
@@ -23,7 +24,7 @@ function Login() {
                 'Content-type': 'application/json', 
                 'Accept': 'application/json' 
                 } 
-                } 
+            } 
             ) 
             .then((response) => { window.localStorage.setItem("JWTtoken", JSON.stringify(response.data)); }) 
             .catch((response) => { console.log('Error!') });
@@ -33,6 +34,9 @@ function Login() {
     }
     const handlefindPW = () =>{
         alert('findPW');
+    }
+    const handleCloseModal = () =>{
+        props.setLoginOpen(false);
     }
     return (
         <div className='Login'>
