@@ -31,6 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # local
+    'commercial_area',
+    # 3rd
+    'django_extensions',
+    'rest_framework',
+    # native
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
