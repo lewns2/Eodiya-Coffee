@@ -4,7 +4,7 @@ import axios from 'axios';
 const Register =(props) =>{
   const { register, handleSubmit } = useForm();
   const onSubmit = data => {
-    axios.post( 'url', 
+    axios.post( '/accounts/signup', 
       data,
       { 
         headers:{ 
@@ -13,9 +13,12 @@ const Register =(props) =>{
         } 
       } 
       ) 
-      .then((response) => { }) 
+      .then((response) => { handleCloseModal()}) 
       .catch((response) => { console.log('Error!') });
     }
+  const handleCloseModal = () =>{
+    props.setSigninIsOpen(false);
+  } 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>닉네임
