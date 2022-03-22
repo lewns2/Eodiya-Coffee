@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
-
+import geojson from '../assets/data/TL_SCCO_SIG'
 
 const { kakao } = window;
 
@@ -14,25 +14,27 @@ const options = {
 
 const Map=()=>{
 
-    //지도를 담을 영역의 DOM 레퍼런스
+    // 1. 지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
+
+    // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
 
     useEffect(()=>{
-      //지도 생성 및 객체 리턴
-      // var map = new kakao.maps.Map(container, options);
+      // + 기능 1. 지도 생성 및 화면 표시
+        // 1.1 지도 생성 및 객체 리턴
       var map = new window.kakao.maps.Map(container.current, options);
-      
+
+        // 1.2 마커 생성 (중심부에)
       var marker = new kakao.maps.Marker({ 
-        // 지도 중심좌표에 마커를 생성합니다 
         position: map.getCenter() 
       }); 
       
-      // 지도에 마커를 표시합니다
+        // 1.3 지도에 마커를 표시합니다
       marker.setMap(map);
       kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
     
-        // 클릭한 위도, 경도 정보를 가져옵니다 
+        // 1.4 클릭한 위도, 경도 정보를 가져옵니다 
       var latlng = mouseEvent.latLng;
 
       marker.setPosition(latlng);
@@ -71,7 +73,7 @@ const Map=()=>{
       }
     }
 
-    
+
 
 
 
