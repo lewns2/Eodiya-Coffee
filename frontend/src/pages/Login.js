@@ -30,8 +30,8 @@ function Login(props) {
       )
       .then((response) => {
         console.log(response, "from login");
-        handleCloseModal();
         localStorage.setItem("jwt", response.data.token);
+        handleCloseModal();
       })
       .catch((response) => {
         console.log("Error!");
