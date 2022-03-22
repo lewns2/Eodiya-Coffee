@@ -10,8 +10,6 @@ const Searchbar = (props) => {
         // return () => {
         //     props.setKeyword(place);
         // };
-        
-
     }, [place])
 
     const onChange = (e) => {

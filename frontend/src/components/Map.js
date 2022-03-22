@@ -5,8 +5,9 @@ import RightSide from './RightSide';
 
 const { kakao } = window;
 
+var mapCenter = new kakao.maps.LatLng(37.365264512305174, 127.10676860117488);
 const options = {
-  center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
+  center: mapCenter,
   level: 3
 }
 
@@ -44,15 +45,16 @@ const Map=()=>{
       resultDiv.innerHTML = message;
     });
 
-    // +
+    // + 기능 2. 검색 시 해당 위치로 이동한다.
     console.log("Map : ", searchKeyword, "로 변경되었음.")
-    // 장소 검색 객체를 생성
+
+    // 2.1 장소 검색 객체를 생성
     const ps = new window.kakao.maps.services.Places();
 
-    // 키워드로 장소를 검색
+    // 2.2 키워드로 장소를 검색
     ps.keywordSearch(searchKeyword, placesSearchCB);
 
-    // 키워드 검색 완료 시 호출되는 콜백함수
+    // 2.3 키워드 검색 완료 시 호출되는 콜백함수
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         
@@ -61,24 +63,19 @@ const Map=()=>{
         let bounds = new kakao.maps.LatLngBounds();
 
         for (let i=0; i<data.length; i++) {
-            displayMarker(data[i]);    
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
         }       
 
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+        // 2.4 검색된 장소 위치를 기준으로 지도 범위를 재설정
         map.setBounds(bounds);
       }
     }
 
-    // 지도에 마커를 표시하는 함수
-    function displayMarker(place) {
+    
 
-      // 마커를 생성하고 지도에 표시
-      let marker = new kakao.maps.Marker({
-          map: map,
-          position: new kakao.maps.LatLng(place.y, place.x) 
-      });
-    }
+
+
+
 },)
   
       return (
