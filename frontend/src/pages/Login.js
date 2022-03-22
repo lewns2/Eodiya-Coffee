@@ -18,7 +18,7 @@ function Login(props) {
       .post(
         "/accounts/api-token-auth/",
         {
-          username: userId,
+          email: userId,
           password: userPW,
         },
         {
