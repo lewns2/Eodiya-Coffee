@@ -1,17 +1,12 @@
 from rest_framework import serializers
-from .models import CommercialArea1, CommercialArea2, CommercialArea3
+from .models import CommercialArea, SeoulGuDong
 
-class CommercialAreaSerializer1(serializers.ModelSerializer):
+class CommercialAreaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CommercialArea1
+        model = CommercialArea
         fields = '__all__'
         
-class CommercialAreaSerializer2(serializers.ModelSerializer):
+class SeoulGuDongSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CommercialArea2
+        model = SeoulGuDong
         fields = '__all__'
-        
-class CommercialAreaSerializer3(serializers.ModelSerializer):
-    class Meta:
-        model = CommercialArea3
-        fields = '__all__'        

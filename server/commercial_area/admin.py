@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import CommercialArea1, CommercialArea2, CommercialArea3
+from .models import CommercialArea
 
 # Register your models here.
-admin.site.register(CommercialArea1)
-admin.site.register(CommercialArea2)
-admin.site.register(CommercialArea3)
+admin.site.register(CommercialArea)
