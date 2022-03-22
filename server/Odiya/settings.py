@@ -141,6 +141,6 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
-    # 100일동안 유효한 토큰
+    # 1일동안 유효한 토큰
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }
