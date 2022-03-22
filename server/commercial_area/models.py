@@ -1,8 +1,16 @@
+from pyexpat import model
+from tkinter import CASCADE
 from django.db import models
 
 # Create your models here.
 
+class SeoulGuDong(models.Model):
+    guName = models.CharField(max_length=50) # 구 이름
+    dongName = models.CharField(max_length=50) # 동 이름
+    
+    
 class CommercialArea(models.Model):
+    seoulgudong = models.ForeignKey(SeoulGuDong, related_name='commercialAreas', on_delete=models.CASCADE)
     code = models.IntegerField() # 상권 코드
     commercialAreaName = models.CharField(max_length=50) #상권 이름
     revenue = models.IntegerField() # 분기 매출
@@ -27,12 +35,3 @@ class CommercialArea(models.Model):
     age40 = models.IntegerField() # 40대 수
     age50 = models.IntegerField() # 50대 수
     age60 = models.IntegerField() # 60대 이상 수
-    guName = models.CharField(max_length=50) # 구 이름
-    dongName = models.CharField(max_length=50) # 동 이름
-    
-    
-class SeoulGuDong(models.Model):
-    code = models.IntegerField() # 상권 코드
-    commercialAreaName = models.CharField(max_length=50) #상권 이름
-    guName = models.CharField(max_length=50) # 구 이름
-    dongName = models.CharField(max_length=50) # 동 이름

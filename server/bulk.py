@@ -3,8 +3,21 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Odiya.settings')
 django.setup()
 
-from commercial_area.models import CommercialArea, SeoulGuDong
+from commercial_area.models import SeoulGuDong, CommercialArea
 import pandas as pd
+
+df = pd.read_csv('../Data/commercialAreaData/상권-행정동.csv', encoding='CP949')    
+### SeoulGuDong Model
+instances = []
+check = []
+for i in range(len(df)):
+    guName = df.iloc[i]['시군구명']
+    dongName = df.iloc[i]['행정동명']
+    if dongName in check: continue
+    check.append(dongName)
+    instances.append(SeoulGuDong(guName=guName, dongName=dongName))
+SeoulGuDong.objects.bulk_create(instances)
+
 
 ### CommercialArea Model
 df1 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-추정매출).csv', encoding='CP949')
@@ -19,6 +32,7 @@ instances=  []
 for i in range(len(df1)):
     # 1 상권-추정매출
     code = df1.iloc[i]['상권_코드']
+    if code in res: continue
     commercialAreaName = df1.iloc[i]['상권_코드_명']
     revenue = df1.iloc[i]['분기당_매출_금액']
     if df1.iloc[i]['분기당_매출_건수'] == 0:
@@ -60,7 +74,6 @@ for i in range(len(df1)):
     # 3 상권-상주인구
     temp_df = df3.loc[df3['상권 코드'] == code]
     if temp_df.empty:
-        # print('상주인구', code)
         continue
     residentPeople = temp_df['총 상주인구 수']
     maleResidentPeople = temp_df['남성 상주인구 수']
@@ -77,24 +90,8 @@ for i in range(len(df1)):
     temp_df = df4.loc[df4['상권_코드'] == code]
     if temp_df.empty:
         continue
-    guName = temp_df['시군구명'].values[0]
     dongName = temp_df['행정동명'].values[0]
-    if code in res: continue
+    seoulgudong = SeoulGuDong.objects.get(dongName=dongName)
     res.append(code)
-    instances.append(CommercialArea(code=code, commercialAreaName=commercialAreaName, revenue=revenue, priceByCase=priceByCase, maleRevenue=maleRevenue, femaleRevenue=femaleRevenue, ageGroup=ageGroup, timeGroup=timeGroup, numberStore=numberStore, similarStore=similarStore, openingStore=openingStore, closureStore=closureStore, openingRate=openingRate, closureRate=closureRate, residentPeople=residentPeople, maleResidentPeople=maleResidentPeople, femaleResidentPeople=femaleResidentPeople, numberHouseholds=numberHouseholds, age10=age10, age20=age20, age30=age30, age40=age40, age50=age50, age60=age60, guName=guName, dongName=dongName))
+    instances.append(CommercialArea(seoulgudong=seoulgudong, code=code, commercialAreaName=commercialAreaName, revenue=revenue, priceByCase=priceByCase, maleRevenue=maleRevenue, femaleRevenue=femaleRevenue, ageGroup=ageGroup, timeGroup=timeGroup, numberStore=numberStore, similarStore=similarStore, openingStore=openingStore, closureStore=closureStore, openingRate=openingRate, closureRate=closureRate, residentPeople=residentPeople, maleResidentPeople=maleResidentPeople, femaleResidentPeople=femaleResidentPeople, numberHouseholds=numberHouseholds, age10=age10, age20=age20, age30=age30, age40=age40, age50=age50, age60=age60))
 CommercialArea.objects.bulk_create(instances)
-    
-    
-### SeoulGuDong Model
-df = pd.read_csv('../Data/commercialAreaData/상권-행정동.csv', encoding='CP949')
-instances = []
-for i in range(len(res)):
-    temp_df = df.loc[df['상권_코드'] == res[i]]
-    if temp_df.empty:
-        continue
-    code = res[i]
-    commercialAreaName = temp_df['상권_코드_명'].values[0]
-    guName = temp_df['시군구명'].values[0]
-    dongName = temp_df['행정동명'].values[0]
-    instances.append(SeoulGuDong(code=code, commercialAreaName=commercialAreaName, guName=guName, dongName=dongName))
-SeoulGuDong.objects.bulk_create(instances)
