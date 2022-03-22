@@ -14,7 +14,6 @@ function Login(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     alert("A name was submitted: " + userId + " " + userPW);
-    // handleCloseModal();
     axios
       .post(
         "/accounts/api-token-auth/",
@@ -31,6 +30,7 @@ function Login(props) {
       )
       .then((response) => {
         console.log(response, "from login");
+        handleCloseModal();
         localStorage.setItem("jwt", response.data.token);
       })
       .catch((response) => {
@@ -45,7 +45,7 @@ function Login(props) {
     alert("findPW");
   };
   const handleCloseModal = () => {
-    props.setLoginOpen(false);
+    props.closemodal();
   };
   return (
     <div className="Login">

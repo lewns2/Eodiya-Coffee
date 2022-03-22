@@ -12,6 +12,7 @@ const Register = (props) => {
         },
       })
       .then((response) => {
+        console.log(response)
         handleCloseModal();
       })
       .catch((response) => {
@@ -20,7 +21,7 @@ const Register = (props) => {
       });
   };
   const handleCloseModal = () => {
-    props.setSigninIsOpen(false);
+    props.closemodal();
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
