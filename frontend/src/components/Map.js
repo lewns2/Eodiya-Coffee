@@ -2,6 +2,8 @@ import React, { Component, useState, useEffect, useRef } from 'react';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
 import geojson from '../assets/TL_SCCO_SIG.json'
+// import sanggwonjson from '../assets/TBGIS_TRDAR_RELM.json';
+// import sanggwonname from '../assets/seoul_sanggwon.json';
 
 const { kakao } = window;
 
@@ -91,6 +93,7 @@ const Map=()=>{
     // const infowindow = new kakao.maps.InfoWindow({ removable: true });
     
     let data = geojson.features;
+    // let data = sanggwonjson.geometries;
     let coordinates = [];
     let name = '';
     let polygons = [];
@@ -98,11 +101,13 @@ const Map=()=>{
     const displayArea = (coordinates, name) => {
       let path = [];
       let points = [];
-      
+
       coordinates[0].forEach((coordinate) => {
         let point = {};
+
         point.x = coordinate[1];
         point.y = coordinate[0];
+        
         points.push(point);
         path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
       });
@@ -122,31 +127,33 @@ const Map=()=>{
 
     // 다각형에 mouseover 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 변경합니다
     // 지역명을 표시하는 커스텀오버레이를 지도위에 표시합니다
-    kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
-      polygon.setOptions({ fillColor: '#09f' });
+    // kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+    //   polygon.setOptions({ fillColor: '#09f' });
 
-      customOverlay.setContent('<div class="area">' + name + '</div>');
+    //   customOverlay.setContent('<div class="area">' + name + '</div>');
 
-      customOverlay.setPosition(mouseEvent.latLng);
-      customOverlay.setMap(map);
-    });
+    //   customOverlay.setPosition(mouseEvent.latLng);
+    //   customOverlay.setMap(map);
+    // });
 
-    // 다각형에 mousemove 이벤트를 등록하고 이벤트가 발생하면 커스텀 오버레이의 위치를 변경합니다
-    kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
-      customOverlay.setPosition(mouseEvent.latLng);
-    });
+    // // 다각형에 mousemove 이벤트를 등록하고 이벤트가 발생하면 커스텀 오버레이의 위치를 변경합니다
+    // kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
+    //   customOverlay.setPosition(mouseEvent.latLng);
+    // });
 
-    // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
-    // 커스텀 오버레이를 지도에서 제거합니다
-    kakao.maps.event.addListener(polygon, 'mouseout', function () {
-      polygon.setOptions({ fillColor: '#fff' });
-      customOverlay.setMap(null);
-    });
+    // // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
+    // // 커스텀 오버레이를 지도에서 제거합니다
+    // kakao.maps.event.addListener(polygon, 'mouseout', function () {
+    //   polygon.setOptions({ fillColor: '#fff' });
+    //   customOverlay.setMap(null);
+    // });
   }
 
   data.forEach((val) => {
-    coordinates = val.geometry.coordinates;
-    name = val.properties.SIG_KOR_NM;
+    // coordinates = val.geometry.coordinates;
+    coordinates = val.coordinates;
+    // name = val.properties.SIG_KOR_NM;
+    name = "TEST";
     if(displayDivision) {
       displayArea(coordinates, name);
     }
