@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import get_object_or_404
 from django.http.response import JsonResponse
 from django.core import serializers
@@ -34,3 +35,19 @@ def signup(request):
         user.set_password(request.data.get('password'))
         user.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['DELETE'])
+def signout(request):
+    user_email = request.data.get('email')
+    password = request.data.get('password')
+
+    user = get_user_model().objects.get(email=user_email)
+    if user:
+        if check_password(password, user.password):
+            user.delete()
+            return Response(status=status.HTTP_201_CREATED)
+
+        return Response({"비밀번호가": "틀림"})
+
+    return Response({"없는": "유저"})
