@@ -33,11 +33,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # local
+    'commercial_area',
     'accounts',
-
+    # 3rd
+    'django_extensions',
     'rest_framework',
     'corsheaders',
-
+    # native
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
