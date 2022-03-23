@@ -1,9 +1,8 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
-import geojson from '../assets/TL_SCCO_SIG.json'
-// import sanggwonjson from '../assets/TBGIS_TRDAR_RELM.json';
-// import sanggwonname from '../assets/seoul_sanggwon.json';
+import geojson from '../assets/seoul_sigungudong.json';
+// import sanggwonjson from '../assets/seoul_sigungu.json';
 
 const { kakao } = window;
 
@@ -93,7 +92,7 @@ const Map=()=>{
     // const infowindow = new kakao.maps.InfoWindow({ removable: true });
     
     let data = geojson.features;
-    // let data = sanggwonjson.geometries;
+    // let data = sanggwonjson.features;
     let coordinates = [];
     let name = '';
     let polygons = [];
@@ -150,10 +149,9 @@ const Map=()=>{
   }
 
   data.forEach((val) => {
-    // coordinates = val.geometry.coordinates;
-    coordinates = val.coordinates;
+    coordinates = val.geometry.coordinates;
     // name = val.properties.SIG_KOR_NM;
-    name = "TEST";
+    name = val.properties.EMD_KOR_NM;
     if(displayDivision) {
       displayArea(coordinates, name);
     }
