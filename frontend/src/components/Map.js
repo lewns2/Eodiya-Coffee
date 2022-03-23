@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect, useRef } from 'react';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
 import geojson from '../assets/seoul_sigungudong.json';
-// import sanggwonjson from '../assets/seoul_sigungu.json';
+import sanggwonjson from '../assets/seoul_sanggwon.json';
 
 const { kakao } = window;
 
@@ -24,10 +24,19 @@ const Map=()=>{
     // 3. 행정 구역 보기 토글 버튼
     var [displayDivision, setdisplayDivision] = useState(0);
 
+    // 4. 상권 구역 보기 토글 버튼
+    var [displaySanggwon, setdisplaySanggwon] = useState(0);
+
     const handleDisplay = () => {
       displayDivision ^= 1;
       console.log("행정구 활성화 버튼", displayDivision);
       setdisplayDivision(displayDivision);
+    }
+
+    const handleDisplaySanggwon = () => {
+      displaySanggwon ^= 1;
+      console.log("상권구역 활성화 버튼", displayDivision);
+      setdisplaySanggwon(displaySanggwon);
     }
     
 
@@ -38,7 +47,7 @@ const Map=()=>{
 
         // 1.2 마커 생성 (중심부에)
       
-      if(!displayDivision) {
+      if(!displayDivision || !displaySanggwon) {
         var marker = new kakao.maps.Marker({ 
           position: map.getCenter() 
         }); 
@@ -91,15 +100,16 @@ const Map=()=>{
     const customOverlay = new kakao.maps.CustomOverlay({});
     // const infowindow = new kakao.maps.InfoWindow({ removable: true });
     
-    let data = geojson.features;
-    // let data = sanggwonjson.features;
-    let coordinates = [];
-    let name = '';
-    let polygons = [];
+    let sigunguData = geojson.features;
+    let sanggwonData = sanggwonjson.features;
+    // let coordinates = [];
+    // let name = '';
+    
 
     const displayArea = (coordinates, name) => {
       let path = [];
       let points = [];
+      let polygons = [];
 
       coordinates[0].forEach((coordinate) => {
         let point = {};
@@ -126,33 +136,44 @@ const Map=()=>{
 
     // 다각형에 mouseover 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 변경합니다
     // 지역명을 표시하는 커스텀오버레이를 지도위에 표시합니다
-    // kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
-    //   polygon.setOptions({ fillColor: '#09f' });
+    kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+      polygon.setOptions({ fillColor: '#09f' });
 
-    //   customOverlay.setContent('<div class="area">' + name + '</div>');
+      customOverlay.setContent('<div class="area">' + name + '</div>');
 
-    //   customOverlay.setPosition(mouseEvent.latLng);
-    //   customOverlay.setMap(map);
-    // });
+      customOverlay.setPosition(mouseEvent.latLng);
+      customOverlay.setMap(map);
+    });
 
-    // // 다각형에 mousemove 이벤트를 등록하고 이벤트가 발생하면 커스텀 오버레이의 위치를 변경합니다
-    // kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
-    //   customOverlay.setPosition(mouseEvent.latLng);
-    // });
+    // 다각형에 mousemove 이벤트를 등록하고 이벤트가 발생하면 커스텀 오버레이의 위치를 변경합니다
+    kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
+      customOverlay.setPosition(mouseEvent.latLng);
+    });
 
-    // // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
-    // // 커스텀 오버레이를 지도에서 제거합니다
-    // kakao.maps.event.addListener(polygon, 'mouseout', function () {
-    //   polygon.setOptions({ fillColor: '#fff' });
-    //   customOverlay.setMap(null);
-    // });
+    // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
+    // 커스텀 오버레이를 지도에서 제거합니다
+    kakao.maps.event.addListener(polygon, 'mouseout', function () {
+      polygon.setOptions({ fillColor: '#fff' });
+      customOverlay.setMap(null);
+    });
   }
 
-  data.forEach((val) => {
+  sigunguData.forEach((val) => {
+    let coordinates = [];
+    let name = '';
+    
     coordinates = val.geometry.coordinates;
-    // name = val.properties.SIG_KOR_NM;
     name = val.properties.EMD_KOR_NM;
     if(displayDivision) {
+      displayArea(coordinates, name);
+    }
+  })
+  sanggwonData.forEach((val) => {
+    let coordinates = [];
+    let name = '';
+    coordinates = val.geometry.coordinates;
+    name = val.properties.TRDAR_CD_N;
+    if(displaySanggwon) {
       displayArea(coordinates, name);
     }
   })
@@ -167,14 +188,11 @@ const Map=()=>{
                 style={{width:"100vw", height:"90vh"}}
                 ref = {container}
               ></div>
-              <p 
-                id ="result"
-              >
-                  asd
-              </p>
+              <p id ="result">asd</p>
               <LeftSide setSearchKeyword={setSearchKeyword}/>
               <RightSide/>
               <button type="submit" onClick={handleDisplay} style={{width:"100vw"}}>행정 구역 보기</button>
+              <button type="submit" onClick={handleDisplaySanggwon} style={{width:"100vw"}}>상권 구역 보기</button>
               
           </div>
       )
