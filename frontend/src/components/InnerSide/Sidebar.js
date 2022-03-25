@@ -3,7 +3,6 @@ import '../../styles/Sidebar.css'
 
 export const Sidebar = ({width, height, children}) => {
     const [xPosition, setX] = useState(-width);
-
     const toggleMenu = () => {
         console.log("버튼이 눌렸다.", xPosition)
         if(xPosition < 0) {
