@@ -1,13 +1,11 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
-// import testjson from '../assets/test.json';
-// import geojson from '../assets/seoul_sigungudong.json';
-// import sanggwonjson from '../assets/seoul_sanggwon.json';
-// import sigungujson from '../assets/seoul_sigungu.json';
+import markerImg from '../assets/marker.png';
 
 const { kakao } = window;
 
+// 초기 시작 위치 : 서울시
 var mapCenter = new kakao.maps.LatLng(37.56690518860781, 126.97808628226417);
 const options = {
   center: mapCenter,
@@ -64,8 +62,7 @@ const testGangbuk = [
 ]
 
 const guMarkers = [];
-const dongMarkers = [];
-
+let dongMarkers = [];
 
 const Map=()=>{
 
@@ -75,60 +72,67 @@ const Map=()=>{
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
 
-    // 3. 행정 구역 보기 토글 버튼
-    var [displayDivision, setdisplayDivision] = useState(0);
-
-    // 4. 상권 구역 보기 토글 버튼
-    var [displaySanggwon, setdisplaySanggwon] = useState(0);
-
-    const handleDisplay = () => {
-      displayDivision ^= 1;
-      console.log("행정구 활성화 버튼", displayDivision);
-      setdisplayDivision(displayDivision);
-    }
-
-    const handleDisplaySanggwon = () => {
-      displaySanggwon ^= 1;
-      console.log("상권구역 활성화 버튼", displayDivision);
-      setdisplaySanggwon(displaySanggwon);
-    }
+    // 3. 지도에 선택한 주소 띄우기 위한 훅
+    // var [selectGu, setSelectGu] = useState("");
+    // var [selectDong, setSelectDong] = useState("");
 
     useEffect(()=>{
-      // + 기능 1. 지도 생성 및 화면 표시
-        // 1.1 지도 생성 및 객체 리턴
+      
+      // #1. 지도 생성 및 화면 표시
       var map = new window.kakao.maps.Map(container.current, options);
-
-      // + 기능 4. 지도에 시군구동 마커 띄우기
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+      
+      // #2. 지도에 시군구동 이미지 마커 띄우기
+      var imageSrc = markerImg; 
 
       for(var i=0; i<locationSeoulGu.length; i++) {
 
-        var imageSize = new kakao.maps.Size(30, 50);
+        var imageSize = new kakao.maps.Size(60, 60);
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+        var guName = locationSeoulGu[i].name
+        
         
         var marker = new kakao.maps.Marker({
           position: locationSeoulGu[i].latlng,
           title : locationSeoulGu[i].name,
           image : markerImage,
+          opacity : 0.8,  // 투명도
         });
         guMarkers.push(marker);
         marker.setMap(map);
-        // 4.2 개별 마커 클릭 이벤트
-        kakao.maps.event.addListener(marker, 'click', moveAndDisplayGuArea(marker, locationSeoulGu[i].latlng));
+
+        // #2.1 마커 커스텀하기 => 정확히는 그냥 오버레이 덮어씌우기
+        var content = guName;
+
+        var position = locationSeoulGu[i].latlng;
+
+        var customOverlay = new kakao.maps.CustomOverlay({
+          map: map,
+          clickable: true,
+          position: position,
+          content: content,
+          yAnchor: 1.85,
+          xAnchor : 0.45,
+        });
+
+        // #2.2 개별 마커 클릭 이벤트
+        kakao.maps.event.addListener(marker, 'click', moveAndDisplayGuArea(marker, locationSeoulGu[i].latlng, locationSeoulGu[i].name));
       }
-      // 4.2.1. 줌인 & 마커 위치로 지도 이동
-      function moveAndDisplayGuArea(marker, loca) {
+      // #2.3 줌인 & 마커 위치로 지도 이동
+      function moveAndDisplayGuArea(customOverlay, loca, guName) {
         // console.log(loca.La, loca.Ma);
         return function() {
           var moveLatLon = loca;
           map.setLevel(7);
-          map.panTo(moveLatLon);  
+          map.panTo(moveLatLon);
+          // setSelectGu(guName);  
 
-          // 4.2.2 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)
-
+          // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)
+          
+          // #2.5 구 영역 그리기
           let path = [];
           let points = [];
           let polygons = [];
+          dongMarkers = [];
           
           for(var i=0; i<testGangbuk[0].area.length; i++) {
             let point = {};
@@ -149,73 +153,83 @@ const Map=()=>{
             fillOpacity: 0.7, // 채우기 불투명도 입니다
           });
           polygons.push(polygon);
+          
+          // #2.5.1 영역에 효과 추가하기
+          const customOverlay = new kakao.maps.CustomOverlay({});
     
-              const customOverlay = new kakao.maps.CustomOverlay({});
-    
-              kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
-                  polygon.setOptions({ fillColor: '#09f' });
+          kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+            polygon.setOptions({ fillColor: '#09f' });
               
-                  customOverlay.setPosition(mouseEvent.latLng);
-                  customOverlay.setMap(map);
-              });
-              
-                  // 다각형에 mousemove 이벤트를 등록하고 이벤트가 발생하면 커스텀 오버레이의 위치를 변경합니다
-              kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
-                customOverlay.setPosition(mouseEvent.latLng);
-              });
-              
-                  // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
-                  // 커스텀 오버레이를 지도에서 제거합니다
-              kakao.maps.event.addListener(polygon, 'mouseout', function () {
-                polygon.setOptions({ fillColor: '#fff' });
-                customOverlay.setMap(null);
-              });
-
-              // 다각형 클릭 시, 줌인 & 동 표시
-              kakao.maps.event.addListener(polygon, 'click', function () {
-                map.setLevel(6);
-                var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-
-                for(var i=1; i<testGangbuk.length; i++) {
-
-                  var imageSize = new kakao.maps.Size(20, 40);
-                  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-                  
-                  var marker = new kakao.maps.Marker({
-                    position: testGangbuk[i].latlng,
-                    title : testGangbuk[i].name,
-                    image : markerImage,
-                  });
-
-                  marker.setMap(map);
-                  kakao.maps.event.addListener(marker, 'click', moveAndDisplayDongArea(marker, testGangbuk[i].latlng));
-                }
-
-                function moveAndDisplayDongArea(marker, loca) {
-                  // console.log(loca.La, loca.Ma);
-                  return function() {
-                    var moveLatLon = loca;
-                    map.setLevel(5);
-                    map.panTo(moveLatLon);  
-                  }
-                }
+            customOverlay.setPosition(mouseEvent.latLng);
+            customOverlay.setMap(map);
+          });
                 
+            // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
+            // 커스텀 오버레이를 지도에서 제거합니다
+          kakao.maps.event.addListener(polygon, 'mouseout', function () {
+            polygon.setOptions({ fillColor: '#fff' });
+            customOverlay.setMap(null);
+          });
+
+          // # 2.6 다각형 클릭 시, 줌인 & 동 마커 표시
+          kakao.maps.event.addListener(polygon, 'click', function () {
+            map.setLevel(6);
+            var imageSrc = markerImg; 
+
+            for(var i=1; i<testGangbuk.length; i++) {
+
+              var imageSize = new kakao.maps.Size(30, 30);
+              var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+                  
+              var marker = new kakao.maps.Marker({
+                position: testGangbuk[i].latlng,
+                title : testGangbuk[i].name,
+                image : markerImage,
               });
+              dongMarkers.push(marker);
+              marker.setMap(map);
+              kakao.maps.event.addListener(marker, 'click', moveAndDisplayDongArea(marker, testGangbuk[i].latlng, testGangbuk[i].name));
+                  
+              // #2.6.1 동 마커에는 인포윈도우가 필요할듯.
+              var content = testGangbuk[i].name;
+  
+              var position = testGangbuk[i].latlng;
+  
+              var customOverlay = new kakao.maps.CustomOverlay({
+                map: map,
+                clickable: true,
+                position: position,
+                content: content,
+                yAnchor: 2.5,
+              });
+            }
+            
+            // #2.7 줌인 & 마커 위치로 지도 이동
+            function moveAndDisplayDongArea(marker, loca, dongName) {
+              // console.log(loca.La, loca.Ma);
+              return function() {
+                var moveLatLon = loca;
+                map.setLevel(5);
+                map.panTo(moveLatLon);
+                // setSelectDong(dongName);  
+              }
+            }
+          });
         }
       }
 
         
 
-    // + 기능 2. 검색 시 해당 위치로 이동한다.
+    // #3. 검색 시 해당 위치로 이동한다.
     console.log("Map : ", searchKeyword, "로 변경되었음.")
 
-    // 2.1 장소 검색 객체를 생성
+    // #3.1 장소 검색 객체를 생성
     const ps = new window.kakao.maps.services.Places();
 
-    // 2.2 키워드로 장소를 검색
+    // #3.2 키워드로 장소를 검색
     ps.keywordSearch(searchKeyword, placesSearchCB);
 
-    // 2.3 키워드 검색 완료 시 호출되는 콜백함수
+    // #3.3 키워드 검색 완료 시 호출되는 콜백함수
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         
@@ -227,7 +241,7 @@ const Map=()=>{
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
         }       
 
-        // 2.4 검색된 장소 위치를 기준으로 지도 범위를 재설정
+        // 3.4 검색된 장소 위치를 기준으로 지도 범위를 재설정
         map.setBounds(bounds);
       }
     }
@@ -236,7 +250,6 @@ const Map=()=>{
   
       return (
           <div className='Map'>
-              
               <div 
                 // id="map" 
                 style={{width:"100vw", height:"90vh"}}
@@ -245,9 +258,7 @@ const Map=()=>{
               <p id ="result">asd</p>
               <LeftSide setSearchKeyword={setSearchKeyword}/>
               <RightSide/>
-              <button type="submit" onClick={handleDisplay} style={{width:"100vw"}}>행정 구역 보기</button>
-              <button type="submit" onClick={handleDisplaySanggwon} style={{width:"100vw"}}>상권 구역 보기</button>
-              
+              {/* <div><span>서울시</span> <span>{selectGu}</span> <span>{selectDong}</span></div> */}
           </div>
       )
 }
