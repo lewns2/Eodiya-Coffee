@@ -1,10 +1,9 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
-import RightSide from './RightSide';
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import geojson from '../assets/TL_SCCO_SIG.json'
 import Search from './Search';
 import Comm from './Comm';
 import Cafe from './Cafe';
-import Category from './MapFeat/Category';
+import RightSidebar from '../components/InnerSide/RightSidebar';
 const { kakao } = window;
 
 var mapCenter = new kakao.maps.LatLng(37.365264512305174, 127.10676860117488);
@@ -14,8 +13,8 @@ const options = {
 }
 
 
-const Map=()=>{
-
+const Map=(props)=>{
+  const [click, setClick] = useState(false);
     // 1. 지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
 
@@ -24,15 +23,8 @@ const Map=()=>{
 
     // 3. 행정 구역 보기 토글 버튼
     var [displayDivision, setdisplayDivision] = useState(0);
-
-    const handleDisplay = () => {
-      displayDivision ^= 1;
-      console.log("행정구 활성화 버튼", displayDivision);
-      setdisplayDivision(displayDivision);
-    }
-    
-
     useEffect(()=>{
+      console.log(click);
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
       var map = new window.kakao.maps.Map(container.current, options);
@@ -167,13 +159,11 @@ const Map=()=>{
               </div>
               {/* <Category/> */}
               <Search setSearchKeyword={setSearchKeyword}/>
-              <Comm setdisplayDivision={setdisplayDivision}/>
+              <Comm setdisplayDivision={setdisplayDivision} setClick={setClick}/>
               <Cafe />
+              <RightSidebar width={300} height={"100vw"} />
             </div>
-              <p id ="result"></p>
-              <RightSide/>
-              {/* <button type="submit" onClick={handleDisplay} style={{width:"100vw"}}>행정 구역 보기</button> */}
-              
+            <p id ="result"></p>
           </div>
       )
 }

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useState } from 'react';
 import Mypage from '../pages/Mypage';
