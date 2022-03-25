@@ -1,27 +1,83 @@
-import React, { Component } from 'react';
-// import Calender from './Calender';
+import React, { Component, useState } from 'react';
+import axios from 'axios';
 import Calender from './Calender';
 
+function Mypage(props) {
+    const [email, setEmail] = useState();
+    const [username, setUsername] = useState();
+    const [birthday, setBirthday] = useState();
+    const [gender, setGender] = useState();
+    
+    const handleEmailChange = (event) => {
+        setEmail(() => event.target.value);
+    };
+    const handleUsernameChange = (event) => {
+        setUsername(() => event.target.value);
+    };
+    const handleBirthdayChange = (event) => {
+        setBirthday(() => event.target.value);
+    };
+    const handleGenderChange = (event) => {
+        setGender(() => event.target.value);
+    };
 
-class Mypage extends Component {
-
-    render() {
-        return (
-            <div className='Mypage'>
-                <label> My Page</label>
-                <form>
-                    <input type="text" name="userid" placeholder='아이디'></input>
-                    <input type="text" name="username" placeholder='이름'></input>
-                    <input type="text" name="userbirth" placeholder='생년원일'></input>
-                    <Calender />
-                    <input type="text" name="userphone" placeholder='연락처'></input>
-                </form>
-                
-                <button>취소</button>
-                <button>수정</button>
-            </div>
-        );
-    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = {email:email, username:username, birthday:birthday, gender:gender};
+        alert("A name was submitted: " + data);
+        axios
+          .post(
+            "/accounts/profile/",
+            data,
+            {
+              headers: {
+                "Content-type": "application/json",
+                Accept: "*/*",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response, "from login");
+            handleCloseModal();
+          })
+          .catch((response) => {
+            console.log("Error!");
+            console.log(response, "from login");
+          });
+      };
+    const handleCloseModal = () => {
+        props.closemodal();
+    };
+    return (
+        <div className='Mypage'>
+            <label>My Page</label>
+            <form onSubmit={handleSubmit}>
+                <input type="text" value={email} onChange={handleEmailChange} placeholder="이메일"/>
+                <input type="text" value={username} onChange={handleUsernameChange} placeholder="이름"/>
+                <input type="text" value={birthday} onChange={handleBirthdayChange} placeholder="생일"/>
+                남
+                <input
+                value="male"
+                name="gender"
+                type="radio"
+                checked={gender === "male"}
+                onChange={handleGenderChange}
+                />
+                여
+                <input
+                id="female"
+                value="female"
+                name="gender"
+                type="radio"
+                checked={gender === "female"}
+                onChange={handleGenderChange}
+                />
+                <Calender />
+                <input type="submit" value="Submit" />
+            </form>
+            
+        </div>
+    );
 }
 
 export default Mypage;
