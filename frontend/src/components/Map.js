@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect, useRef } from 'react';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
 import markerImg from '../assets/marker.png';
+import addressStyle from '../styles/Address.css'
 
 const { kakao } = window;
 
@@ -71,10 +72,6 @@ const Map=()=>{
 
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-
-    // 3. 지도에 선택한 주소 띄우기 위한 훅
-    // var [selectGu, setSelectGu] = useState("");
-    // var [selectDong, setSelectDong] = useState("");
 
     useEffect(()=>{
       
@@ -211,7 +208,11 @@ const Map=()=>{
                 var moveLatLon = loca;
                 map.setLevel(5);
                 map.panTo(moveLatLon);
-                // setSelectDong(dongName);  
+                // setSelectDong(dongName);
+                
+                // [Todo] #2.8 BackEnd로 요청보내기 (선택한 동에 해당하는 상권 영역을 받아온다.)
+          
+                // #2.9 상권 영역 그리기
               }
             }
           });
@@ -246,6 +247,40 @@ const Map=()=>{
       }
     }
 
+    // #4. 현재 보고있는 곳의 주소 표현하기
+
+    // #4.1 주소-좌표 변환 객체를 생성합니다.
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // #4.2 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+    // #4.3 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+    kakao.maps.event.addListener(map, 'idle', function() {
+        searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+    });
+    
+    function searchAddrFromCoords(coords, callback) {
+        // 좌표로 행정동 주소 정보를 요청합니다
+        geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
+    }
+
+    // #4.4 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+    function displayCenterInfo(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+          console.log("오케이")
+          var infoDiv = document.getElementById('centerAddr');
+
+          for(var i = 0; i < result.length; i++) {
+              // 행정동의 region_type 값은 'H' 이므로
+              if (result[i].region_type === 'H') {
+                  infoDiv.innerHTML = result[i].address_name;
+                  break;
+              }
+          }
+      }    
+    }
+
 },)
   
       return (
@@ -254,10 +289,12 @@ const Map=()=>{
                 // id="map" 
                 style={{width:"100vw", height:"90vh"}}
                 ref = {container}
-              ></div>
-              <p id ="result">asd</p>
+              >
+              </div>
               <LeftSide setSearchKeyword={setSearchKeyword}/>
               <RightSide/>
+              <div id="centerAddr" className={addressStyle.Address}></div>
+              {/* <div id="centerAddr"></div> */}
               {/* <div><span>서울시</span> <span>{selectGu}</span> <span>{selectDong}</span></div> */}
           </div>
       )
