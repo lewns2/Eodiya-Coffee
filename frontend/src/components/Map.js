@@ -42,6 +42,8 @@ const locationSeoulGu = [
   {latlng: new kakao.maps.LatLng(37.55045024, 127.1470118), name: "강동구"},
 ];
 
+// [0] 에는 구에 대한 정보 (이름, 2차원 영역좌표, 유동인구, 매출 )
+// [1] 부터는 해당 구에 존재하는 동에 대한 정보 (이름, 중심 좌표, 2차원 영역 좌표)
 const testGangbuk = [
 {
   name : '강북구',  // 구 이름
@@ -109,13 +111,13 @@ const Map=()=>{
           title : locationSeoulGu[i].name,
           image : markerImage,
         });
-
+        guMarkers.push(marker);
         marker.setMap(map);
         // 4.2 개별 마커 클릭 이벤트
-        kakao.maps.event.addListener(marker, 'click', moveAndDisplayArea(marker, locationSeoulGu[i].latlng));
+        kakao.maps.event.addListener(marker, 'click', moveAndDisplayGuArea(marker, locationSeoulGu[i].latlng));
       }
       // 4.2.1. 줌인 & 마커 위치로 지도 이동
-      function moveAndDisplayArea(marker, loca) {
+      function moveAndDisplayGuArea(marker, loca) {
         // console.log(loca.La, loca.Ma);
         return function() {
           var moveLatLon = loca;
@@ -186,11 +188,22 @@ const Map=()=>{
                   });
 
                   marker.setMap(map);
+                  kakao.maps.event.addListener(marker, 'click', moveAndDisplayDongArea(marker, testGangbuk[i].latlng));
+                }
+
+                function moveAndDisplayDongArea(marker, loca) {
+                  // console.log(loca.La, loca.Ma);
+                  return function() {
+                    var moveLatLon = loca;
+                    map.setLevel(5);
+                    map.panTo(moveLatLon);  
+                  }
                 }
                 
               });
         }
       }
+
         
 
     // + 기능 2. 검색 시 해당 위치로 이동한다.
@@ -218,90 +231,6 @@ const Map=()=>{
         map.setBounds(bounds);
       }
     }
-
-    
-
-    // + 기능 3. 서울시 행정구 표시
-    // const customOverlay = new kakao.maps.CustomOverlay({});
-    // const infowindow = new kakao.maps.InfoWindow({ removable: true });
-    
-    // let sigunguData = geojson.features;
-    // let sanggwonData = sanggwonjson.features;
-    // let coordinates = [];
-    // let name = '';
-    
-
-  //   const displayArea = (coordinates, name) => {
-  //     let path = [];
-  //     let points = [];
-  //     let polygons = [];
-
-  //     coordinates[0].forEach((coordinate) => {
-  //       let point = {};
-
-  //       point.x = coordinate[1];
-  //       point.y = coordinate[0];
-        
-  //       points.push(point);
-  //       path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
-  //     });
-    
-
-  //   let polygon = new kakao.maps.Polygon({
-  //     map : map,
-  //     path: path,
-  //     strokeWeight: 2, // 선의 두께입니다
-  //     strokeColor: '#004c80', // 선의 색깔입니다
-  //     strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-  //     strokeStyle: 'solid', // 선의 스타일입니다
-  //     fillColor: '#fff', // 채우기 색깔입니다
-  //     fillOpacity: 0.7, // 채우기 불투명도 입니다
-  //   });
-  //   polygons.push(polygon);
-  
-  //   // 다각형에 mouseover 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 변경합니다
-  //   // 지역명을 표시하는 커스텀오버레이를 지도위에 표시합니다
-  //   kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
-  //     polygon.setOptions({ fillColor: '#09f' });
-
-  //     customOverlay.setContent('<div class="area">' + name + '</div>');
-
-  //     customOverlay.setPosition(mouseEvent.latLng);
-  //     customOverlay.setMap(map);
-  //   });
-
-  //   // 다각형에 mousemove 이벤트를 등록하고 이벤트가 발생하면 커스텀 오버레이의 위치를 변경합니다
-  //   kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
-  //     customOverlay.setPosition(mouseEvent.latLng);
-  //   });
-
-  //   // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
-  //   // 커스텀 오버레이를 지도에서 제거합니다
-  //   kakao.maps.event.addListener(polygon, 'mouseout', function () {
-  //     polygon.setOptions({ fillColor: '#fff' });
-  //     customOverlay.setMap(null);
-  //   });
-  // }
-
-  // sigunguData.forEach((val) => {
-  //   let coordinates = [];
-  //   let name = '';
-    
-  //   coordinates = val.geometry.coordinates;
-  //   name = val.properties.EMD_KOR_NM;
-  //   if(displayDivision) {
-  //     displayArea(coordinates, name);
-  //   }
-  // })
-  // sanggwonData.forEach((val) => {
-  //   let coordinates = [];
-  //   let name = '';
-  //   coordinates = val.geometry.coordinates;
-  //   name = val.properties.TRDAR_CD_N;
-  //   if(displaySanggwon) {
-  //     displayArea(coordinates, name);
-  //   }
-  // })
 
 },)
   
