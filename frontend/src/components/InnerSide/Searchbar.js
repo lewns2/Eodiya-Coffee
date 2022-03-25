@@ -34,7 +34,6 @@ const Searchbar = (props) => {
                 </input>
                 <button type="submit">검색</button>
             </form>
-            <h1>{place}</h1>
         </Fragment>
     );
 }

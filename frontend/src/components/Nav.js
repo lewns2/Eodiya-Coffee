@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useState } from 'react';
 import Mypage from '../pages/Mypage';
@@ -10,6 +9,11 @@ function Nav() {
     const [LoginIsOpen, setLoginOpen] = useState(false);
     const [MypageIsOpen, setMypageOpen] = useState(false);
     const [SigninIsOpen, setSigninIsOpen] = useState(false);
+    const handleCloseModal = ()=> {
+        setLoginOpen(false);
+        setMypageOpen(false);
+        setSigninIsOpen(false);
+    }
     return (
         <div className='Navbar'>
             <header>
@@ -20,13 +24,13 @@ function Nav() {
                         <button onClick={() => setMypageOpen(true)}>마이페이지</button>
                         <button onClick={() => setSigninIsOpen(true)}>회원가입</button>
                         <Modal isOpen={LoginIsOpen} onRequestClose={() => setLoginOpen(false)}>
-                            <Login/>
+                            <Login closemodal ={handleCloseModal}/>
                         </Modal>
                         <Modal isOpen={MypageIsOpen} onRequestClose={() => setMypageOpen(false)}>
-                            <Mypage/>
+                            <Mypage closemodal ={handleCloseModal}/>
                         </Modal>
                         <Modal isOpen={SigninIsOpen} onRequestClose={() => setSigninIsOpen(false)}>
-                            <Signin />
+                            <Signin closemodal ={handleCloseModal}/>
                         </Modal>
                             
                     </div>

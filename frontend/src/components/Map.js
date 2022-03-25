@@ -1,9 +1,12 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
-import LeftSide from './LeftSide';
-import RightSide from './RightSide';
+import React, { Component, useState, useEffect, useRef, useImperativeHandle } from 'react';
 import markerImg from '../assets/marker.png';
 import addressStyle from '../styles/Address.css'
 
+// import geojson from '../assets/TL_SCCO_SIG.json'
+import Search from './Search';
+import Comm from './Comm';
+import Cafe from './Cafe';
+import RightSidebar from '../components/InnerSide/RightSidebar';
 const { kakao } = window;
 
 // 초기 시작 위치 : 서울시
@@ -65,17 +68,20 @@ const testGangbuk = [
 const guMarkers = [];
 let dongMarkers = [];
 
-const Map=()=>{
-
+const Map=(props)=>{
+  const [click, setClick] = useState(false);
     // 1. 지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
 
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
 
+    // 3. 행정 구역 보기 토글 버튼
+    var [displayDivision, setdisplayDivision] = useState(0);
     useEffect(()=>{
-      
-      // #1. 지도 생성 및 화면 표시
+      console.log(click);
+      // + 기능 1. 지도 생성 및 화면 표시
+        // 1.1 지도 생성 및 객체 리턴
       var map = new window.kakao.maps.Map(container.current, options);
       
       // #2. 지도에 시군구동 이미지 마커 띄우기
@@ -285,17 +291,21 @@ const Map=()=>{
   
       return (
           <div className='Map'>
+            <div className='map_wrap'>
               <div 
-                // id="map" 
-                style={{width:"100vw", height:"90vh"}}
-                ref = {container}
-              >
+                  // id="map" 
+                  style={{width:"100vw", height:"90vh"}}
+                  ref = {container}
+              > 
               </div>
-              <LeftSide setSearchKeyword={setSearchKeyword}/>
-              <RightSide/>
-              <div id="centerAddr" className={addressStyle.Address}></div>
-              {/* <div id="centerAddr"></div> */}
-              {/* <div><span>서울시</span> <span>{selectGu}</span> <span>{selectDong}</span></div> */}
+              {/* <Category/> */}
+              <Search setSearchKeyword={setSearchKeyword}/>
+              <Comm setdisplayDivision={setdisplayDivision} setClick={setClick}/>
+              <Cafe />
+              <RightSidebar width={300} height={"100vw"} />
+            </div>
+            <p id ="result"></p>
+            <div id="centerAddr" className={addressStyle.Address}></div>
           </div>
       )
 }
