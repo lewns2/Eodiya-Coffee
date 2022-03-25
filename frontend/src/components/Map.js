@@ -1,8 +1,10 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import LeftSide from './LeftSide';
 import RightSide from './RightSide';
 import geojson from '../assets/TL_SCCO_SIG.json'
-
+import Search from './Search';
+import Comm from './Comm';
+import Cafe from './Cafe';
+import Category from './MapFeat/Category';
 const { kakao } = window;
 
 var mapCenter = new kakao.maps.LatLng(37.365264512305174, 127.10676860117488);
@@ -156,20 +158,21 @@ const Map=()=>{
   
       return (
           <div className='Map'>
+            <div className='map_wrap'>
               <div 
-                // id="map" 
-                style={{width:"100vw", height:"90vh"}}
-                ref = {container}
+                  id="map" 
+                  style={{width:"100vw", height:"90vh"}}
+                  ref = {container}
               > 
               </div>
-              <p 
-                id ="result"
-              >
-                  asd
-              </p>
-              <LeftSide setSearchKeyword={setSearchKeyword}/>
+              {/* <Category/> */}
+              <Search setSearchKeyword={setSearchKeyword}/>
+              <Comm setdisplayDivision={setdisplayDivision}/>
+              <Cafe />
+            </div>
+              <p id ="result"></p>
               <RightSide/>
-              <button type="submit" onClick={handleDisplay} style={{width:"100vw"}}>행정 구역 보기</button>
+              {/* <button type="submit" onClick={handleDisplay} style={{width:"100vw"}}>행정 구역 보기</button> */}
               
           </div>
       )
