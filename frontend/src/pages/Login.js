@@ -31,6 +31,7 @@ function Login(props) {
       .then((response) => {
         console.log(response, "from login");
         localStorage.setItem("jwt", response.data.token);
+        localStorage.setItem("user_email", userId);
         handleCloseModal();
       })
       .catch((response) => {
