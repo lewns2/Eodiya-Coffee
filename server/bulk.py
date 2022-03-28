@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import os
 import django
 import json
@@ -139,8 +140,8 @@ for i in range(len(df)):
             dongXYPoint = k[1] # 동 경계의 xy좌표
             break
     # print(dongName + guName, dongXYPoint)
-    if dongName in check: continue
-    check.append(dongName)
+    if dongCode in check: continue
+    check.append(dongCode)
     # print(dongCode, guName, (guCenterXPoint, guCenterYPoint), guXYPoint, dongName, (dongCenterXPoint, dongCenterYPoint), dongXYPoint)
     instances.append(SeoulGuDong(dongCode=dongCode, guName=guName, guCenterXPoint=guCenterXPoint, guCenterYPoint=guCenterYPoint, guXYPoint=guXYPoint, dongName=dongName, 
                                  dongCenterXPoint=dongCenterXPoint, dongCenterYPoint=dongCenterYPoint, dongXYPoint=dongXYPoint))
