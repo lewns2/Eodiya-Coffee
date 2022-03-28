@@ -59,3 +59,10 @@ class CommercialAreaBackground(models.Model):
     commercialArea = models.ForeignKey(CommercialArea, related_name='backgroundInfo', on_delete=models.CASCADE)
     avgIncome = models.IntegerField() # 평균 소득
     gradeIncome = models.IntegerField() # 소득 분위
+    guCenterXPoint = models.FloatField() # 구 중심의 x좌표
+    guCenterYPoint = models.FloatField() # 구 중심의 y좌표
+    guXYPoint = models.TextField() # 구 경계의 xy좌표
+    dongName = models.CharField(max_length=50) # 동 이름
+    dongCenterXPoint = models.FloatField() # 동 중심의 x좌표
+    dongCenterYPoint = models.FloatField() # 동 중심의 y좌표
+    dongXYPoint = models.TextField() # 동 경계의 xy좌표

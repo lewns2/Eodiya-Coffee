@@ -1,50 +1,70 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
-function Login() {
-    const [userId, setUserId] = useState('')
-    const [userPW, setUserPW] = useState('')
+function Login(props) {
+  const [userId, setUserId] = useState("");
+  const [userPW, setUserPW] = useState("");
 
-    const handleIdChange = (event) => {
-        setUserId(() =>event.target.value);
-    }
-    const handlePWChange = (event) => {
-        setUserPW(() =>event.target.value);
-    }
-    const handleSubmit = (event) => {
-        alert('A name was submitted: ' + userId +" "+ userPW);
-        axios.post( 'url', 
-            { 
-                user_email: userId, 
-                password: userPW 
-            }, 
-            { 
-            headers:{ 
-                'Content-type': 'application/json', 
-                'Accept': 'application/json' 
-                } 
-                } 
-            ) 
-            .then((response) => { window.localStorage.setItem("JWTtoken", JSON.stringify(response.data)); }) 
-            .catch((response) => { console.log('Error!') });
-    }
-    const handlefindId = () =>{
-        alert('findId');
-    }
-    const handlefindPW = () =>{
-        alert('findPW');
-    }
-    return (
-        <div className='Login'>
-            <form onSubmit={handleSubmit}>
-                <label>아이디: <input type="text" value={userId} onChange={handleIdChange}/></label>
-                <label>비밀번호: <input type="text" value={userPW} onChange={handlePWChange}/></label>
-                <hr/>
-                <a onClick={handlefindId}>아이디 찾기</a><span> / </span><a onClick={handlefindPW}>비밀번호 찾기</a>
-                <input type="submit" value="Submit"/>
-            </form>
-        </div>
-    );
+  const handleIdChange = (event) => {
+    setUserId(() => event.target.value);
+  };
+  const handlePWChange = (event) => {
+    setUserPW(() => event.target.value);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert("A name was submitted: " + userId + " " + userPW);
+    axios
+      .post(
+        "/accounts/api-token-auth/",
+        {
+          email: userId,
+          password: userPW,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "*/*",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response, "from login");
+        localStorage.setItem("jwt", response.data.token);
+        handleCloseModal();
+      })
+      .catch((response) => {
+        console.log("Error!");
+        console.log(response, "from login");
+      });
+  };
+  const handlefindId = () => {
+    alert("findId");
+  };
+  const handlefindPW = () => {
+    alert("findPW");
+  };
+  const handleCloseModal = () => {
+    props.closemodal();
+  };
+  return (
+    <div className="Login">
+      <form onSubmit={handleSubmit}>
+        <label>
+          아이디: <input type="text" value={userId} onChange={handleIdChange} />
+        </label>
+        <label>
+          비밀번호:{" "}
+          <input type="text" value={userPW} onChange={handlePWChange} />
+        </label>
+        <hr />
+        <a onClick={handlefindId}>아이디 찾기</a>
+        <span> / </span>
+        <a onClick={handlefindPW}>비밀번호 찾기</a>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  );
 }
 export default Login;
 

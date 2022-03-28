@@ -1,5 +1,7 @@
 import os
 import django
+import json
+from pandas.io.json import json_normalize
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Odiya.settings')
 django.setup()
 
@@ -72,6 +74,50 @@ for i in range(len(df_dong2[0]['features'])):
     dong_point_array.append([df_dong2[0]['features'][i]['properties']['adm_nm'], dong_point])
 
 
+## 지역 테이블 만들기
+df = pd.read_csv('../Data/commercialAreaData/상권-행정동.csv', encoding='CP949')
+# 구의 중심좌표를 구하기 위함
+df_gu = pd.read_csv('../Data/XY_point/gu.csv')
+gu_center_point = []
+for i in range(len(df)):
+    for j in range(len(df_gu)):
+        if df.iloc[i]['시군구명'] == df_gu.iloc[j]['시군구명']:
+            guCenterXPoint = df_gu.iloc[j]['X']# 구 중심의 x좌표
+            guCenterYPoint = df_gu.iloc[j]['Y']# 구 중심의 y좌표
+            gu_center_point.append([guCenterXPoint, guCenterYPoint])
+
+# # 구의 경계좌표를 구하기 위함
+df_gu2 = pd.read_json('../Data/XY_point/seoul_sigungu.json', orient='index')
+gu_point_array = []
+for i in range(len(df_gu2[0]['features'])):
+    if df_gu2[0]['features'][i]['properties']['SIG_CD'][0] == '1':
+        gu_point = str(df_gu2[0]['features'][i]['geometry']['coordinates'][0])
+        gu_point = gu_point[1:]
+        gu_point = gu_point[:-1]
+        gu_name = df_gu2[0]['features'][i]['properties']['SIG_KOR_NM']
+        gu_point_array.append((gu_name, gu_point))
+
+# 동의 중심좌표를 구하기 위함
+df_dong = pd.read_csv('../Data/XY_point/dong.csv', encoding='CP949')
+dong_center_point = []
+for i in range(len(df)):
+    for j in range(len(df_dong)):
+        # 강남구에도 신사동이 있고 관악구에도 신사동(신림동)이 있다
+        if df.iloc[i]['행정동명'] == df_dong.iloc[j]['읍면동명'] and df.iloc[i]['시군구명'] == df_dong.iloc[j]['시군구명']:
+            dongCenterXPoint = df_dong.iloc[j]['X'] # 동 중심의 x좌표
+            dongCenterYPoint = df_dong.iloc[j]['Y'] # 동 중심의 y좌표
+            dong_center_point.append([dongCenterXPoint, dongCenterYPoint])
+
+
+# 동의 경계좌표를 구하기 위함
+df_dong2 = pd.read_json('../Data/XY_point/seoul_sigungudong.json', orient='index')
+dong_point_array = []
+for i in range(len(df_dong2[0]['features'])):
+    dong_point = str(df_dong2[0]['features'][i]['geometry']['coordinates'][0])
+    dong_point = dong_point[1:-1]
+    dong_point_array.append([df_dong2[0]['features'][i]['properties']['adm_nm'], dong_point])
+
+
 ### SeoulGuDong Model
 instances = []
 check = []
@@ -99,8 +145,6 @@ for i in range(len(df)):
     instances.append(SeoulGuDong(dongCode=dongCode, guName=guName, guCenterXPoint=guCenterXPoint, guCenterYPoint=guCenterYPoint, guXYPoint=guXYPoint, dongName=dongName, 
                                  dongCenterXPoint=dongCenterXPoint, dongCenterYPoint=dongCenterYPoint, dongXYPoint=dongXYPoint))
 SeoulGuDong.objects.bulk_create(instances)
-
-
 
 
 ### dataFrame
