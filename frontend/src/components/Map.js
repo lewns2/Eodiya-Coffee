@@ -11,6 +11,9 @@ import '../styles/Map.css';
 import '../styles/Location.css'
 import { Fab } from '@mui/material';
 
+import {GET_DISTRICT, getArea} from '../actions/District';
+import axios from 'axios';
+
 
 const { kakao } = window;
 
@@ -150,7 +153,12 @@ const Map=(props)=>{
           // setSelectGu(guName);  
 
           // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)
+          // 임시 확인용 => 추후 redux 적용 예정.
+          console.log(guName);
+          axios.get(`http://127.0.0.1:8000/api/v1/${guName}`).then((res) => console.log(res)).catch((err) => console.log(err));
           
+          
+
           // #2.5 구 영역 그리기
           let path = [];
           let points = [];
