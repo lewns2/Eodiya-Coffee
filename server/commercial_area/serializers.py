@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CommercialArea, SeoulGuDong
+from .models import SeoulGuDong, CommercialArea
 
 class CommercialAreaSerializer(serializers.ModelSerializer):
     class Meta:
