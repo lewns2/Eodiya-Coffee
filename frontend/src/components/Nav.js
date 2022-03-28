@@ -16,26 +16,25 @@ function Nav() {
     }
     return (
         <div className='Navbar'>
-            <header>
-                <h1>EoDIYA COFFEE</h1>
-                <nav className='Nav'>
-                    <div className='Nav'>
-                        <button onClick={() => setLoginOpen(true)}>로그인</button>
-                        <button onClick={() => setMypageOpen(true)}>마이페이지</button>
-                        <button onClick={() => setSigninIsOpen(true)}>회원가입</button>
-                        <Modal isOpen={LoginIsOpen} onRequestClose={() => setLoginOpen(false)}>
+            <nav className='Nav'>
+            <h1>EoDIYA COFFEE</h1>
+                <div className='Nav'>
+                    <button onClick={() => setLoginOpen(true)}>로그인</button>
+                    <button onClick={() => setMypageOpen(true)}>마이페이지</button>
+                    <button onClick={() => setSigninIsOpen(true)}>회원가입</button>
+                    <div className='Modal'>
+                        <Modal isOpen={LoginIsOpen} onRequestClose={() => setLoginOpen(false)} ariaHideApp={false}>
                             <Login closemodal ={handleCloseModal}/>
                         </Modal>
-                        <Modal isOpen={MypageIsOpen} onRequestClose={() => setMypageOpen(false)}>
+                        <Modal isOpen={MypageIsOpen} onRequestClose={() => setMypageOpen(false)} ariaHideApp={false}>
                             <Mypage closemodal ={handleCloseModal}/>
                         </Modal>
-                        <Modal isOpen={SigninIsOpen} onRequestClose={() => setSigninIsOpen(false)}>
+                        <Modal isOpen={SigninIsOpen} onRequestClose={() => setSigninIsOpen(false)} ariaHideApp={false}>
                             <Signin closemodal ={handleCloseModal}/>
                         </Modal>
-                            
                     </div>
-                </nav>
-            </header>
+                </div>
+            </nav>
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, useRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import markerImg from '../assets/marker.png';
 import addressStyle from '../styles/Address.css'
 
@@ -7,6 +7,7 @@ import Search from './Search';
 import Comm from './Comm';
 import Cafe from './Cafe';
 import RightSidebar from '../components/InnerSide/RightSidebar';
+import '../styles/Map.css';
 const { kakao } = window;
 
 // 초기 시작 위치 : 서울시
