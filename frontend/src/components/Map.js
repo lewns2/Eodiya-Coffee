@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import markerImg from '../assets/marker.png';
-import addressStyle from '../styles/Address.css'
 
 // import geojson from '../assets/TL_SCCO_SIG.json'
 import Search from './Search';
 import Comm from './Comm';
 import Cafe from './Cafe';
 import RightSidebar from '../components/InnerSide/RightSidebar';
+
 import '../styles/Map.css';
+import '../styles/Location.css'
+import { Fab } from '@mui/material';
+
+
 const { kakao } = window;
 
 // 초기 시작 위치 : 서울시
@@ -79,10 +83,25 @@ const Map=(props)=>{
 
     // 3. 행정 구역 보기 토글 버튼
     var [displayDivision, setdisplayDivision] = useState(0);
+
+    // 4. 오른쪽 사이드바로 넘겨줄 주소 정보
+    const [nowLocation, setNowLocation] = useState();
+
+    // 5. 맵 초기화 되는 거 방지
+
+    // const [mapCenter, setMapCenter] = useState(37.56690518860781, 126.97808628226417);
+    // const [options, setOptions] = useState({
+    //   center : mapCenter,
+    //   level : 8,
+    // })
+
     useEffect(()=>{
       console.log(click);
+      console.log("변경되었습니다.");
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
+      
+
       var map = new window.kakao.maps.Map(container.current, options);
       
       // #2. 지도에 시군구동 이미지 마커 띄우기
@@ -151,10 +170,10 @@ const Map=(props)=>{
             path: path,
             strokeWeight: 2, // 선의 두께입니다
             strokeColor: '#004c80', // 선의 색깔입니다
-            strokeOpacity: 0.1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle: 'solid', // 선의 스타일입니다
+            strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'longdash', // 선의 스타일입니다
             fillColor: '#fff', // 채우기 색깔입니다
-            fillOpacity: 0.7, // 채우기 불투명도 입니다
+            fillOpacity: 0.3, // 채우기 불투명도 입니다
           });
           polygons.push(polygon);
           
@@ -272,16 +291,16 @@ const Map=(props)=>{
         geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
     }
 
-    // #4.4 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+    // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
     function displayCenterInfo(result, status) {
       if (status === kakao.maps.services.Status.OK) {
-          console.log("오케이")
           var infoDiv = document.getElementById('centerAddr');
 
           for(var i = 0; i < result.length; i++) {
               // 행정동의 region_type 값은 'H' 이므로
               if (result[i].region_type === 'H') {
                   infoDiv.innerHTML = result[i].address_name;
+                  // setNowLocation(result[i].address_name);
                   break;
               }
           }
@@ -305,8 +324,9 @@ const Map=(props)=>{
               <Cafe />
               <RightSidebar width={300} height={"100vw"} />
             </div>
-            <p id ="result"></p>
-            <div id="centerAddr" className={addressStyle.Address}></div>
+
+            <Fab id="centerAddr" className='Location' variant="extended" />
+            
           </div>
       )
 }
