@@ -1,6 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Cafe.css';
 const Cafe =() => {
+    const [visible, setVisible] = useState("none");
+    function click() {
+        if(visible ==="none"){
+            setVisible("block");
+        }else{
+            setVisible("none");
+        }
+    }
     useEffect(() =>{
         addCafeClickEvent();
         function addCafeClickEvent(){
@@ -19,8 +27,15 @@ const Cafe =() => {
     })
     return (
         <div className='Cafe'>
-            <h3>카페를 선택</h3>
             <div>
+                <h3>카페를 선택</h3>
+                <button onClick={() => click()}>{visible ==="none"? "열기" : "닫기"}</button>
+            </div>
+            <div
+                style={{
+                    display : visible
+                }}
+            >
                 <ul id ="category">
                     <li id="study">
                         <span className="category_bg study"></span>

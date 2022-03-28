@@ -1,9 +1,4 @@
-.Login{
-    z-index:10;
-}
-.Signin{
-    z-index:10;
-}
-.Mypage{
-    z-index:10;
+.Navbar {
+  height: 70px;
+  background-color: blueviolet;
 }
