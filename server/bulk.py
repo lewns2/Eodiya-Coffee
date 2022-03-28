@@ -8,77 +8,77 @@ django.setup()
 from commercial_area.models import SeoulGuDong
 import pandas as pd
 
-## 지역 테이블 만들기
-df = pd.read_csv('../Data/commercialAreaData/상권-행정동.csv', encoding='CP949')
-# 구의 중심좌표를 구하기 위함
-df_gu = pd.read_csv('../Data/XY_point/gu.csv')
-gu_center_point = []
-for i in range(len(df)):
-    for j in range(len(df_gu)):
-        if df.iloc[i]['시군구명'] == df_gu.iloc[j]['시군구명']:
-            guCenterXPoint = df_gu.iloc[j]['X']# 구 중심의 x좌표
-            guCenterYPoint = df_gu.iloc[j]['Y']# 구 중심의 y좌표
-            gu_center_point.append([guCenterXPoint, guCenterYPoint])
+# ## 지역 테이블 만들기
+# df = pd.read_csv('../Data/commercialAreaData/상권-행정동.csv', encoding='CP949')
+# # 구의 중심좌표를 구하기 위함
+# df_gu = pd.read_csv('../Data/XY_point/gu.csv')
+# gu_center_point = []
+# for i in range(len(df)):
+#     for j in range(len(df_gu)):
+#         if df.iloc[i]['시군구명'] == df_gu.iloc[j]['시군구명']:
+#             guCenterXPoint = df_gu.iloc[j]['X']# 구 중심의 x좌표
+#             guCenterYPoint = df_gu.iloc[j]['Y']# 구 중심의 y좌표
+#             gu_center_point.append([guCenterXPoint, guCenterYPoint])
 
-# # 구의 경계좌표를 구하기 위함
-df_gu2 = pd.read_json('../Data/XY_point/seoul_sigungu.json', orient='index')
-gu_point_array = []
-for i in range(len(df_gu2[0]['features'])):
-    if df_gu2[0]['features'][i]['properties']['SIG_CD'][0] == '1':
-        gu_point = str(df_gu2[0]['features'][i]['geometry']['coordinates'][0])
-        gu_point = gu_point[1:]
-        gu_point = gu_point[:-1]
-        gu_name = df_gu2[0]['features'][i]['properties']['SIG_KOR_NM']
-        gu_point_array.append((gu_name, gu_point))
+# # # 구의 경계좌표를 구하기 위함
+# df_gu2 = pd.read_json('../Data/XY_point/seoul_sigungu.json', orient='index')
+# gu_point_array = []
+# for i in range(len(df_gu2[0]['features'])):
+#     if df_gu2[0]['features'][i]['properties']['SIG_CD'][0] == '1':
+#         gu_point = str(df_gu2[0]['features'][i]['geometry']['coordinates'][0])
+#         gu_point = gu_point[1:]
+#         gu_point = gu_point[:-1]
+#         gu_name = df_gu2[0]['features'][i]['properties']['SIG_KOR_NM']
+#         gu_point_array.append((gu_name, gu_point))
 
-# 동의 중심좌표를 구하기 위함
-df_dong = pd.read_csv('../Data/XY_point/dong.csv', encoding='CP949')
-dong_center_point = []
-for i in range(len(df)):
-    for j in range(len(df_dong)):
-        # 강남구에도 신사동이 있고 관악구에도 신사동(신림동)이 있다
-        if df.iloc[i]['행정동명'] == df_dong.iloc[j]['읍면동명'] and df.iloc[i]['시군구명'] == df_dong.iloc[j]['시군구명']:
-            dongCenterXPoint = df_dong.iloc[j]['X'] # 동 중심의 x좌표
-            dongCenterYPoint = df_dong.iloc[j]['Y'] # 동 중심의 y좌표
-            dong_center_point.append([dongCenterXPoint, dongCenterYPoint])
-
-
-# 동의 경계좌표를 구하기 위함
-df_dong2 = pd.read_json('../Data/XY_point/seoul_sigungudong.json', orient='index')
-dong_point_array = []
-for i in range(len(df_dong2[0]['features'])):
-    dong_point = str(df_dong2[0]['features'][i]['geometry']['coordinates'][0])
-    dong_point = dong_point[1:-1]
-    dong_point_array.append([df_dong2[0]['features'][i]['properties']['adm_nm'], dong_point])
+# # 동의 중심좌표를 구하기 위함
+# df_dong = pd.read_csv('../Data/XY_point/dong.csv', encoding='CP949')
+# dong_center_point = []
+# for i in range(len(df)):
+#     for j in range(len(df_dong)):
+#         # 강남구에도 신사동이 있고 관악구에도 신사동(신림동)이 있다
+#         if df.iloc[i]['행정동명'] == df_dong.iloc[j]['읍면동명'] and df.iloc[i]['시군구명'] == df_dong.iloc[j]['시군구명']:
+#             dongCenterXPoint = df_dong.iloc[j]['X'] # 동 중심의 x좌표
+#             dongCenterYPoint = df_dong.iloc[j]['Y'] # 동 중심의 y좌표
+#             dong_center_point.append([dongCenterXPoint, dongCenterYPoint])
 
 
-### SeoulGuDong Model
-instances = []
-check = []
-for i in range(len(df)):
-    dongCode = df.iloc[i]['행정동_코드']
-    guName = df.iloc[i]['시군구명']
-    guCenterXPoint = gu_center_point[i][0] # 구 중심의 x좌표
-    guCenterYPoint = gu_center_point[i][1] # 구 중심의 y좌표
-    for j in gu_point_array:
-        if j[0] == guName:
-            guXYPoint = j[1] # 구 경계의 xy좌표
-            break
-    # print(dongCode, guName, guCenterXPoint, guCenterYPoint, guXYPoint)
-    dongName = df.iloc[i]['행정동명']
-    dongCenterXPoint = dong_center_point[i][0] # 동 중심의 x좌표
-    dongCenterYPoint = dong_center_point[i][1]# 동 중심의 y좌표
-    for k in dong_point_array:
-        if k[0][6:] == guName + ' ' + dongName:
-            dongXYPoint = k[1] # 동 경계의 xy좌표
-            break
-    # print(dongName + guName, dongXYPoint)
-    if dongName in check: continue
-    check.append(dongName)
-    # print(dongCode, guName, (guCenterXPoint, guCenterYPoint), guXYPoint, dongName, (dongCenterXPoint, dongCenterYPoint), dongXYPoint)
-    instances.append(SeoulGuDong(dongCode=dongCode, guName=guName, guCenterXPoint=guCenterXPoint, guCenterYPoint=guCenterYPoint, guXYPoint=guXYPoint, dongName=dongName, 
-                                 dongCenterXPoint=dongCenterXPoint, dongCenterYPoint=dongCenterYPoint, dongXYPoint=dongXYPoint))
-SeoulGuDong.objects.bulk_create(instances)
+# # 동의 경계좌표를 구하기 위함
+# df_dong2 = pd.read_json('../Data/XY_point/seoul_sigungudong.json', orient='index')
+# dong_point_array = []
+# for i in range(len(df_dong2[0]['features'])):
+#     dong_point = str(df_dong2[0]['features'][i]['geometry']['coordinates'][0])
+#     dong_point = dong_point[1:-1]
+#     dong_point_array.append([df_dong2[0]['features'][i]['properties']['adm_nm'], dong_point])
+
+
+# ### SeoulGuDong Model
+# instances = []
+# check = []
+# for i in range(len(df)):
+#     dongCode = df.iloc[i]['행정동_코드']
+#     guName = df.iloc[i]['시군구명']
+#     guCenterXPoint = gu_center_point[i][0] # 구 중심의 x좌표
+#     guCenterYPoint = gu_center_point[i][1] # 구 중심의 y좌표
+#     for j in gu_point_array:
+#         if j[0] == guName:
+#             guXYPoint = j[1] # 구 경계의 xy좌표
+#             break
+#     # print(dongCode, guName, guCenterXPoint, guCenterYPoint, guXYPoint)
+#     dongName = df.iloc[i]['행정동명']
+#     dongCenterXPoint = dong_center_point[i][0] # 동 중심의 x좌표
+#     dongCenterYPoint = dong_center_point[i][1]# 동 중심의 y좌표
+#     for k in dong_point_array:
+#         if k[0][6:] == guName + ' ' + dongName:
+#             dongXYPoint = k[1] # 동 경계의 xy좌표
+#             break
+#     # print(dongName + guName, dongXYPoint)
+#     if dongName in check: continue
+#     check.append(dongName)
+#     # print(dongCode, guName, (guCenterXPoint, guCenterYPoint), guXYPoint, dongName, (dongCenterXPoint, dongCenterYPoint), dongXYPoint)
+#     instances.append(SeoulGuDong(dongCode=dongCode, guName=guName, guCenterXPoint=guCenterXPoint, guCenterYPoint=guCenterYPoint, guXYPoint=guXYPoint, dongName=dongName, 
+#                                  dongCenterXPoint=dongCenterXPoint, dongCenterYPoint=dongCenterYPoint, dongXYPoint=dongXYPoint))
+# SeoulGuDong.objects.bulk_create(instances)
 
 
 ### CommercialArea Model
@@ -178,3 +178,27 @@ SeoulGuDong.objects.bulk_create(instances)
 #                                     avgIncome = avgIncome, incomeGrade = incomeGrade, outcomeForFood = outcomeForFood,
 #                                     ))
 # CommercialArea.objects.bulk_create(instances)
+
+# gu_list = ['마포구','서대문구','은평구','종로구','중구','용산구','성동구','광진구',
+#            '동대문구','성북구','강북구','도봉구','노원구','중랑구','강동구','송파구',
+#            '강남구','서초구','관악구','동작구','영등포구','금천구','구로구','양천구','강서구']
+# instance = []
+# for gu in gu_list:
+#     df_cafe = pd.read_csv(f'../Data/Cafe_Data/{gu}_cafe_data.csv', encoding='utf-8')
+#     print(df_cafe)
+    
+#     for i in range(len(df_cafe)):
+#         # dongCode = 
+#         # commercialCode = 
+#         cafeName = df_cafe.iloc[i]['카페명']
+#         cafeRate = df_cafe.iloc[i]['평점']
+#         reviewCount =df_cafe.iloc[i]['리뷰개수']
+#         cafeAddress = df_cafe.iloc[i]['주소']
+#         cafeHour = df_cafe.iloc[i]['영업시간']
+#         cafeTel = df_cafe.iloc[i]['전화번호']
+#         cafeHomepage = df_cafe.iloc[i]['홈페이지주소']
+#         cafeTag = df_cafe.iloc[i]['태그']
+#         cafePhoto = df_cafe.iloc[i]['대표사진주소']
+    # instance(cafeName=cafeName, cafeRate=cafeRate, reviewCount=reviewCount, cafeAddress=cafeAddress,
+    #         cafeHour=cafeHour, cafeTel = cafeTel, cafeHomepage=cafeHomepage, cafeTag=cafeTag, cafePhoto=cafePhoto
+    #         )
