@@ -1,4 +1,3 @@
-import email
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -36,13 +35,17 @@ def signup(request):
         user.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    return
+
 
 @api_view(['DELETE'])
 def signout(request):
+    print(request)
     user_email = request.data.get('email')
     password = request.data.get('password')
 
-    user = get_user_model().objects.get(email=user_email)
+    user = get_object_or_404(get_user_model(), email=user_email)
+    # user = get_user_model().objects.get(email=user_email)
     if user:
         if check_password(password, user.password):
             user.delete()
