@@ -148,7 +148,7 @@ const Map=(props)=>{
         // console.log(loca.La, loca.Ma);
         return function() {
           var moveLatLon = loca;
-          map.setLevel(7);
+          map.setLevel(7); 
           map.panTo(moveLatLon);
           // setSelectGu(guName);  
 
@@ -156,6 +156,8 @@ const Map=(props)=>{
           // 임시 확인용 => 추후 redux 적용 예정.
           console.log(guName);
           axios.get(`http://127.0.0.1:8000/api/v1/${guName}`).then((res) => console.log(res)).catch((err) => console.log(err));
+          
+          // 이동하기
           
           
 
