@@ -5,7 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
+<<<<<<< HEAD
 
+=======
+import { StyledEngineProvider } from '@mui/material/styles';
+>>>>>>> fe/sidebar
 // axios.defaults.baseURL = "/api/v1";
 axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1";
 axios.defaults.withCredentials = false;
@@ -15,7 +19,9 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
-      <App />
+      <StyledEngineProvider injectFirst>
+        <App />
+      </StyledEngineProvider>
     </React.StrictMode>
   </BrowserRouter>,
   document.getElementById("root")
