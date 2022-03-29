@@ -100,7 +100,6 @@ const Map=(props)=>{
 
     useEffect(()=>{
       console.log(click);
-      console.log("변경되었습니다.");
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
       
