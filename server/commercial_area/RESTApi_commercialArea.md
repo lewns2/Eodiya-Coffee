@@ -1,5 +1,7 @@
 ### 상권
 
+### 옛날꺼
+
 - 구에 해당하는 동 정보
 
 ```
@@ -33,10 +35,6 @@ Content-Type : application/json
     },
 ```
 
-
-
-
-
 - 동에 해당하는 상권 정보
 
 ```
@@ -60,4 +58,3 @@ Content-Type : application/json
         "seoulGuDong": 11620685
     },
 ```
-
