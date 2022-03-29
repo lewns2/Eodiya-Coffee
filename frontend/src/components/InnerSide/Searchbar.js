@@ -4,6 +4,14 @@ const Searchbar = (props) => {
     const [inputText, setInputText] = useState("");
     const [place, setplace] = useState(props.setKeyword);
 
+    const onChange = (e) => {
+        setInputText(e.target.value);
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setplace(inputText);
+        setInputText("");
+    }
     useEffect(() => {
         console.log("Searchbar : ", place, '로 변경되었음.')
         props.setKeyword(place);
@@ -12,15 +20,7 @@ const Searchbar = (props) => {
         // };
     }, [place])
 
-    const onChange = (e) => {
-        setInputText(e.target.value);
-    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setplace(inputText);
-        setInputText("");
-    }
 
     return (
         <Fragment>

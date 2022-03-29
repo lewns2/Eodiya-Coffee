@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import markerImg from '../assets/marker.png';
 import addressStyle from '../styles/Address.css'
-
+import { StyledEngineProvider } from '@mui/material/styles';
 // import geojson from '../assets/TL_SCCO_SIG.json'
 import Search from './Search';
 import Comm from './Comm';
-import Cafe from './Cafe';
-import RightSidebar from '../components/InnerSide/RightSidebar';
 import '../styles/Map.css';
+import RightSide from './Sidebar';
 const { kakao } = window;
 
 // 초기 시작 위치 : 서울시
@@ -68,19 +68,20 @@ const testGangbuk = [
 
 const guMarkers = [];
 let dongMarkers = [];
-
 const Map=(props)=>{
-  const [click, setClick] = useState(false);
+    //분석하기 클릭하면 
+    const [open, setOpen] = React.useState(false);
+    const getOpen = (e) =>{
+      setOpen(e);
+    }  
     // 1. 지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
 
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-
+  
     // 3. 행정 구역 보기 토글 버튼
-    var [displayDivision, setdisplayDivision] = useState(0);
     useEffect(()=>{
-      console.log(click);
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
       var map = new window.kakao.maps.Map(container.current, options);
@@ -299,11 +300,11 @@ const Map=(props)=>{
                   ref = {container}
               > 
               </div>
-              {/* <Category/> */}
-              <Search setSearchKeyword={setSearchKeyword}/>
-              <Comm setdisplayDivision={setdisplayDivision} setClick={setClick}/>
-              <Cafe />
-              <RightSidebar width={300} height={"100vw"} />
+              <StyledEngineProvider injectFirst>
+                <Search setSearchKeyword={setSearchKeyword}/>
+                <Comm open={open} getOpen={getOpen} />
+                <RightSide open={open} getOpen={getOpen}/>
+              </StyledEngineProvider >
             </div>
             <p id ="result"></p>
             <div id="centerAddr" className={addressStyle.Address}></div>
