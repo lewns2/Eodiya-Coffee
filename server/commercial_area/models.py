@@ -5,13 +5,13 @@ from django.db import models
 class SeoulGuDong(models.Model):
     dongCode = models.IntegerField(primary_key=True) # 행정동코드
     guName = models.CharField(max_length=50) # 구 이름
-    guCenterXPoint = models.FloatField(null=True) # 구 중심의 x좌표
-    guCenterYPoint = models.FloatField(null=True) # 구 중심의 y좌표
-    guXYPoint = models.TextField(null=True) # 구 경계의 xy좌표
+    guCenterXPoint = models.FloatField() # 구 중심의 x좌표
+    guCenterYPoint = models.FloatField() # 구 중심의 y좌표
+    guXYPoint = models.TextField() # 구 경계의 xy좌표
     dongName = models.CharField(max_length=50) # 동 이름
-    dongCenterXPoint = models.FloatField(null=True) # 동 중심의 x좌표
-    dongCenterYPoint = models.FloatField(null=True) # 동 중심의 y좌표
-    dongXYPoint = models.TextField(null=True) # 동 경계의 xy좌표
+    dongCenterXPoint = models.FloatField() # 동 중심의 x좌표
+    dongCenterYPoint = models.FloatField() # 동 중심의 y좌표
+    dongXYPoint = models.TextField() # 동 경계의 xy좌표
     
     
 class CommercialArea(models.Model):
