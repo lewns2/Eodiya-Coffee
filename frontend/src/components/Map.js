@@ -11,8 +11,11 @@ import '../styles/Map.css';
 import '../styles/Location.css'
 import { Fab } from '@mui/material';
 
-import {GET_DISTRICT, getArea} from '../actions/District';
-import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import { getArea } from '../actions/district';
+
+// import {GET_DISTRICT, getArea} from '../actions/district';
+// import axios from 'axios';
 
 
 const { kakao } = window;
@@ -77,7 +80,10 @@ const guMarkers = [];
 let dongMarkers = [];
 
 const Map=(props)=>{
-  const [click, setClick] = useState(false);
+    const dispatch = useDispatch();
+    const guSelector = useSelector(state => state);
+
+    const [click, setClick] = useState(false);
     // 1. 지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
 
@@ -99,11 +105,8 @@ const Map=(props)=>{
     // })
 
     useEffect(()=>{
-      console.log(click);
-      console.log("변경되었습니다.");
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
-      
 
       var map = new window.kakao.maps.Map(container.current, options);
       
@@ -145,7 +148,7 @@ const Map=(props)=>{
       }
       // #2.3 줌인 & 마커 위치로 지도 이동
       function moveAndDisplayGuArea(customOverlay, loca, guName) {
-        // console.log(loca.La, loca.Ma);
+
         return function() {
           var moveLatLon = loca;
           map.setLevel(7); 
@@ -155,8 +158,10 @@ const Map=(props)=>{
           // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)
           // 임시 확인용 => 추후 redux 적용 예정.
           console.log(guName);
-          axios.get(`http://127.0.0.1:8000/api/v1/${guName}`).then((res) => console.log(res)).catch((err) => console.log(err));
-          
+          console.log("변경 전 : ",guSelector);
+          dispatch(getArea(guName));
+          // axios.get(`http://127.0.0.1:8000/api/v1/${guName}`).then((res) => console.log(res)).catch((err) => console.log(err));
+          console.log("변경 후 :", guSelector);
           // 이동하기
           
           

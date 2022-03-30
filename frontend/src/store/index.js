@@ -1,5 +1,4 @@
 // 미들웨어를 설정한다.
-
 import { createStore, compose, applyMiddleware } from "redux";  
 import thunk from "redux-thunk";
 
