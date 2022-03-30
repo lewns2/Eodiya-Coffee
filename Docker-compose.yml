@@ -1,0 +1,23 @@
+version: '3.2'
+
+services: 
+  frontend:
+    image: loveyh95/eodiyafront:0.0.5
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443" 
+    volumes:
+      - /home/ubuntu/docker-volume/ssl:/var/www/html
+    container_name: "frontend"
+  
+  server:
+    image: loveyh95/eodiyaback:0.0.5
+    build:
+      context: server/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    container_name: "server"

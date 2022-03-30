@@ -10,7 +10,6 @@
 .Map{
     position: relative;
     overflow: hidden;
-    top:500px;
 }
 .Leftbar{
     top:0;
