@@ -69,18 +69,19 @@ class CommercialAreaBackground(models.Model):
     
 class CafeList(models.Model):
     dongCode = models.ForeignKey(SeoulGuDong, related_name='dong_cafes',on_delete=models.CASCADE)
-    commercialCode = models.ForeignKey(CommercialArea, related_name='commercial_cafes', on_delete=models.CASCADE)
+    commercialCode = models.ManyToManyField(CommercialArea, related_name='commercialCode', null=True)
     UrlId = models.IntegerField(primary_key=True)
     guName = models.CharField(max_length=10)
     cafeName = models.CharField(max_length=50)
-    cafe_rate = models.FloatField()
+    cafeRate = models.FloatField()
     reviewCount = models.CharField(max_length=10)
-    cafeAddress = models.CharField(max_length=100)
-    cafeHour = models.CharField(max_length=50)
-    cafeTel = models.CharField(max_length=20)
-    cafeHomepage = models.CharField(max_length=100)
-    cafeTag = models.CharField(max_length=100)
-    cafePhoto = models.CharField(max_length=255)
+    cafeAddress = models.CharField(max_length=100, null=True)
+    cafeHour = models.CharField(max_length=50, null=True)
+    cafeTel = models.CharField(max_length=20, null=True)
+    cafeHomepage = models.CharField(max_length=100, null=True)
+    cafeTag = models.CharField(max_length=100, null=True)
+    cafePhoto = models.CharField(max_length=255, null=True)
+    cafePoint = models.CharField(max_length=100)
     
 # class ReviewList(models.Model):
 #     UrlId = models.ForeignKey(CafeList, related_name='', on_delete=models.CASCADE)
