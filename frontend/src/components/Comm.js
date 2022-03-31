@@ -19,10 +19,7 @@ const gu =[
     "영등포구","용산구","은평구","종로구","중구","중랑구"];
 
 const dong = [
-    [1,"개포1동"],[1,"개포2동"],[1,"개포4동"],[1,"논현1동"],[1,"논현2동"],[1,"대치1동"],
-    [1,"대치2동"],[1,"대치4동"],[1,"도곡1동"],[1,"도곡2동"],[1,"삼성1동"],[1,"삼성2동"],
-    [1,"세곡동"],[1,"수서동"],[1,"신사동"],[1,"압구정동"],[1,"역삼1동"],[1,"역삼2동"],
-    [1,"일원1동"],[1,"일원2동"],[1,"일원본동"],[1,"청담동"]
+    
 ];
 const Comm =({open, getOpen}) =>{
     var [selectgu, setSelectGu] = useState('1');
@@ -70,7 +67,7 @@ const Comm =({open, getOpen}) =>{
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 >
-                <Typography>상권 현황</Typography>
+                <Typography>상권 분석</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                 <Typography>
@@ -108,7 +105,7 @@ const Comm =({open, getOpen}) =>{
                 aria-controls="panel2a-content"
                 id="panel2a-header"
                 >
-                <Typography>카페 현황</Typography>
+                <Typography>상권 현황</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Stack spacing={1}>
