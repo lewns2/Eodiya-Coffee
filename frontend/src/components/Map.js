@@ -97,29 +97,22 @@ const Map=(props)=>{
     const [nowLocation, setNowLocation] = useState();
 
     // 5. 구역 가져오기
-    const getGuDongArea = async(name) => {
-      area = [];
-      var flag = new Boolean(false);
-      await axios.get(`${BASE}/${name}`)
-      .then(async (res) => {
-        if(res.status === 200) {
-          const x = res.data.guInfo[0];
-          area.push(x);
-          for(var i=0; i<res.data.dongInfo.length; i++) {
-            const y = res.data.dongInfo[i];
-            area.push(y);
-          }
-          console.log("#1 test", area);
-        }
-      });
-
-      await function isTrue() {
-        if(flag) return true;
-        else return false;
-      }
-
+    const getGuDongArea = (name) => {
+      // area = [];
+      // axios.get(`${BASE}/${name}`)
+      // .then((res) => {
+      //   if(res.status === 200) {
+      //     const x = res.data.dongInfo[0];
+      //     console.log(res.data.guInfo)
+      //     area.push(x);
+      //     for(var i=0; i<res.data.dongInfo.length; i++) {
+      //       const y = res.data.dongInfo[i];
+      //       area.push(y);
+      //     }
+      //     console.log("#1 test", area);
+      //   }
+      // });
     }
-    
 
     useEffect(()=>{
       console.log(click);
@@ -167,33 +160,41 @@ const Map=(props)=>{
       }
       // #2.3 줌인 & 마커 위치로 지도 이동
       function moveAndDisplayGuArea(customOverlay, loca, guName) {
-        
-        
         return function() {
           var moveLatLon = loca;
           map.setLevel(7); 
           map.panTo(moveLatLon);
           // setSelectGu(guName);  
-          if(getGuDongArea(guName)) console.log("#test 3 : ", area);
-          else console.log("false");
-          
-          // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)        
+          area = [];
+          axios.get(`${BASE}/${guName}`)
+          .then((res) => {
+            if(res.status === 200) {
+              const x = res.data.guInfo[0];
+              console.log(res.data.guInfo)
+              area.push(x);
+              for(var i=0; i<res.data.dongInfo.length; i++) {
+                const y = res.data.dongInfo[i];
+                area.push(y);
+              }
+              console.log("#1 test", area);
+            }
+            // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)        
           // if(getGuDongArea(guName)) console.log("#test 3 : ", area);
           // else console.log("false");
-          
+          console.log("#test3", area)
           // #2.5 구 영역 그리기
           let path = [];
           let points = [];
           let polygons = [];
           dongMarkers = [];
           
-          // for(var i=0; i<testGangbuk[0].area.length; i++) {
-          //   let point = {};
-          //   point.x = testGangbuk[0].area[i][1];
-          //   point.y = testGangbuk[0].area[i][0];
-          //   points.push(point);
-          //   path.push(new kakao.maps.LatLng(point.x, point.y));
-          // }
+          for(var i=0; i<area[0].guXYPoint.length; i++) {
+            let point = {};
+            point.x = area[0].guXYPoint[i][1];
+            point.y = area[0].guXYPoint[i][0];
+            points.push(point);
+            path.push(new kakao.maps.LatLng(point.x, point.y));
+          }
 
           let polygon = new kakao.maps.Polygon({
             map : map,
@@ -271,6 +272,7 @@ const Map=(props)=>{
                 // #2.9 상권 영역 그리기
               }
             }
+          });
           });
         }
       }
