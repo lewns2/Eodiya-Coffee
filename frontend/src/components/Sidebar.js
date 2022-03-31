@@ -10,9 +10,11 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel'; 
 import { Divider } from '@mui/material';
-
+import Primary from './InnerSide/Primary';
+import Recommend from './InnerSide/Recommend';
+import Visual from './InnerSide/Visual';
 // Sidebar 넓이
-const drawerWidth = 400;
+const drawerWidth = 600;
 
 const Sidebar = ({open, getOpen}) => {
     const [value, setValue] = React.useState('1');
@@ -58,18 +60,22 @@ const Sidebar = ({open, getOpen}) => {
                     {/* Sidebar 표시할 내용 */}
                     <TabContext value={value}>
                         <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
-                            <Tab label="분석1" value="1" />
-                            <Tab label="분석2" value="2" />
-                            <Tab label="분석3" value="3" />
+                            <Tab label="기본정보" value="1" />
+                            <Tab label="상세정보" value="2" />
+                            <Tab label="위치정보" value="3" />
+                            <Tab label="추천정보" value="4" />
                         </TabList>
                         <TabPanel value="1">
-                            Item One
+                            <Primary/>
                         </TabPanel>
                         <TabPanel value="2">
-                            Item Two
+                            <Visual />
                         </TabPanel>
                         <TabPanel value="3">
-                            Item Three
+                            <h3>주요시설 현황</h3>
+                        </TabPanel>
+                        <TabPanel value="4">
+                            <Recommend />
                         </TabPanel>
                     </TabContext>
                 </Drawer>
