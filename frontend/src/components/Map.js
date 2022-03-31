@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import markerImg from '../assets/marker.png';
-import addressStyle from '../styles/Address.css'
 import { StyledEngineProvider } from '@mui/material/styles';
-// import geojson from '../assets/TL_SCCO_SIG.json'
+
 import Search from './Search';
 import Comm from './Comm';
+import Cafe from './Cafe';
+import RightSidebar from '../components/InnerSide/RightSidebar';
+
 import '../styles/Map.css';
-import RightSide from './Sidebar';
+import '../styles/Location.css'
+import { Fab } from '@mui/material';
+
+import axios from 'axios';
+
+
 const { kakao } = window;
 
 // 초기 시작 위치 : 서울시
@@ -68,6 +75,14 @@ const testGangbuk = [
 
 const guMarkers = [];
 let dongMarkers = [];
+
+
+// [임시] 영역 정보를 담을 전역 변수들
+const BASE = 'http://127.0.0.1:8000/api/v1';
+
+let area = [];
+
+
 const Map=(props)=>{
     //분석하기 클릭하면 
     const [open, setOpen] = React.useState(false);
@@ -81,9 +96,34 @@ const Map=(props)=>{
     const [searchKeyword, setSearchKeyword] = useState("");
   
     // 3. 행정 구역 보기 토글 버튼
+    var [displayDivision, setdisplayDivision] = useState(0);
+
+    // 4. 오른쪽 사이드바로 넘겨줄 주소 정보
+    const [nowLocation, setNowLocation] = useState();
+
+    // 5. 구역 가져오기
+    const getGuDongArea = (name) => {
+      // area = [];
+      // axios.get(`${BASE}/${name}`)
+      // .then((res) => {
+      //   if(res.status === 200) {
+      //     const x = res.data.dongInfo[0];
+      //     console.log(res.data.guInfo)
+      //     area.push(x);
+      //     for(var i=0; i<res.data.dongInfo.length; i++) {
+      //       const y = res.data.dongInfo[i];
+      //       area.push(y);
+      //     }
+      //     console.log("#1 test", area);
+      //   }
+      // });
+    }
+
     useEffect(()=>{
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
+      
+
       var map = new window.kakao.maps.Map(container.current, options);
       
       // #2. 지도에 시군구동 이미지 마커 띄우기
@@ -124,25 +164,38 @@ const Map=(props)=>{
       }
       // #2.3 줌인 & 마커 위치로 지도 이동
       function moveAndDisplayGuArea(customOverlay, loca, guName) {
-        // console.log(loca.La, loca.Ma);
         return function() {
           var moveLatLon = loca;
-          map.setLevel(7);
+          map.setLevel(7); 
           map.panTo(moveLatLon);
           // setSelectGu(guName);  
-
-          // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)
-          
+          area = [];
+          axios.get(`${BASE}/${guName}`)
+          .then((res) => {
+            if(res.status === 200) {
+              const x = res.data.guInfo[0];
+              console.log(res.data.guInfo)
+              area.push(x);
+              for(var i=0; i<res.data.dongInfo.length; i++) {
+                const y = res.data.dongInfo[i];
+                area.push(y);
+              }
+              console.log("#1 test", area);
+            }
+            // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)        
+          // if(getGuDongArea(guName)) console.log("#test 3 : ", area);
+          // else console.log("false");
+          console.log("#test3", area)
           // #2.5 구 영역 그리기
           let path = [];
           let points = [];
           let polygons = [];
           dongMarkers = [];
           
-          for(var i=0; i<testGangbuk[0].area.length; i++) {
+          for(var i=0; i<area[0].guXYPoint.length; i++) {
             let point = {};
-            point.x = testGangbuk[0].area[i][1];
-            point.y = testGangbuk[0].area[i][0];
+            point.x = area[0].guXYPoint[i][1];
+            point.y = area[0].guXYPoint[i][0];
             points.push(point);
             path.push(new kakao.maps.LatLng(point.x, point.y));
           }
@@ -152,10 +205,10 @@ const Map=(props)=>{
             path: path,
             strokeWeight: 2, // 선의 두께입니다
             strokeColor: '#004c80', // 선의 색깔입니다
-            strokeOpacity: 0.1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle: 'solid', // 선의 스타일입니다
+            strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'longdash', // 선의 스타일입니다
             fillColor: '#fff', // 채우기 색깔입니다
-            fillOpacity: 0.7, // 채우기 불투명도 입니다
+            fillOpacity: 0.3, // 채우기 불투명도 입니다
           });
           polygons.push(polygon);
           
@@ -224,6 +277,7 @@ const Map=(props)=>{
               }
             }
           });
+          });
         }
       }
 
@@ -273,16 +327,16 @@ const Map=(props)=>{
         geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
     }
 
-    // #4.4 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+    // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
     function displayCenterInfo(result, status) {
       if (status === kakao.maps.services.Status.OK) {
-          console.log("오케이")
           var infoDiv = document.getElementById('centerAddr');
 
           for(var i = 0; i < result.length; i++) {
               // 행정동의 region_type 값은 'H' 이므로
               if (result[i].region_type === 'H') {
                   infoDiv.innerHTML = result[i].address_name;
+                  // setNowLocation(result[i].address_name);
                   break;
               }
           }
@@ -306,8 +360,9 @@ const Map=(props)=>{
                 <RightSide open={open} getOpen={getOpen}/>
               </StyledEngineProvider >
             </div>
-            <p id ="result"></p>
-            <div id="centerAddr" className={addressStyle.Address}></div>
+
+            <Fab id="centerAddr" className='Location' variant="extended" />
+            
           </div>
       )
 }
