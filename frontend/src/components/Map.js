@@ -11,7 +11,6 @@ import '../styles/Map.css';
 import '../styles/Location.css'
 import { Fab } from '@mui/material';
 
-import {GET_DISTRICT, getArea} from '../actions/District';
 import axios from 'axios';
 
 
@@ -76,6 +75,13 @@ const testGangbuk = [
 const guMarkers = [];
 let dongMarkers = [];
 
+
+// [임시] 영역 정보를 담을 전역 변수들
+const BASE = 'http://127.0.0.1:8000/api/v1';
+
+let area = [];
+
+
 const Map=(props)=>{
   const [click, setClick] = useState(false);
     // 1. 지도를 담을 영역의 DOM 레퍼런스
@@ -90,13 +96,30 @@ const Map=(props)=>{
     // 4. 오른쪽 사이드바로 넘겨줄 주소 정보
     const [nowLocation, setNowLocation] = useState();
 
-    // 5. 맵 초기화 되는 거 방지
+    // 5. 구역 가져오기
+    const getGuDongArea = async(name) => {
+      area = [];
+      var flag = new Boolean(false);
+      await axios.get(`${BASE}/${name}`)
+      .then(async (res) => {
+        if(res.status === 200) {
+          const x = res.data.guInfo[0];
+          area.push(x);
+          for(var i=0; i<res.data.dongInfo.length; i++) {
+            const y = res.data.dongInfo[i];
+            area.push(y);
+          }
+          console.log("#1 test", area);
+        }
+      });
 
-    // const [mapCenter, setMapCenter] = useState(37.56690518860781, 126.97808628226417);
-    // const [options, setOptions] = useState({
-    //   center : mapCenter,
-    //   level : 8,
-    // })
+      await function isTrue() {
+        if(flag) return true;
+        else return false;
+      }
+
+    }
+    
 
     useEffect(()=>{
       console.log(click);
@@ -144,35 +167,33 @@ const Map=(props)=>{
       }
       // #2.3 줌인 & 마커 위치로 지도 이동
       function moveAndDisplayGuArea(customOverlay, loca, guName) {
-        // console.log(loca.La, loca.Ma);
+        
+        
         return function() {
           var moveLatLon = loca;
           map.setLevel(7); 
           map.panTo(moveLatLon);
           // setSelectGu(guName);  
-
-          // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)
-          // 임시 확인용 => 추후 redux 적용 예정.
-          console.log(guName);
-          axios.get(`http://127.0.0.1:8000/api/v1/${guName}`).then((res) => console.log(res)).catch((err) => console.log(err));
+          if(getGuDongArea(guName)) console.log("#test 3 : ", area);
+          else console.log("false");
           
-          // 이동하기
+          // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)        
+          // if(getGuDongArea(guName)) console.log("#test 3 : ", area);
+          // else console.log("false");
           
-          
-
           // #2.5 구 영역 그리기
           let path = [];
           let points = [];
           let polygons = [];
           dongMarkers = [];
           
-          for(var i=0; i<testGangbuk[0].area.length; i++) {
-            let point = {};
-            point.x = testGangbuk[0].area[i][1];
-            point.y = testGangbuk[0].area[i][0];
-            points.push(point);
-            path.push(new kakao.maps.LatLng(point.x, point.y));
-          }
+          // for(var i=0; i<testGangbuk[0].area.length; i++) {
+          //   let point = {};
+          //   point.x = testGangbuk[0].area[i][1];
+          //   point.y = testGangbuk[0].area[i][0];
+          //   points.push(point);
+          //   path.push(new kakao.maps.LatLng(point.x, point.y));
+          // }
 
           let polygon = new kakao.maps.Polygon({
             map : map,
