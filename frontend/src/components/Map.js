@@ -5,8 +5,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 
 import Search from './Search';
 import Comm from './Comm';
-import Cafe from './Cafe';
-import RightSidebar from '../components/InnerSide/RightSidebar';
+import RightSide from '../components/Sidebar';
 
 import '../styles/Map.css';
 import '../styles/Location.css'
