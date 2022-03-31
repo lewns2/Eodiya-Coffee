@@ -1,15 +1,28 @@
 import React from 'react';
 import Nav from './components/Nav';
 import Map from './components/Map';
+import Main from './components/Main';
 import './styles/App.css'
-import { Button } from '@mui/material';
 
 const App = () => {
+  const [isMain, setIsMain] = React.useState(false); 
+  const mainend = () => {
+    setIsMain(!isMain)
+  }
+  const ssd = () => {
+    alert(isMain)
+    setIsMain(false)
+  }
   return (
     <div>
-      <Nav/>
-      <Button>Hello World</Button>
-      <Map/>
+      {isMain &&(
+        <>
+          <Nav/>
+          <button onClick={ssd}>asd</button>
+          <Map/>
+        </>
+      )}
+      {!isMain &&(<Main mainend={mainend} />)}
     </div>
   );
 };
