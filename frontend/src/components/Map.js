@@ -21,11 +21,11 @@ import { getArea } from '../actions/district';
 const { kakao } = window;
 
 // 초기 시작 위치 : 서울시
-var mapCenter = new kakao.maps.LatLng(37.56690518860781, 126.97808628226417);
-const options = {
-  center: mapCenter,
-  level: 8
-}
+// var mapCenter = new kakao.maps.LatLng(37.56690518860781, 126.97808628226417);
+// const options = {
+//   center: mapCenter,
+//   level: 8
+// }
 
 const locationSeoulGu = [
   {latlng: new kakao.maps.LatLng(37.59491732, 126.9773213), name: "종로구"},
@@ -85,7 +85,7 @@ const Map=(props)=>{
 
     const [click, setClick] = useState(false);
     // 1. 지도를 담을 영역의 DOM 레퍼런스
-    const container = useRef(null);
+    // const container = useRef(null);
 
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
@@ -95,20 +95,31 @@ const Map=(props)=>{
 
     // 4. 오른쪽 사이드바로 넘겨줄 주소 정보
     const [nowLocation, setNowLocation] = useState();
-
-    // 5. 맵 초기화 되는 거 방지
-
+ 
+    // 5. 맵 초기화 되는 거 방지 : 이래도 새로고침해서 보여줌.
     // const [mapCenter, setMapCenter] = useState(37.56690518860781, 126.97808628226417);
     // const [options, setOptions] = useState({
-    //   center : mapCenter,
+    //   center : new kakao.maps.LatLng(37.56690518860781, 126.97808628226417),
     //   level : 8,
     // })
-
+    
     useEffect(()=>{
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
+        var container = document.getElementById('map');  
 
-      var map = new window.kakao.maps.Map(container.current, options);
+        var options = {
+          center: new kakao.maps.LatLng(37.56690518860781, 126.97808628226417),
+          level: 8
+        };
+
+        var map = new kakao.maps.Map(container, options);    
+     
+    
+      // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+      // var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+      // var map = new window.kakao.maps.Map(container.current, options);
       
       // #2. 지도에 시군구동 이미지 마커 띄우기
       var imageSrc = markerImg; 
@@ -153,6 +164,7 @@ const Map=(props)=>{
           var moveLatLon = loca;
           map.setLevel(7); 
           map.panTo(moveLatLon);
+          // setOptions({center : moveLatLon, level:7})
           // setSelectGu(guName);  
 
           // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)
@@ -328,9 +340,9 @@ const Map=(props)=>{
           <div className='Map'>
             <div className='map_wrap'>
               <div 
-                  // id="map" 
+                  id="map" 
                   style={{width:"100vw", height:"90vh"}}
-                  ref = {container}
+                  // ref = {container}
               > 
               </div>
               {/* <Category/> */}
