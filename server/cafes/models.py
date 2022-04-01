@@ -1,20 +1,20 @@
 from django.db import models
-from server.commercial_area.models import SeoulGuDong, CommercialArea
+from commercial_area.models import SeoulGuDong, CommercialArea
 
 # Create your models here.
 
 class CafeList(models.Model):
     dongCode = models.ForeignKey(SeoulGuDong, related_name='dong_cafes',on_delete=models.CASCADE)
-    commercialCode = models.ManyToManyField(CommercialArea, related_name='commercialCode', null=True)
-    UrlId = models.IntegerField(primary_key=True)
+    commercialCode = models.ManyToManyField(CommercialArea, related_name='commercialCode')
     guName = models.CharField(max_length=10)
+    UrlId = models.IntegerField(primary_key=True)
     cafeName = models.CharField(max_length=50)
     cafeRate = models.FloatField()
     reviewCount = models.CharField(max_length=10)
-    cafeAddress = models.CharField(max_length=100, null=True)
-    cafeHour = models.CharField(max_length=50, null=True)
+    cafeAddress = models.CharField(max_length=255, null=True)
+    cafeHour = models.CharField(max_length=255, null=True)
     cafeTel = models.CharField(max_length=20, null=True)
-    cafeHomepage = models.CharField(max_length=100, null=True)
-    cafeTag = models.CharField(max_length=100, null=True)
-    cafePhoto = models.CharField(max_length=255, null=True)
+    cafeHomepage = models.CharField(max_length=255, null=True)
+    cafeTag = models.CharField(max_length=255, null=True)
+    cafePhoto = models.TextField(null=True)
     cafePoint = models.CharField(max_length=100)

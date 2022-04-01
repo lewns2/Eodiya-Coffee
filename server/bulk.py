@@ -58,7 +58,7 @@ for i in range(len(df_dong2[0]['features'])):
     dong_point_array.append([df_dong2[0]['features'][i]['properties']['adm_nm'], dong_point])
 
 
-### SeoulGuDong Model
+# ### SeoulGuDong Model
 instances = []
 check = []
 for i in range(len(df)):
@@ -87,7 +87,7 @@ for i in range(len(df)):
 SeoulGuDong.objects.bulk_create(instances)
 
 
-### dataFrame
+# ### dataFrame
 df1 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-추정매출).csv', encoding='CP949')
 df1 = df1.loc[(df1['기준_분기_코드'] == 3) & (df1['서비스_업종_코드_명'] == '커피-음료')]
 df2 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-점포).csv', encoding='CP949')
@@ -124,8 +124,8 @@ for i in range(len(res)):
     instances.append(CommercialArea(seoulGuDong=seoulGuDong, commercialAreaCode=commercialAreaCode, commercialAreaName=commercialAreaName, commercialAreaChange=commercialAreaChange, commercialAreaXYPoint=commercialAreaXYPoint))
 CommercialArea.objects.bulk_create(instances)
 
-### CommercialAreaRevenue Model
-### 상권-추정매출
+# ### CommercialAreaRevenue Model
+# ### 상권-추정매출
 instances = []
 for i in range(len(res)):
     code = res[i]
@@ -162,33 +162,67 @@ for i in range(len(res)):
     instances.append(CommercialAreaRevenue(commercialArea=commercialArea, quaterRevenue=quaterRevenue, perRevenue=perRevenue, maleRevenue=maleRevenue, femaleRevenue=femaleRevenue, ageGroup=ageGroup, timeGroup=timeGroup))
 CommercialAreaRevenue.objects.bulk_create(instances)
     
+# ### CommercialAreaNumber Model    
+# ### 상권-점포
+instances = []
+for i in range(len(res)):
+    code = res[i]
+    temp_df = df2.loc[df2['상권_코드'] == code]
+    if temp_df.empty:
+        continue
+    numberStore = temp_df['점포_수'].values[0]
+    numberSimilarStore = temp_df['유사_업종_점포_수'].values[0]
+    openingStore = temp_df['개업_점포_수'].values[0]
+    closureStore = temp_df['폐업_점포_수'].values[0]
+    openingRate = temp_df['개업_율'].values[0]
+    closureRate = temp_df['폐업_률'].values[0]
+    commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+    instances.append(CommercialAreaNumber(commercialArea=commercialArea, numberStore=numberStore, numberSimilarStore=numberSimilarStore, openingStore=openingStore, closureStore=closureStore, openingRate=openingRate, closureRate=closureRate))
+CommercialAreaNumber.objects.bulk_create(instances)
+    
+# ### CommercialAreaPeople Model
+# ### 상권-생활인구
+instances = []
+for i in range(len(res)):
+    code = res[i] 
+    temp_df = df3.loc[df3['상권_코드'] == code]
+    if temp_df.empty:
+        continue
+    likePeople = temp_df['총_생활인구_수'].values[0]
+    maleLikePeople = temp_df['남성_생활인구_수'].values[0]
+    femaleLikePeople = temp_df['여성_생활인구_수'].values[0]
+    likePeopleAge10 = temp_df['연령대_10_생활인구_수'].values[0]
+    likePeopleAge20 = temp_df['연령대_20_생활인구_수'].values[0]
+    likePeopleAge30 = temp_df['연령대_30_생활인구_수'].values[0]
+    likePeopleAge40 = temp_df['연령대_40_생활인구_수'].values[0]
+    likePeopleAge50 = temp_df['연령대_50_생활인구_수'].values[0]
+    likePeopleAge60 = temp_df['연령대_60_이상_생활인구_수'].values[0]
+    commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+    instances.append(CommercialAreaPeople(commercialArea=commercialArea, likePeople=likePeople, maleLikePeople=maleLikePeople, femaleLikePeople=femaleLikePeople, likePeopleAge10=likePeopleAge10, likePeopleAge20=likePeopleAge20, likePeopleAge30=likePeopleAge30, likePeopleAge40=likePeopleAge40, likePeopleAge50=likePeopleAge50, likePeopleAge60=likePeopleAge60))
+CommercialAreaPeople.objects.bulk_create(instances)
+
+# ### CommercialAreaBackground Model
+# ### 상권배후지-소득소비
+instances = []
+for i in range(len(res)):
+    code = res[i] 
+    temp_df = df5.loc[df5['상권_코드'] == code]
+    if temp_df.empty:
+        continue
+    avgIncome = temp_df['월_평균_소득_금액'].values[0]
+    gradeIncome = temp_df['소득_구간_코드'].values[0]
+    commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+    instances.append(CommercialAreaBackground(commercialArea=commercialArea, avgIncome=avgIncome, gradeIncome=gradeIncome))
+CommercialAreaBackground.objects.bulk_create(instances)
+    
 
 ### 카페 모델
-# gu_list = ['마포구','서대문구','은평구','종로구','중구','용산구','성동구','광진구',
-#            '동대문구','성북구','강북구','도봉구','노원구','중랑구','강동구','송파구',
-#            '강남구','서초구','관악구','동작구','영등포구','금천구','구로구','양천구','강서구']
 gu_list = ['마포구','서대문구','은평구','종로구','중구','용산구','성동구','광진구',
-           '동대문구','성북구','강북구','도봉구','노원구','강동구','송파구',
+           '동대문구','성북구','강북구','도봉구','노원구','중랑구','강동구','송파구',
            '강남구','서초구','관악구','동작구','영등포구','금천구','구로구','양천구','강서구']
+# gu_list = ['강남구']
 
 instances = []
-square = [] # 북남동서
-df_sang = pd.read_json('../Data/XY_point/seoul_sanggwon.json', orient='index')
-
-for idx in range(len(df_sang[0]['features'])):
-    max_border_x, min_border_x, max_border_y, min_border_y = 0, 987654321, 0, 987654321
-    for border_x, border_y in df_sang[0]['features'][idx]['geometry']['coordinates'][0]:
-        # print(border_x, border_y)
-        if border_x >= max_border_x:
-            max_border_x = border_x
-        elif border_x <= min_border_x:
-            min_border_x = border_x
-        if border_y >= max_border_y:
-            max_border_y = border_y
-        elif border_y <= min_border_y:
-            min_border_y = border_y
-    # 상권들의 경계
-    square.append([df_sang[0]['features'][idx]['properties']['TRDAR_CD_N'], df_sang[0]['features'][idx]['properties']['TRDAR_CD'], [max_border_x, max_border_y, min_border_x, min_border_y]])
 
 # 구 순회
 for gu in gu_list:
@@ -213,11 +247,6 @@ for gu in gu_list:
                 tmp_dongCode = df.loc[k]['행정동_코드']
                 break      
         dongCode = SeoulGuDong.objects.get(dongCode = tmp_dongCode)
-                
-#         # for i in range(len(res)):
-#         #     code = res[i]
-#             # dongCode = df.loc[df['상권_코드'] == code]['행정동_코드'].values[0]
-#         # commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
         guName = df_cafe.iloc[i]['구']
         UrlId = df_cafe.iloc[i]['URL_ID']
         cafeName = df_cafe.iloc[i]['카페명']
@@ -231,16 +260,49 @@ for gu in gu_list:
         cafePhoto = df_cafe.iloc[i]['대표사진주소']
         Xpoint, Ypoint = df_cafe.loc[i]['경도'], df_cafe.loc[i]['위도']
         cafePoint = str(Xpoint) + '&' + str(Ypoint)
-        commercialCodes = []
+    
+        instances.append(CafeList(dongCode=dongCode, guName=guName, UrlId=UrlId, cafeName=cafeName, cafeRate=cafeRate, reviewCount=reviewCount, cafeAddress=cafeAddress,
+                cafeHour=cafeHour, cafeTel = cafeTel, cafeHomepage=cafeHomepage, cafeTag=cafeTag, cafePhoto=cafePhoto, cafePoint = cafePoint
+                ))
+CafeList.objects.bulk_create(instances)
+
+### 상권과 카페의 중개 테이블
+
+square = [] # 북남동서
+df_sang = pd.read_json('../Data/XY_point/seoul_sanggwon.json', orient='index')
+
+for idx in range(len(df_sang[0]['features'])):
+    max_border_x, min_border_x, max_border_y, min_border_y = 0, 987654321, 0, 987654321
+    for border_x, border_y in df_sang[0]['features'][idx]['geometry']['coordinates'][0]:
+        # print(border_x, border_y)
+        if border_x >= max_border_x:
+            max_border_x = border_x
+        elif border_x <= min_border_x:
+            min_border_x = border_x
+        if border_y >= max_border_y:
+            max_border_y = border_y
+        elif border_y <= min_border_y:
+            min_border_y = border_y
+    # 상권들의 경계
+    square.append([df_sang[0]['features'][idx]['properties']['TRDAR_CD_N'], df_sang[0]['features'][idx]['properties']['TRDAR_CD'], [max_border_x, max_border_y, min_border_x, min_border_y]])
+
+instances = []
+for gu in gu_list:
+    df_cafe = pd.read_csv(f'../Data/Cafe_Data/{gu}_cafe_data.csv', encoding='CP949')
+    
+    for i in range(len(df_cafe)):
+        guName = df_cafe.iloc[i]['구']
+        UrlId = df_cafe.iloc[i]['URL_ID']
+        cafeName = df_cafe.iloc[i]['카페명']
+        Xpoint, Ypoint = df_cafe.loc[i]['경도'], df_cafe.loc[i]['위도']
+        
+        commercialCodes = []    
         # 카페가 상권 안에 있는지 확인
         for j in square:
             if j[2][2] <= Xpoint <= j[2][0] and j[2][3] <= Ypoint <= j[2][1]:
-                commercialCodes.append(j[1])
-        # print(commercialCodes)
-        for commercialCode in commercialCodes:
-            # print(dongCode, commercialCode, guName, UrlId, cafeName, cafeRate, reviewCount, cafeAddress, cafeHour, cafeTel, cafeHomepage, cafeTag, cafePhoto, cafePoint)
-            instances.append(CafeList(dongCode=dongCode, commercialCode=commercialCode, guName=guName, UrlId=UrlId, cafeName=cafeName, cafeRate=cafeRate, reviewCount=reviewCount, cafeAddress=cafeAddress,
-                    cafeHour=cafeHour, cafeTel = cafeTel, cafeHomepage=cafeHomepage, cafeTag=cafeTag, cafePhoto=cafePhoto, cafePoint = cafePoint
-                    ))
-CafeList.objects.bulk_create(instances)
+                commercialCodes.append(int((j[1])))
+        # print(guName, cafeName, commercialCodes)
 
+        for cc in commercialCodes:
+            commercialAreaId = CommercialArea.objects.get(commercialAreaCode=cc)
+            commercialAreaId.commercialCode.add(UrlId)

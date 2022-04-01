@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     # local
     'commercial_area',
     'accounts',
+    'cafes',
     # 3rd
     'django_extensions',
     'rest_framework',
