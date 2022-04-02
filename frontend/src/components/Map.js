@@ -100,24 +100,6 @@ const Map=(props)=>{
     // 4. 오른쪽 사이드바로 넘겨줄 주소 정보
     const [nowLocation, setNowLocation] = useState();
 
-    // 5. 구역 가져오기
-    const getGuDongArea = (name) => {
-      // area = [];
-      // axios.get(`${BASE}/${name}`)
-      // .then((res) => {
-      //   if(res.status === 200) {
-      //     const x = res.data.dongInfo[0];
-      //     console.log(res.data.guInfo)
-      //     area.push(x);
-      //     for(var i=0; i<res.data.dongInfo.length; i++) {
-      //       const y = res.data.dongInfo[i];
-      //       area.push(y);
-      //     }
-      //     console.log("#1 test", area);
-      //   }
-      // });
-    }
-
     useEffect(()=>{
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
@@ -163,32 +145,34 @@ const Map=(props)=>{
       }
       // #2.3 줌인 & 마커 위치로 지도 이동
       function moveAndDisplayGuArea(customOverlay, loca, guName) {
+        console.log("클릭 이벤트");
         return function() {
           var moveLatLon = loca;
           map.setLevel(7); 
           map.panTo(moveLatLon);
-          // setSelectGu(guName);  
+
+          let polygons = [];
+          console.log(polygons);
+          console.log(polygons.length)
+
           area = [];
           axios.get(`${BASE}/${guName}`)
           .then((res) => {
             if(res.status === 200) {
               const x = res.data.guInfo[0];
-              console.log(res.data.guInfo)
+              // console.log(res.data.guInfo)
               area.push(x);
               for(var i=0; i<res.data.dongInfo.length; i++) {
                 const y = res.data.dongInfo[i];
                 area.push(y);
               }
-              console.log("#1 test", area);
+              // console.log("#1 test", area);
             }
-            // [Todo] #2.4 BackEnd로 요청보내기 (testGangbuk 형태로 데이터 받아온다.)        
-          // if(getGuDongArea(guName)) console.log("#test 3 : ", area);
-          // else console.log("false");
           console.log("#test3", area)
           // #2.5 구 영역 그리기
           let path = [];
           let points = [];
-          let polygons = [];
+          
           dongMarkers = [];
           
           for(var i=0; i<area[0].guXYPoint.length; i++) {
@@ -233,24 +217,26 @@ const Map=(props)=>{
             map.setLevel(6);
             var imageSrc = markerImg; 
 
-            for(var i=1; i<testGangbuk.length; i++) {
+            for(var i=1; i<area.length; i++) {
 
               var imageSize = new kakao.maps.Size(30, 30);
               var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-                  
-              var marker = new kakao.maps.Marker({
-                position: testGangbuk[i].latlng,
-                title : testGangbuk[i].name,
+              var latlng = new kakao.maps.LatLng(area[i].dongCenterYPoint, area[i].dongCenterXPoint);
+            
+              var marker = new kakao.maps.Marker({  
+                position: latlng,
+                title : area[i].dongName,
                 image : markerImage,
               });
+
               dongMarkers.push(marker);
               marker.setMap(map);
-              kakao.maps.event.addListener(marker, 'click', moveAndDisplayDongArea(marker, testGangbuk[i].latlng, testGangbuk[i].name));
+              kakao.maps.event.addListener(marker, 'click', moveAndDisplayDongArea(marker, latlng, area[0].guName ,area[i].dongName));
                   
               // #2.6.1 동 마커에는 인포윈도우가 필요할듯.
-              var content = testGangbuk[i].name;
+              var content = area[i].dongName;
   
-              var position = testGangbuk[i].latlng;
+              var position = latlng;
   
               var customOverlay = new kakao.maps.CustomOverlay({
                 map: map,
@@ -262,16 +248,24 @@ const Map=(props)=>{
             }
             
             // #2.7 줌인 & 마커 위치로 지도 이동
-            function moveAndDisplayDongArea(marker, loca, dongName) {
+            function moveAndDisplayDongArea(marker, loca, guName, dongName) {
               // console.log(loca.La, loca.Ma);
               return function() {
                 var moveLatLon = loca;
                 map.setLevel(5);
                 map.panTo(moveLatLon);
+                polygon.setMap(null);
                 // setSelectDong(dongName);
                 
                 // [Todo] #2.8 BackEnd로 요청보내기 (선택한 동에 해당하는 상권 영역을 받아온다.)
-          
+                // console.log(guName, dongName);
+                axios.get(`${BASE}/${guName}/${dongName}`)
+                .then((res) => {
+                  console.log(res);
+                })
+                
+                
+
                 // #2.9 상권 영역 그리기
               }
             }

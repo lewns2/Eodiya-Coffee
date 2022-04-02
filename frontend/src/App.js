@@ -5,7 +5,7 @@ import Main from './components/Main';
 import './styles/App.css'
 
 const App = () => {
-  const [isMain, setIsMain] = React.useState(false); 
+  const [isMain, setIsMain] = React.useState(true); 
   const mainend = () => {
     setIsMain(!isMain)
   }
