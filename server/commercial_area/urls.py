@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # path('commercial_area/', views.commercial_area),
-    path('commercial_area/<int:code_pk>', views.commercial_area_detail),
+    path('search/<str:guName>/<str:dongName>', views.dong_info),
+    path('search/<str:guName>/<str:dongName>/location', views.dong_info_location),
+    path('search/<str:guName>/<str:dongName>/recommend', views.dong_info_recommend),
+    path('<str:guName>', views.commercial_area_gu),
+    path('<str:guName>/<str:dongName>', views.commercial_area_dong),
 ]

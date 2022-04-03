@@ -128,28 +128,5 @@ for gu_name in gu_list:
                     df_cafe['행정동'][idx] = gu_name + " " + hangjeongdong[idx]
             df_cafe.to_csv(gu_name + '_hangjeongdong_cafe.csv', )
             
-# else:
-#     print('이것은 xml파일')
-#     root_xml = ET.fromstring(response_body)
-
-#     print('<< ' + root_xml.tag + ' >>')
-
-#     print('totalCount   : ' + root_xml.find('common').findtext('totalCount'))
-#     print('currentPage  : ' + root_xml.find('common').findtext('currentPage'))
-#     print('countPerPage : ' + root_xml.find('common').findtext('countPerPage'))
-#     print('errorCode    : ' + root_xml.find('common').findtext('errorCode'))
-#     print('errorMessage : ' + root_xml.find('common').findtext('errorMessage'))
-
-#     for child in root_xml.findall('juso'):
-#         print('-'*100)
-#         print('[' + child.findtext('zipNo') + '] ' + child.findtext('roadAddr'))
-#         print('    지번주소     = ' + child.findtext('jibunAddr'))
-#         print('    영문주소     = ' + child.findtext('engAddr'))
-#         print('    도로명코드   = ' + child.findtext('rnMgtSn'))
-#         print('    건물관리번호 = ' + child.findtext('bdMgtSn'))
-#         print('    법정동코드   = ' + child.findtext('admCd'))
-#         print('    상세건물명   = ' + child.findtext('detBdNmList'))
-#         print('    관할주민센터 = ' + child.findtext('hemdNm'))
-    
     
     
