@@ -81,13 +81,22 @@ const BASE = 'http://127.0.0.1:8000/api/v1';
 
 let area = [];
 
-
 const Map=(props)=>{
     //분석하기 클릭하면 
     const [open, setOpen] = React.useState(false);
     const getOpen = (e) =>{
       setOpen(e);
     }  
+    //Comm 카페현황 구와 동
+    const [guCafe, setGuCafe] = React.useState("");
+    const [dongCafe, setDongCafe] = React.useState("");
+    const getGuCafe = (guCafe) =>{
+      setGuCafe(guCafe);
+    }
+    const getDongCafe = (dongCafe) =>{
+      setDongCafe(dongCafe);
+      // moveToDong();
+    }
     // 1. 지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
 
@@ -117,14 +126,13 @@ const Map=(props)=>{
       //   }
       // });
     }
-
     useEffect(()=>{
       // + 기능 1. 지도 생성 및 화면 표시
         // 1.1 지도 생성 및 객체 리턴
       
 
       var map = new window.kakao.maps.Map(container.current, options);
-      
+
       // #2. 지도에 시군구동 이미지 마커 띄우기
       var imageSrc = markerImg; 
 
@@ -161,6 +169,32 @@ const Map=(props)=>{
         // #2.2 개별 마커 클릭 이벤트
         kakao.maps.event.addListener(marker, 'click', moveAndDisplayGuArea(marker, locationSeoulGu[i].latlng, locationSeoulGu[i].name));
       }
+
+      // //카페 동 선택시 주소 이동하기
+      // function moveToDong() {
+      //   // 주소-좌표 변환 객체를 생성합니다
+      //   var geocoder = new kakao.maps.services.Geocoder();
+      //   console.log("moveTodDong"+guCafe+" , "+dongCafe);
+      //   // 주소로 좌표를 검색합니다
+      //   geocoder.addressSearch(guCafe+" "+dongCafe, function(result, status) {
+      //       // 정상적으로 검색이 완료됐으면 
+      //       if (status === kakao.maps.services.Status.OK) {
+      //           var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+      //           // 결과값으로 받은 위치를 마커로 표시합니다
+      //           var marker = new kakao.maps.Marker({
+      //               map: map,
+      //               position: coords
+      //           });
+      //           // 인포윈도우로 장소에 대한 설명을 표시합니다
+      //           var infowindow = new kakao.maps.InfoWindow({
+      //               content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+      //           });
+      //           infowindow.open(map, marker);
+      //           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+      //           map.setCenter(coords);
+      //       } 
+      //   });  
+      // }
       // #2.3 줌인 & 마커 위치로 지도 이동
       function moveAndDisplayGuArea(customOverlay, loca, guName) {
         return function() {
@@ -279,9 +313,7 @@ const Map=(props)=>{
           });
         }
       }
-
-        
-
+  
     // #3. 검색 시 해당 위치로 이동한다.
     console.log("Map : ", searchKeyword, "로 변경되었음.")
 
@@ -355,7 +387,7 @@ const Map=(props)=>{
               </div>
               <StyledEngineProvider injectFirst>
                 <Search setSearchKeyword={setSearchKeyword}/>
-                <Comm open={open} getOpen={getOpen} />
+                <Comm open={open} getOpen={getOpen} getGuCafe={getGuCafe} getDongCafe={getDongCafe} />
                 <RightSide open={open} getOpen={getOpen}/>
               </StyledEngineProvider >
             </div>
