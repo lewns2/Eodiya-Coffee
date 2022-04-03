@@ -3,6 +3,8 @@ import actionCreators from "../actions/actionCreators";
 const { kakao } = window;
   
 const { SET_MAP } = actionCreators.setMap;
+const { SET_GUMARKER } = actionCreators.addGuMarker;
+const { SET_DONGMARKER } = actionCreators.addGuMarker;
 
 
 const locationSeoulGu = [
@@ -20,14 +22,32 @@ const setMap = (state = {
         overlay: []
     }
 }, action) => {
+    console.log("액션 타입 : ", action.type);
     switch (action.type) {
-        case SET_MAP:
+        case "setMap":
             console.log("setting...", action);
             return {
                 ...state,
                 eodiyaMap : {
                     ...state.eodiyaMap,
                     map: action.map
+                }
+            }
+        case "setGumarker":
+            // console.log("구 타입 확인 완료!@@@@@@@@@@@@@@@@@@@@@@")
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    guMarker: action.guMarker,
+                }
+            }
+        case "setDongmarker":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    dongMarker: action.dongMarker,
                 }
             }
         

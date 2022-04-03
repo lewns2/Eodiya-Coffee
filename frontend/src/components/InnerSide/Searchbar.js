@@ -16,7 +16,7 @@ const Searchbar = (props) => {
         setInputText("");
     }
     useEffect(() => {
-        console.log("Searchbar : ", place, '로 변경되었음.')
+        // console.log("Searchbar : ", place, '로 변경되었음.')
         props.setKeyword(place);
         // return () => {
         //     props.setKeyword(place);

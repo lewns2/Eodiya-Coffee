@@ -12,16 +12,18 @@ const setMap = (map) => {
     }
 };
 
-const addGuMarker = (gu) => {
+const addGuMarker = (data, gu) => {
     return {
         type : SET_GUMARKER,
+        guMarker : data,
         gu : gu,
     }
 }
 
-const addDongMarker = (dong) => {
+const addDongMarker = (data, dong) => {
     return {
         type : SET_DONGMARKER,
+        dongMarker : data,
         dong : dong,
     }
 }

@@ -1,6 +1,10 @@
-import React, {useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import markerImg from '../assets/marker.png';
-// import { StyledEngineProvider } from '@mui/material/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
+
+import Search from './Search';
+import Comm from './Comm';
+import RightSide from '../components/Sidebar';
 
 import actionCreators from '../actions/actionCreators';
 import useGetArea from '../actions/useGetArea';
@@ -42,6 +46,16 @@ const locationSeoulGu = [
 
 
 const Map = () => {
+
+  const [open, setOpen] = React.useState(false);
+  const getOpen = (e) =>{
+    setOpen(e);
+  }
+
+  // 2. 검색 키워드를 관리하는 훅
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+
   
   const dispatch = useDispatch();
   const { getArea } = useGetArea();
@@ -91,17 +105,18 @@ const Map = () => {
 
         // #2.2 개별 마커 클릭 이벤트
         kakao.maps.event.addListener(marker, 'click', moveAndDisplayGuArea(marker, locationSeoulGu[i].latlng, locationSeoulGu[i].name));
+    }
+      
+    // #2.3 줌인 & 마커 위치로 지도 이동
+    function moveAndDisplayGuArea(customOverlay, loca, guName) {
+      return function() {
+        var moveLatLon = loca;
+        map.setLevel(7); 
+        map.panTo(moveLatLon);
+        // console.log("actions로 가라");
+        getArea(guName);
       }
-      // #2.3 줌인 & 마커 위치로 지도 이동
-      function moveAndDisplayGuArea(customOverlay, loca, guName) {
-        return function() {
-          var moveLatLon = loca;
-          map.setLevel(7); 
-          map.panTo(moveLatLon);
-          console.log("actions로 가라");
-          getArea(guName);
-        }
-      }
+    }
 
     dispatch(actionCreators.setMap(map), [map]);
 
@@ -109,7 +124,14 @@ const Map = () => {
 
   return (
     <div className="Map">
-      <div id="map" style={{width:"100vw", height:"90vh"}}></div>
+      <div id="map" style={{width:"100vw", height:"90vh"}}>
+        <StyledEngineProvider injectFirst>
+          <Search setSearchKeyword={setSearchKeyword}/>
+          <Comm open={open} getOpen={getOpen} />
+          <RightSide open={open} getOpen={getOpen}/>
+        </StyledEngineProvider >
+
+      </div>
     </div>
   )
 

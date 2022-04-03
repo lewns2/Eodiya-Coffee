@@ -3,7 +3,6 @@ import Map from "../components/Map";
 import { useSelector } from "react-redux";
 
 import useGeolocation from "../actions/useGeolocation";
-import useGetArea from "../actions/useGetArea";
 
 const EodiyaMap = () => {
 
@@ -11,12 +10,12 @@ const EodiyaMap = () => {
     const map = useSelector(state => state.setMap.map);
 
     const { getGeo } = useGeolocation();
-    const { getArea } = useGetArea();
-
+    const test = useSelector(state => state.setMap.eodiyaMap);
+    
     useEffect(() => {
+        console.log(test);
         getGeo();
-        getArea();
-      }, [map, getGeo, getArea]);
+      }, [map, getGeo]);
 
     return (
         <div>

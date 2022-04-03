@@ -5,7 +5,7 @@ const Search =(props) => {
     
     const [keyword, setKeyword] = useState(props.setSearchKeyword);
     useEffect(() => {
-        console.log("LeftSide : ", keyword, '로 변경되었음.')
+        // console.log("LeftSide : ", keyword, '로 변경되었음.')
         props.setSearchKeyword(keyword);
         // return() => {
         //     props.setSearchKeyword(keyword);

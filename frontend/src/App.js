@@ -8,9 +8,15 @@ import configureStore from "./store/index";
 import reducers from "./reducer/reducers";
 import { Provider } from "react-redux";
 
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore } from "redux"; 
 
-const store = configureStore(reducers, {
-});
+// const store = configureStore(reducers, {
+// });
+
+const store = createStore(reducers, {}, composeWithDevTools());
+
+console.log(store.getState());
 
 const App = () => {
   const [isMain, setIsMain] = React.useState(true); 

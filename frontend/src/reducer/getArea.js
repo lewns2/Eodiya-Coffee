@@ -1,23 +1,17 @@
-import actionCreators from "../actions/actionCreators";
+// import actionCreators from "../actions/actionCreators";
 
-const { SET_GUMARKER } = actionCreators.addGuMarker;
-const { SET_DONGMARKER } = actionCreators.addDongMarker;
+// // const SET_GUMARKER = actionCreators.addGuMarker.type;
+// // const { SET_DONGMARKER } = actionCreators.addDongMarker;
 
-const getArea = (state = [], action) => {
-    switch (action.type) {
+
+// const getArea = (state = [], action) => {
+//     // console.log("리듀서에 도착은 했니? ", action);
+//     switch (action.type) {
         
-        case SET_GUMARKER:
-            console.log("reducer... 구 마커 설정 : ", action);
-            return {
-            }
+        
+//         default:
+//             return state;
+//     }
+// }
 
-        case SET_DONGMARKER:
-            return {
-
-            }
-        default:
-            return state;
-    }
-}
-
-export default getArea;
+// export default getArea;
