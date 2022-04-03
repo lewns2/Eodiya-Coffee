@@ -7,13 +7,15 @@ from django.http import JsonResponse
 # from rest_framework.permissions import AllowAny
 # from rest_framework.serializer import Serializers
 from .models import CafeList
+from commercial_area.models import SeoulGuDong
 from .serializers import CafeListSerializer
 # Create your views here.
 
 # 카페 정보 요청
 # @api_view(['GET'])
-def get_cafes(request):
-    cafes = CafeList.objects.all()
+def get_cafes(request, guName, dongName):
+    cafes = CafeList.objects.filter(guName = guName)
+    cafeDong = SeoulGuDong.objects.filter
     serializer = CafeListSerializer(cafes, many=True)
     # 데이터를 프론트에서 원하는 형식으로 만들어줘야 한다.
     

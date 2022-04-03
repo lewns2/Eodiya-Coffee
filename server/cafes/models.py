@@ -18,3 +18,9 @@ class CafeList(models.Model):
     cafeTag = models.CharField(max_length=255, null=True)
     cafePhoto = models.TextField(null=True)
     cafePoint = models.CharField(max_length=100)
+
+class CafeMenu(models.Model):
+    UrlId = models.ForeignKey(CafeList, related_name='Url_id', on_delete=models.CASCADE)
+    menuName = models.CharField(max_length=255, null=True)
+    menuPrice = models.IntegerField(null=True)
+    
