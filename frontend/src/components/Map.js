@@ -45,17 +45,40 @@ const locationSeoulGu = [
 ];
 
 
-const Map = () => {
+// // [임시] 영역 정보를 담을 전역 변수들
+// const BASE = 'http://127.0.0.1:8000/api/v1';
 
-  const [open, setOpen] = React.useState(false);
-  const getOpen = (e) =>{
-    setOpen(e);
-  }
+// let area = [];
 
-  // 2. 검색 키워드를 관리하는 훅
-  const [searchKeyword, setSearchKeyword] = useState("");
+const Map=(props)=>{
+    //분석하기 클릭하면 
+    const [open, setOpen] = React.useState(false);
+    const [dongData, setDongData] = React.useState([
+      {
+        quarterRevenue: "초기값",
+        perRevenue: "초기값",
+        ageGroup: "초기값",
+        timeGroup: "초기값",
+        numberStore: "초기값",
+        openingStore: "초기값",
+        closureStore: "초기값",
+        openingRate: "초기값",
+        closureRate: "초기값",
+        likePeople: "초기값",
+        maleLikePeople: "초기값",
+        femaleLikePeople: "초기값"
+      }
+    ]);
+    const getOpenfromsearch = (data) =>{
+      setDongData(data);
+      console.log("맵:",data);
+    }
+    const getOpen = (isopen) =>{
+      setOpen(isopen);
+    } 
 
-
+    // 2. 검색 키워드를 관리하는 훅
+    const [searchKeyword, setSearchKeyword] = useState("");
   
   const dispatch = useDispatch();
   const { getArea } = useGetArea();
@@ -118,6 +141,22 @@ const Map = () => {
       }
     }
 
+    // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+    function displayCenterInfo(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+          var infoDiv = document.getElementById('centerAddr');
+
+          for(var i = 0; i < result.length; i++) {
+              // 행정동의 region_type 값은 'H' 이므로
+              if (result[i].region_type === 'H') {
+                  infoDiv.innerHTML = result[i].address_name;
+                  // setNowLocation(result[i].address_name);
+                  break;
+              }
+          }
+      }    
+    }
+
     dispatch(actionCreators.setMap(map), [map]);
 
   }, []);
@@ -127,14 +166,13 @@ const Map = () => {
       <div id="map" style={{width:"100vw", height:"90vh"}}>
         <StyledEngineProvider injectFirst>
           <Search setSearchKeyword={setSearchKeyword}/>
-          <Comm open={open} getOpen={getOpen} />
-          <RightSide open={open} getOpen={getOpen}/>
+          <Comm open={open} getOpen={getOpen} getOpen2={getOpenfromsearch} />
+          <RightSide open={open} dongData={dongData} getOpen={getOpen}/>
         </StyledEngineProvider >
-
       </div>
+      {/* <Fab id="centerAddr" className='Location' variant="extended" /> */}
     </div>
-  )
-
+  );  
 }
 
 

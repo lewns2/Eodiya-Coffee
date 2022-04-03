@@ -1,6 +1,7 @@
 import React from "react";
 import '../styles/Main.css';
 import '../assets/mapread.png';
+import Button from '@mui/material/Button';
 
 export default function Main(props){
     const zeroRef = React.useRef(null);
@@ -72,7 +73,7 @@ export default function Main(props){
     return(
         <div className="OutLine">
             <div className="InLine" ref={zeroRef} onWheel = {(e) =>updown(0, e)}>
-                <h1>Eodiya</h1>
+                <img src={require('../assets/Eodiya-removebg-preview.png')} alt="사진"/>
                 <p>저희 Eodiya는 여러분의 빅데이터 분석으로 카페창업의 위치 선정을 도와주는 추천 시스템입니다.</p>
             </div>
             <div className="InLine" ref={oneRef} onWheel = {(e) =>updown(1, e)}>
@@ -94,10 +95,10 @@ export default function Main(props){
                 </div>
             </div>
             <div className="InLineend" ref={threeRef} onWheel = {(e) =>updown(3, e)}>
-                <img src="https://www.walkerhillstory.com/wp-content/uploads/2020/09/%EC%9D%B8%EC%83%9D%EC%82%AC%EC%A7%84-%EC%9B%90%EA%B3%A0-%EB%8C%80%ED%91%9C%EC%82%AC%EC%A7%84-1024x678.jpg" alt="사진"/>
-                <h1>Eodiya</h1>
-                <input type="button" onClick={mainEnd} value="시작하기"/>
-                <button onClick={onZeroClick}>moveAndDisplayDongArea</button>
+                <img src={require('../assets/Eodiya-removebg-preview.png')} alt="사진"/>
+                <Button variant="contained" component="span"  size="large" onClick={mainEnd}>
+                    시작하기
+                </Button>
             </div>
             <p>프론트 : 김동현, 김윤지, 정인수 백 : 박진성, 조영현, 최명재</p>
         </div>

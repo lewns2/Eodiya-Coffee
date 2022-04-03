@@ -23,8 +23,8 @@ class CommercialArea(models.Model):
     
     
 class CommercialAreaRevenue(models.Model):
-    commercialArea = models.ForeignKey(CommercialArea, related_name='revenueInfo', on_delete=models.CASCADE)
-    quaterRevenue = models.BigIntegerField() # 분기 매출
+    commercialArea = models.OneToOneField(CommercialArea, on_delete=models.CASCADE)
+    quarterRevenue = models.BigIntegerField() # 분기 매출
     perRevenue = models.FloatField() # 건단가
     maleRevenue = models.BigIntegerField()  # 남성 매출
     femaleRevenue = models.BigIntegerField() # 여성 매출
@@ -33,7 +33,7 @@ class CommercialAreaRevenue(models.Model):
     
     
 class CommercialAreaNumber(models.Model):
-    commercialArea = models.ForeignKey(CommercialArea, related_name='numberInfo', on_delete=models.CASCADE)
+    commercialArea = models.OneToOneField(CommercialArea, on_delete=models.CASCADE)
     numberStore = models.IntegerField() # 점포 수
     numberSimilarStore = models.IntegerField() # 유사 점포 수
     openingStore = models.IntegerField() # 개업 점포 수
@@ -43,7 +43,7 @@ class CommercialAreaNumber(models.Model):
     
     
 class CommercialAreaPeople(models.Model):
-    commercialArea = models.ForeignKey(CommercialArea, related_name='peopleInfo', on_delete=models.CASCADE)
+    commercialArea = models.OneToOneField(CommercialArea, on_delete=models.CASCADE)
     likePeople = models.IntegerField() # 생활 인구
     maleLikePeople = models.IntegerField() # 남성 생활 인구
     femaleLikePeople = models.IntegerField() # 여성 생활 인구
@@ -56,6 +56,23 @@ class CommercialAreaPeople(models.Model):
     
 
 class CommercialAreaBackground(models.Model):
-    commercialArea = models.ForeignKey(CommercialArea, related_name='backgroundInfo', on_delete=models.CASCADE)
+    commercialArea = models.OneToOneField(CommercialArea, on_delete=models.CASCADE)
     avgIncome = models.IntegerField() # 평균 소득
     gradeIncome = models.IntegerField() # 소득 분위
+    
+    
+class CommercialAreaBuilding(models.Model):
+    commercialArea = models.OneToOneField(CommercialArea, on_delete=models.CASCADE)
+    bankNumber = models.IntegerField()
+    hospitalNumber = models.IntegerField()
+    pharmacyNumber = models.IntegerField()
+    kindergardenNumber = models.IntegerField()
+    schoolNumber = models.IntegerField()
+    universityNumber = models.IntegerField()
+    departmentStoreNumber = models.IntegerField()
+    supermarketNumber = models.IntegerField()
+    theaterNumber = models.IntegerField()
+    hotelNumber = models.IntegerField()
+    busTerminalNumber = models.IntegerField()
+    subwayNumber = models.IntegerField()
+    busStopNumber = models.IntegerField()
