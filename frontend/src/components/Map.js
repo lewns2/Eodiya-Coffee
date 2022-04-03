@@ -85,9 +85,14 @@ let area = [];
 const Map=(props)=>{
     //분석하기 클릭하면 
     const [open, setOpen] = React.useState(false);
-    const getOpen = (e) =>{
-      setOpen(e);
-    }  
+    const [dongData, setDongData] = React.useState();
+    const getOpenfromsearch = (isopen, data) =>{
+      setOpen(isopen);
+      setDongData(data);
+    }
+    const getOpen = (isopen) =>{
+      setOpen(isopen);
+    } 
     // 1. 지도를 담을 영역의 DOM 레퍼런스
     const container = useRef(null);
 
@@ -355,8 +360,8 @@ const Map=(props)=>{
               </div>
               <StyledEngineProvider injectFirst>
                 <Search setSearchKeyword={setSearchKeyword}/>
-                <Comm open={open} getOpen={getOpen} />
-                <RightSide open={open} getOpen={getOpen}/>
+                <Comm open={open} getOpen={getOpenfromsearch} />
+                <RightSide open={open} dongData={dongData} getOpen={getOpen}/>
               </StyledEngineProvider >
             </div>
 
