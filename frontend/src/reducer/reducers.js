@@ -1,7 +1,9 @@
 // reducer를 하나로 합치는 파일.
-import districtArea from "./districtArea";
 import { combineReducers } from "redux";
+import setMap from "./setMap";
+import getArea from "./getArea";
 
 export default combineReducers({
-    districtArea,
+    setMap,
+    getArea,
 });

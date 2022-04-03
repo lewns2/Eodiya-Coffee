@@ -6,11 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 
-import configureStore from "./store/index";
-import reducers from "./reducer/reducers";
-import { Provider } from "react-redux";
 
-// axios.defaults.baseURL = "/api/v1";
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 // axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1";
 axios.defaults.withCredentials = false;
@@ -18,15 +14,10 @@ axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
 
-const store = configureStore(reducers, {
-});
-
 ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
     </React.StrictMode>
   </BrowserRouter>,
   document.getElementById("root")
