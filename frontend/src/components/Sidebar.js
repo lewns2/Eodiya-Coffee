@@ -69,13 +69,13 @@ const Sidebar = ({open, dongData, getOpen}) => {
                             <Primary dongData={dongData[0]}/>
                         </TabPanel>
                         <TabPanel value="2">
-                            <Visual/>
+                            <Visual dongData={dongData[0]}/>
                         </TabPanel>
                         <TabPanel value="3">
                             <h3>주요시설 현황</h3>
                         </TabPanel >
                         <TabPanel value="4">
-                            <Recommend />
+                            <Recommend  dongData={dongData[0]}/>
                         </TabPanel>
                     </TabContext>
                 </Drawer>

@@ -6,30 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import "../../styles/Primary.css"
 
-function createData(sales, perPrice, age, time) {
-    return { sales, perPrice, age, time };
-}
-function storeData(count, simCount, open, close, openPer, closePer) {
-    return { count, simCount, open, close, openPer, closePer };
-}
-function populData(resident, man, woman, household) {
-    return {resident, man, woman, household};
-}
-const rows = [
-    createData('901만5,791원', '10,273원', '30대', '13~15시'),
-];
-const storeRows = [
-    storeData(120, 10, 13, 8, 10.8, 0.06),
-];
-const populRows =  [
-    populData('105,601', '63,201', '42,400', '33,101'),
-];
 function Primary({dongData}) {
     return (
         <div>
-            <h3>매출 지표</h3>
-            <TableContainer component={Paper}>
+            <h2 className='infoTable'>매출 지표</h2>
+            <TableContainer className='infoTable' component={Paper}>
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
@@ -44,7 +27,7 @@ function Primary({dongData}) {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {dongData.quarterRevenue}원
+                                {dongData.quaterRevenue}원
                             </TableCell>
                             <TableCell align="right">{dongData.perRevenue}원</TableCell>
                             <TableCell align="right">{dongData.ageGroup}</TableCell>
@@ -53,8 +36,8 @@ function Primary({dongData}) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <h3>업종 지표</h3>
-            <TableContainer component={Paper}>
+            <h2 className='infoTable'>업종 지표</h2>
+            <TableContainer className='infoTable' component={Paper}>
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
@@ -70,18 +53,18 @@ function Primary({dongData}) {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {dongData.numberStore}개
+                                {dongData.numberStore}점포
                             </TableCell>
-                            <TableCell align="right">{dongData.openingStore}개</TableCell>
-                            <TableCell align="right">{dongData.closureStore}개</TableCell>
+                            <TableCell align="right">{dongData.openingStore}점포</TableCell>
+                            <TableCell align="right">{dongData.closureStore}점포</TableCell>
                             <TableCell align="right">{dongData.openingRate}</TableCell>
                             <TableCell align="right">{dongData.closureRate}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
-            <h3>인구 지표</h3>
-            <TableContainer component={Paper}>
+            <h2 className='infoTable'>인구 지표</h2>
+            <TableContainer className='infoTable' component={Paper}>
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
