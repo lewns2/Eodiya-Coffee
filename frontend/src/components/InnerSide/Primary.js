@@ -27,7 +27,7 @@ function Primary({dongData}) {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {dongData.quaterRevenue}원
+                                {dongData.quarterRevenue}원
                             </TableCell>
                             <TableCell align="right">{dongData.perRevenue}원</TableCell>
                             <TableCell align="right">{dongData.ageGroup}</TableCell>
