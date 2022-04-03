@@ -11,9 +11,8 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import '../styles/Comm.css';
-import axios from "axios";
-
-
+import GuDong from '../utils/GuDong.json';
+import axios from 'axios';
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
@@ -46,11 +45,18 @@ const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담�
         , ['소공동', '회현동', '명동', '필동', '장충동', '광희동', '을지로동', '신당동', '다산동', '약수동', '청구동', '신당5동', '동화동', '황학동', '중림동']
         , ['면목2동', '면목4동', '면목5동', '면목본동', '면목7동', '면목3.8동', '상봉1동', '상봉2동', '중화1동', '중화2동', '묵1동', '묵2동', '망우본동', '망우3동', '신내1동', '신내2동']];
 
-const Comm =({open, getOpen}) =>{
-    var [selectgu, setSelectGu] = useState(0);
+const tag =[
+        "스터디","디저트","키즈","브런치","무인","애견"
+    ];
+
+
+const Comm =({open, getOpen, getOpen2}) =>{
+    var [selectgu, setSelectGu] = useState(0); //상권분석
     var [selectdong, setSelectDong] = useState(0);
-    
+    var [cafegu, setCafeGu] = useState("");     //카페현황 - 구
+    var [cafeDong, setCafeDong] = useState(""); //카페현황 - 동
     var [displayDivision, setdisplayDivision] = useState(0);
+    
     const handleSide = () =>{
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
         axios
@@ -65,7 +71,8 @@ const Comm =({open, getOpen}) =>{
             )
             .then((response) => {
                 console.log(response.data, "from search");
-                getOpen(true, response.data.dongInfo);
+                getOpen(true);
+                getOpen2(response.data.dongInfo);
             })
             .catch((response) => {
                 console.log("Error!");
@@ -73,22 +80,37 @@ const Comm =({open, getOpen}) =>{
             });
     }
 
-    // const guList = () => {
-    //     var n =1;
-    //     const result = [];
-    //     for(let i=0; i<gu.length; i++){
-    //         result.push(<MenuItem value={n++}>{gu[i]}</MenuItem>)
-    //     }
-    //     return result;
-    // }
-    // const dongList = (a) => {
-    //     var n =1;
-    //     const result = [];
-    //     for(let i=0; i<dong[a].length; i++){
-    //         result.push(<MenuItem value={n++}>{dong[a][i]}</MenuItem>)
-    //     }
-    //     return result;
-    // }
+    const guList = () => {
+        var n =1;
+        const result = [];
+        for(let i=0; i<gu.length; i++){
+            result.push(<MenuItem value={n++}>{gu[i]}</MenuItem>)
+        }
+        return result;
+    }
+    const handleCafeSelect = (e) => {
+        console.log("카페 클릭: "+e.target.value);
+        setCafeGu(e.target.value);
+        // GuDong.map()
+        // console.log(GuDong.length);
+    }
+    const cafeDongList = () => {
+        const arr = [];
+        for(let i=0; i<GuDong.length; i++){
+            // console.log(GuDong[i][0]);
+            if(GuDong[i][0] === cafegu){
+                arr.push(<MenuItem value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
+            }
+        }
+        return arr;
+    }
+    const cafeGuList = () => {
+        const cafeGu = [];
+        for(let i =0; i<gu.length; i++){
+            cafeGu.push(<MenuItem value={gu[i]}>{gu[i]}</MenuItem>)
+        }
+        return cafeGu;
+    }
     const handleDisplay = () => {
         displayDivision ^= 1;
         console.log("행정구 활성화 버튼", displayDivision);
@@ -106,10 +128,30 @@ const Comm =({open, getOpen}) =>{
         setSelectDong(e.target.value);
         console.log(selectdong)
     }
-    useEffect(() => {
-        console.log("chaged:"+selectgu);
-        // console.log(open);
-    },[]);
+    const handleCafeDong =(e) => {
+        console.log(e.target.value);
+        setCafeDong(e.target.value);
+    }
+
+    function btnList() {
+        const list = [];
+        for(let i=0; i<tag.length; i++){
+            list.push(<Button variant='outlined'>{tag[i]}</Button>)
+        }
+        return list;
+        //카페 태그 가져오기
+        // axios.get(`${BASE}/${}`)
+        // .then()
+    }
+    const handleConsept=()=>{
+        console.log("카페현황 클릭!");
+        btnList();
+    }
+    // useEffect(() => {
+    //     console.log("chaged:"+selectgu);
+    //     // console.log(open);
+        
+    // },);
     return (
         <div className='Comm'>
             <Accordion>
@@ -162,22 +204,43 @@ const Comm =({open, getOpen}) =>{
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
+                onClick={handleConsept}
                 >
-                <Typography>상권 현황</Typography>
+                <Typography>카페 현황</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">구</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={cafegu}
+                            label="구"
+                            onChange={handleCafeSelect}
+                        >
+                            {cafeGuList()}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={cafeDong}
+                            label="동"
+                            onChange={handleCafeDong}
+                        >
+                            {cafeDongList()}
+                        </Select>
+                    </FormControl>
                     <Stack spacing={1}>
-                        <Button variant='outlined'>스터디</Button>
-                        <Button variant='outlined'>디저트</Button>
-                        <Button variant='outlined'>키즈</Button>
-                        <Button variant='outlined'>브런치</Button>
-                        <Button variant='outlined'>무인</Button>
-                        <Button variant='outlined'>애견</Button>
+                        {btnList()}
                     </Stack>
                 </AccordionDetails>
             </Accordion>
         </div>
     );
+    
 }
 
 export default Comm;
