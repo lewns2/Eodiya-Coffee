@@ -150,9 +150,9 @@ const Comm =({open, getOpen}) =>{
                             ))}
                         </Select>
                     </FormControl>
-                <Button variant='outlined' onClick={handleDisplay}>행정 구역보기</Button>
+                {/* <Button variant='outlined' onClick={handleDisplay}>행정 구역보기</Button>
                 <Button variant='outlined'>버튼</Button>
-                <Button variant='outlined'>버튼</Button>
+                <Button variant='outlined'>버튼</Button> */}
                 <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
                 </Typography>
                 </AccordionDetails>
