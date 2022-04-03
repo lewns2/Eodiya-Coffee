@@ -12,7 +12,6 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import '../styles/Comm.css';
 import axios from "axios";
-import dongdata from "../assets/dondata.json"
 
 
 const gu =[
@@ -49,42 +48,39 @@ const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담�
 
 const Comm =({open, getOpen}) =>{
     var [selectgu, setSelectGu] = useState(0);
-    var [guindong, setGuinDong] = useState(0); 
     var [selectdong, setSelectDong] = useState(0);
     
     var [displayDivision, setdisplayDivision] = useState(0);
     const handleSide = () =>{
-        console.log(`/search/${gu[selectgu-1]}/${dong[selectgu][selectdong]}`)
-        // axios
-        //     .post(
-        //         `/search/${gu[selectgu]}/${selectdong[selectgu][selectdong]}`,
-        //         {
-        //         headers: {
-        //             "Content-type": "application/json",
-        //             Accept: "*/*",
-        //         },
-        //         }
-        //     )
-        //     .then((response) => {
-        //         console.log(response, "from search");
-        //         getOpen(true, response.data);
-        //     })
-        //     .catch((response) => {
-        //         console.log("Error!");
-        //         console.log(response, "from search");
-        //     });
+        console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
+        axios
+            .get(
+                `/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`,
+                {
+                headers: {
+                    "Content-type": "application/json",
+                    Accept: "*/*",
+                },
+                }
+            )
+            .then((response) => {
+                console.log(response.data, "from search");
+                getOpen(true, response.data.dongInfo);
+            })
+            .catch((response) => {
+                console.log("Error!");
+                console.log(response, "from search");
+            });
+    }
 
-        console.log(open);
-        getOpen(true);
-    }
-    const guList = () => {
-        var n =1;
-        const result = [];
-        for(let i=0; i<gu.length; i++){
-            result.push(<MenuItem value={n++}>{gu[i]}</MenuItem>)
-        }
-        return result;
-    }
+    // const guList = () => {
+    //     var n =1;
+    //     const result = [];
+    //     for(let i=0; i<gu.length; i++){
+    //         result.push(<MenuItem value={n++}>{gu[i]}</MenuItem>)
+    //     }
+    //     return result;
+    // }
     // const dongList = (a) => {
     //     var n =1;
     //     const result = [];
@@ -103,8 +99,7 @@ const Comm =({open, getOpen}) =>{
     const handleGuSelect =(e) => {
         console.log("select: "+e.target.value);
         setSelectGu(e.target.value);
-        setGuinDong(e.target.value);
-        console.log(selectgu);  
+
     }
 
     const handleDongSelect =(e) => {
@@ -136,7 +131,9 @@ const Comm =({open, getOpen}) =>{
                             label="구"
                             onChange={handleGuSelect}
                         >
-                            {guList()}
+                            {gu.map((g, index) => (
+                                <MenuItem key={index} value={index}>{g}</MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                     <FormControl sx={{m:1}}>

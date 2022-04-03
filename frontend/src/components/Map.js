@@ -85,10 +85,26 @@ let area = [];
 const Map=(props)=>{
     //분석하기 클릭하면 
     const [open, setOpen] = React.useState(false);
-    const [dongData, setDongData] = React.useState();
+    const [dongData, setDongData] = React.useState([
+      {
+        quarterRevenue: "초기값",
+        perRevenue: "초기값",
+        ageGroup: "초기값",
+        timeGroup: "초기값",
+        numberStore: "초기값",
+        openingStore: "초기값",
+        closureStore: "초기값",
+        openingRate: "초기값",
+        closureRate: "초기값",
+        likePeople: "초기값",
+        maleLikePeople: "초기값",
+        femaleLikePeople: "초기값"
+      }
+    ]);
     const getOpenfromsearch = (isopen, data) =>{
       setOpen(isopen);
       setDongData(data);
+      console.log("맵:",data);
     }
     const getOpen = (isopen) =>{
       setOpen(isopen);

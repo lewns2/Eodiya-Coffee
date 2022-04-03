@@ -16,7 +16,7 @@ import Visual from './InnerSide/Visual';
 // Sidebar 넓이
 const drawerWidth = 600;
 
-const Sidebar = ({open, getOpen}) => {
+const Sidebar = ({open, dongData, getOpen}) => {
     const [value, setValue] = React.useState('1');
     const theme = useTheme();
 
@@ -66,14 +66,14 @@ const Sidebar = ({open, getOpen}) => {
                             <Tab label="추천정보" value="4" />
                         </TabList>
                         <TabPanel value="1">
-                            <Primary/>
+                            <Primary dongData={dongData[0]}/>
                         </TabPanel>
                         <TabPanel value="2">
-                            <Visual />
+                            <Visual/>
                         </TabPanel>
                         <TabPanel value="3">
                             <h3>주요시설 현황</h3>
-                        </TabPanel>
+                        </TabPanel >
                         <TabPanel value="4">
                             <Recommend />
                         </TabPanel>
