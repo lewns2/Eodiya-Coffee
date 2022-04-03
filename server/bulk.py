@@ -5,10 +5,9 @@ from pandas.io.json import json_normalize
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Odiya.settings')
 django.setup()
 
-from commercial_area.models import SeoulGuDong, CommercialArea, CommercialAreaRevenue, CommercialAreaPeople, CommercialAreaBackground, CommercialAreaNumber
+from commercial_area.models import CommercialAreaBuilding, SeoulGuDong, CommercialArea, CommercialAreaRevenue, CommercialAreaPeople, CommercialAreaBackground, CommercialAreaNumber
 from cafes.models import CafeList, CafeMenu
 import pandas as pd
-import json
 
 # #### 지역 테이블 만들기
 # df = pd.read_csv('../Data/commercialAreaData/상권-행정동.csv', encoding='CP949')
@@ -86,23 +85,65 @@ import json
 # SeoulGuDong.objects.bulk_create(instances)
 
 
-# # ### dataFrame
-# df1 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-추정매출).csv', encoding='CP949')
-# df1 = df1.loc[(df1['기준_분기_코드'] == 3) & (df1['서비스_업종_코드_명'] == '커피-음료')]
-# df2 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-점포).csv', encoding='CP949')
-# df2 = df2.loc[(df2['기준_년_코드'] == 2021) &(df2['기준_분기_코드'] == 3) & (df2['서비스_업종_코드_명'] == '커피-음료')]
-# df3 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-생활인구).csv', encoding='CP949')
-# df3 = df3.loc[(df3['기준 년코드'] == 2021) &(df3['기준_분기_코드'] == 3)]
-# df4 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-상권변화지표).csv', encoding='CP949')
-# df4 = df4.loc[(df4['기준_년_코드'] == 2021) & (df4['기준_분기_코드'] == 3)]
-# df5 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권배후지-소득소비).csv', encoding='CP949')
-# df5 = df5.loc[(df5['기준 년 코드'] == 2021) & (df4['기준_분기_코드'] == 3)]
+### dataFrame
+df1 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-추정매출).csv', encoding='CP949')
+df1 = df1.loc[(df1['기준_분기_코드'] == 3) & (df1['서비스_업종_코드_명'] == '커피-음료')]
+df2 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-점포).csv', encoding='CP949')
+df2 = df2.loc[(df2['기준_년_코드'] == 2021) &(df2['기준_분기_코드'] == 3) & (df2['서비스_업종_코드_명'] == '커피-음료')]
+df3 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-생활인구).csv', encoding='CP949')
+df3 = df3.loc[(df3['기준 년코드'] == 2021) &(df3['기준_분기_코드'] == 3)]
+df4 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-상권변화지표).csv', encoding='CP949')
+df4 = df4.loc[(df4['기준_년_코드'] == 2021) & (df4['기준_분기_코드'] == 3)]
+df5 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권배후지-소득소비).csv', encoding='CP949')
+df5 = df5.loc[(df5['기준 년 코드'] == 2021) & (df4['기준_분기_코드'] == 3)]
+df6 = pd.read_csv('../Data/commercialAreaData/상권-행정동.csv', encoding='CP949')    
+df7 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-집객시설).csv', encoding='CP949')
+df7 = df7.loc[(df7['기준_년_코드'] == 2021) & (df7['기준_분기_코드'] == 3)]
+df7.fillna(0, inplace=True)
+
+### res Data
+res1 = []
+for i in range(len(df1)):
+    code = df1.iloc[i]['상권_코드']
+    res1.append(code)
+    
+res2 = []
+for i in range(len(df2)):
+    code = df2.iloc[i]['상권_코드']
+    res2.append(code)
+    
+res3 = []
+for i in range(len(df3)):
+    code = df3.iloc[i]['상권_코드']
+    res3.append(code)
+    
+res4 = []
+for i in range(len(df4)):
+    code = df4.iloc[i]['상권_코드']
+    res4.append(code)
+    
+res5 = []
+for i in range(len(df5)):
+    code = df5.iloc[i]['상권_코드']
+    res5.append(code)
+
+res6 = []
+for i in range(len(df6)):
+    code = df6.iloc[i]['상권_코드']
+    res6.append(code)
+    
+res7 = []
+for i in range(len(df7)):
+    code = df7.iloc[i]['상권_코드']
+    res7.append(code)
+    
+res = list(set(res1) & set(res2) & set(res3) & set(res4) & set(res5) & set(res6) & set(res7))
 
 # ### CommercialArea Model
 # instances=  []
 # for i in range(len(res)):
 #     code = res[i]
-#     dongCode = df.loc[df['상권_코드'] == code]['행정동_코드'].values[0]
+#     dongCode = df6.loc[df6['상권_코드'] == code]['행정동_코드'].values[0]
 #     temp_df = df4.loc[df4['상권_코드'] == code]
 #     if temp_df.empty:
 #         continue
@@ -123,15 +164,15 @@ import json
 #     instances.append(CommercialArea(seoulGuDong=seoulGuDong, commercialAreaCode=commercialAreaCode, commercialAreaName=commercialAreaName, commercialAreaChange=commercialAreaChange, commercialAreaXYPoint=commercialAreaXYPoint))
 # CommercialArea.objects.bulk_create(instances)
 
-# # ### CommercialAreaRevenue Model
-# # ### 상권-추정매출
+# ### CommercialAreaRevenue Model
+# ### 상권-추정매출
 # instances = []
 # for i in range(len(res)):
 #     code = res[i]
 #     temp_df = df1.loc[df1['상권_코드'] == code]
 #     if temp_df.empty:
 #         continue
-#     quaterRevenue = temp_df['분기당_매출_금액'].values[0]
+#     quarterRevenue = temp_df['분기당_매출_금액'].values[0]
 #     if temp_df['분기당_매출_건수'].values[0] == 0:
 #         perRevenue = 0
 #     else:
@@ -158,7 +199,7 @@ import json
 #     elif idx == 5: timeGroup = '21~24시'
     
 #     commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
-#     instances.append(CommercialAreaRevenue(commercialArea=commercialArea, quaterRevenue=quaterRevenue, perRevenue=perRevenue, maleRevenue=maleRevenue, femaleRevenue=femaleRevenue, ageGroup=ageGroup, timeGroup=timeGroup))
+#     instances.append(CommercialAreaRevenue(commercialArea=commercialArea, quarterRevenue=quarterRevenue, perRevenue=perRevenue, maleRevenue=maleRevenue, femaleRevenue=femaleRevenue, ageGroup=ageGroup, timeGroup=timeGroup))
 # CommercialAreaRevenue.objects.bulk_create(instances)
     
 # # ### CommercialAreaNumber Model    
@@ -179,8 +220,26 @@ import json
 #     instances.append(CommercialAreaNumber(commercialArea=commercialArea, numberStore=numberStore, numberSimilarStore=numberSimilarStore, openingStore=openingStore, closureStore=closureStore, openingRate=openingRate, closureRate=closureRate))
 # CommercialAreaNumber.objects.bulk_create(instances)
     
-# # ### CommercialAreaPeople Model
-# # ### 상권-생활인구
+# ### CommercialAreaNumber Model    
+# ### 상권-점포
+# instances = []
+# for i in range(len(res)):
+#     code = res[i]
+#     temp_df = df2.loc[df2['상권_코드'] == code]
+#     if temp_df.empty:
+#         continue
+#     numberStore = temp_df['점포_수'].values[0]
+#     numberSimilarStore = temp_df['유사_업종_점포_수'].values[0]
+#     openingStore = temp_df['개업_점포_수'].values[0]
+#     closureStore = temp_df['폐업_점포_수'].values[0]
+#     openingRate = temp_df['개업_율'].values[0]
+#     closureRate = temp_df['폐업_률'].values[0]
+#     commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+#     instances.append(CommercialAreaNumber(commercialArea=commercialArea, numberStore=numberStore, numberSimilarStore=numberSimilarStore, openingStore=openingStore, closureStore=closureStore, openingRate=openingRate, closureRate=closureRate))
+# CommercialAreaNumber.objects.bulk_create(instances)
+    
+# ### CommercialAreaPeople Model
+# ### 상권-생활인구
 # instances = []
 # for i in range(len(res)):
 #     code = res[i] 
@@ -200,8 +259,8 @@ import json
 #     instances.append(CommercialAreaPeople(commercialArea=commercialArea, likePeople=likePeople, maleLikePeople=maleLikePeople, femaleLikePeople=femaleLikePeople, likePeopleAge10=likePeopleAge10, likePeopleAge20=likePeopleAge20, likePeopleAge30=likePeopleAge30, likePeopleAge40=likePeopleAge40, likePeopleAge50=likePeopleAge50, likePeopleAge60=likePeopleAge60))
 # CommercialAreaPeople.objects.bulk_create(instances)
 
-# # ### CommercialAreaBackground Model
-# # ### 상권배후지-소득소비
+# ### CommercialAreaBackground Model
+# ### 상권배후지-소득소비
 # instances = []
 # for i in range(len(res)):
 #     code = res[i] 
@@ -214,6 +273,31 @@ import json
 #     instances.append(CommercialAreaBackground(commercialArea=commercialArea, avgIncome=avgIncome, gradeIncome=gradeIncome))
 # CommercialAreaBackground.objects.bulk_create(instances)
     
+### CommercialAreaBuilding Model
+### 상권-집객시설
+instances = []
+for i in range(len(res)):
+    code = res[i] 
+    temp_df = df7.loc[df7['상권_코드'] == code]
+    if temp_df.empty:
+        continue
+    bankNumber = temp_df['은행_수']
+    hospitalNumber = temp_df['종합병원_수'] + temp_df['일반_병원_수']
+    pharmacyNumber = temp_df['약국_수']
+    kindergardenNumber = temp_df['유치원_수']
+    schoolNumber = temp_df['초등학교_수'] + temp_df['중학교_수'] + temp_df['고등학교_수']
+    universityNumber = temp_df['대학교_수']
+    departmentStoreNumber = temp_df['백화점_수']
+    supermarketNumber = temp_df['슈퍼마켓_수']
+    theaterNumber = temp_df['극장_수']
+    hotelNumber = temp_df['숙박_시설_수']
+    busTerminalNumber = temp_df['버스_터미널_수']
+    subwayNumber = temp_df['지하철_역_수']
+    busStopNumber = temp_df['버스_정거장_수']
+    commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+    instances.append(CommercialAreaBuilding(commercialArea=commercialArea, bankNumber=bankNumber, hospitalNumber=hospitalNumber, pharmacyNumber=pharmacyNumber, kindergardenNumber=kindergardenNumber, schoolNumber=schoolNumber, universityNumber=universityNumber, departmentStoreNumber=departmentStoreNumber, supermarketNumber=supermarketNumber, theaterNumber=theaterNumber, hotelNumber=hotelNumber, busTerminalNumber=busTerminalNumber, subwayNumber=subwayNumber, busStopNumber=busStopNumber))
+CommercialAreaBuilding.objects.bulk_create(instances)
+
 
 # ### 카페 모델
 # gu_list = ['마포구','서대문구','은평구','종로구','중구','용산구','성동구','광진구',
@@ -344,3 +428,5 @@ import json
 # print('이상없음')
 # # print(instances)
 # CafeMenu.objects.bulk_create(instances)
+    
+    
