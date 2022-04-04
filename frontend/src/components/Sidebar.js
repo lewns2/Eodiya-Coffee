@@ -28,7 +28,8 @@ const Sidebar = ({open, dongData, getOpen}) => {
 
     const guselectName = useSelector(state => state.setMap.eodiyaMap.guNum);
     const dongselectName = useSelector(state => state.setMap.eodiyaMap.dongNum);
-    
+    const RightSideBarMode = useSelector(state => state.setMap.eodiyaMap.rightSideBarMode);
+    console.log("rererere", RightSideBarMode);
     useEffect (()=>{
         setValue('1');
     }, [dongData])
@@ -121,6 +122,7 @@ const Sidebar = ({open, dongData, getOpen}) => {
                     </DrawerHeader>
                     <Divider />
                     {/* Sidebar 표시할 내용 */}
+                    {RightSideBarMode == 1 &&
                     <TabContext value={value}>
                         <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
                             <Tab label="기본정보" value="1" />
@@ -141,6 +143,29 @@ const Sidebar = ({open, dongData, getOpen}) => {
                             <Recommend  recoData={recodongdata}/>
                         </TabPanel>
                     </TabContext>
+                    }
+                    {/* {RightSideBarMode == 2 &&
+                    <TabContext value={value}>
+                        <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
+                            <Tab label="기본정보" value="1" />
+                            <Tab label="상세정보" value="2" />
+                            <Tab label="위치정보" value="3" />
+                            <Tab label="추천정보" value="4" />
+                        </TabList>
+                        <TabPanel value="1">
+                            <Primary dongData={dongData[0]}/>
+                        </TabPanel>
+                        <TabPanel value="2">
+                            <Visual dongData={dongData[0]}/>
+                        </TabPanel>
+                        <TabPanel value="3">
+                            <Facilities facdongdata={facdongdata}/>
+                        </TabPanel >
+                        <TabPanel value="4">
+                            <Recommend  recoData={recodongdata}/>
+                        </TabPanel>
+                    </TabContext>
+                    } */}
                 </Drawer>
             </Box>
         );

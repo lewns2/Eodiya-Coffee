@@ -4,6 +4,7 @@ const SET_GUMARKER = "setGumarker";
 const SET_DONGMARKER = "setDongmarker";
 const SET_GUNUM = "setGuNum";
 const SET_DONGNUM = "setDongNum";
+const SET_RIGHTSIDEBARMODE = "setRightSideBarMode";
 
 
 // action method
@@ -44,12 +45,20 @@ const setDongNum = (dong) => {
     }
 }
 
+const setRightSideBarMode = (mode) => {
+    return {
+        type : SET_RIGHTSIDEBARMODE,
+        rightSideBarMode : mode,
+    }
+}
+
 export const actionCreators = {
     setMap,
     addGuMarker,
     addDongMarker,
     setGuNum,
     setDongNum,
+    setRightSideBarMode,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

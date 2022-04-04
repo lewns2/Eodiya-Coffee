@@ -22,6 +22,7 @@ const setMap = (state = {
         overlay: [],
         guNum:123,
         dongNum:123,
+        rightSideBarMode:1,
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -66,6 +67,14 @@ const setMap = (state = {
                 eodiyaMap : {
                     ...state.eodiyaMap,
                     dongNum: action.dongNum,
+                }
+            }
+        case "setRightSideBarMode":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    rightSideBarMode: action.rightSideBarMode,
                 }
             }
         default:

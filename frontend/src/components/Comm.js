@@ -51,11 +51,15 @@ const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담�
 const tag =[
         "스터디","디저트","키즈","브런치","무인","애견"
     ];
+const theme =[
+
+    ];
 
 
 const Comm =({open, getOpen, getOpen2}) =>{
     var [selectgu, setSelectGu] = useState(0); //상권분석
     var [selectdong, setSelectDong] = useState(0);
+    var [selecttheme, setSelectTheme] = useState(0);
     var [cafegu, setCafeGu] = useState("");     //카페현황 - 구
     var [cafeDong, setCafeDong] = useState(""); //카페현황 - 동
     var [displayDivision, setdisplayDivision] = useState(0);
@@ -78,6 +82,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 console.log(response.data, "from search");
                 dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
                 dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+                dispatch(actionCreators.setRightSideBarMode(1), []);
                 getOpen(true);
                 getOpen2(response.data.dongInfo);
             })
@@ -86,7 +91,31 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 console.log(response, "from search");
             });
     }
-
+    const handleThemeSide = () =>{
+        console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`)
+        // axios
+        //     .get(
+        //         `/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`,
+        //         {
+        //         headers: {
+        //             "Content-type": "application/json",
+        //             Accept: "*/*",
+        //         },
+        //         }
+        //     )
+        //     .then((response) => {
+        //         console.log(response.data, "from search");
+        //         dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+        //         dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+        //         dispatch(actionCreators.setRightSideBarMode(2), []);
+        //         getOpen(true);
+        //         getOpen2(response.data.dongInfo);
+        //     })
+        //     .catch((response) => {
+        //         console.log("Error!");
+        //         console.log(response, "from search");
+        //     });
+    }
     const guList = () => {
         var n =1;
         const result = [];
@@ -100,6 +129,13 @@ const Comm =({open, getOpen, getOpen2}) =>{
         const result = [];
         for(let i=0; i<dong[selectgu].length; i++){
             result.push(<MenuItem key={i} value={i}>{dong[selectgu][i]}</MenuItem>)
+        }
+        return result;
+    }
+    const themeList = () => {
+        const result = [];
+        for(let i =0; i<theme.length; i++){
+            result.push(<MenuItem key={i} value={theme[i]}>{theme[i]}</MenuItem>)
         }
         return result;
     }
@@ -126,6 +162,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
         }
         return cafeGu;
     }
+
     const handleDisplay = () => {
         displayDivision ^= 1;
         console.log("행정구 활성화 버튼", displayDivision);
@@ -142,6 +179,10 @@ const Comm =({open, getOpen, getOpen2}) =>{
     const handleDongSelect =(e) => {
         setSelectDong(e.target.value);
         console.log(selectdong)
+    }
+    const handleThemeSelect =(e) => {
+        setSelectTheme(e.target.value);
+        console.log(selecttheme);
     }
     const handleCafeDong =(e) => {
         console.log(e.target.value);
@@ -242,6 +283,54 @@ const Comm =({open, getOpen, getOpen2}) =>{
                     <Stack spacing={1}>
                         {btnList()}
                     </Stack>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                >
+                <Typography>상권 분석</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">구</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectgu}
+                            label="구"
+                            onChange={handleGuSelect}
+                        >
+                            {guList()}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectdong}
+                            label="동"
+                            onChange={handleDongSelect}
+                        >
+                            {dongList()}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selecttheme}
+                            label="테마"
+                            onChange={handleThemeSelect}
+                        >
+                            {themeList()}
+                        </Select>
+                    </FormControl>
+                    <Button variant='outlined' color="secondary" onClick={handleThemeSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
         </div>
