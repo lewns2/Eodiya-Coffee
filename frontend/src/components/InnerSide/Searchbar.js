@@ -1,10 +1,13 @@
 import React, { useState, Fragment, useEffect } from 'react';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 const Searchbar = (props) => {
     const [inputText, setInputText] = useState("");
     const [place, setplace] = useState(props.setKeyword);
 
     const onChange = (e) => {
+        if(e.target.value)
         setInputText(e.target.value);
     };
     const handleSubmit = (e) => {
@@ -13,7 +16,7 @@ const Searchbar = (props) => {
         setInputText("");
     }
     useEffect(() => {
-        console.log("Searchbar : ", place, '로 변경되었음.')
+        // console.log("Searchbar : ", place, '로 변경되었음.')
         props.setKeyword(place);
         // return () => {
         //     props.setKeyword(place);
@@ -25,14 +28,8 @@ const Searchbar = (props) => {
     return (
         <Fragment>
             <form className="inputForm" onSubmit={handleSubmit}>
-                <input
-                    type = "text"
-                    placeholder='검색할 내용을 입력해주세요'
-                    onChange={onChange}
-                    value={inputText}
-                >
-                </input>
-                <button type="submit">검색</button>
+                <TextField placeholder="동 이름으로 검색" onChange={onChange} value={inputText} size="small"></TextField>
+                <Button variant='outlined' type='submit' >검색</Button>
             </form>
         </Fragment>
     );
