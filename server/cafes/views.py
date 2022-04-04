@@ -10,14 +10,18 @@ from commercial_area.models import SeoulGuDong
 from .serializers import CafeListSerializer
 # Create your views here.
 
-# word_grouping = {
-#     '브런치카페': [],
-#     '키즈카페': [],
-#     '애견카페': [],
+word_grouping = {
+    '브런치카페': ['브런치'],
+    '키즈카페': ['키즈'],
+    '애견카페': ['애견'],
+    '방탈출카페': ['방탈출'],
+    '북카페': ['북', '책'],
+    '디저트카페': ['디저트', '케이크', '마카롱', ],
+    '분위기있는': ['분위기', '포토존', '뷰맛집', ],
+    '커피전문점': ['커피전문점'],
     
-# }
-
-
+    
+}
 
 # 카페 정보 요청
 @api_view(['GET'])
