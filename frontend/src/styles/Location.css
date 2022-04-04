@@ -1,0 +1,13 @@
+.Location {
+    display: flex;
+    position: absolute !important;
+    top: 30px;
+    left: 45%;
+    border-radius: 10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    background: #2e2e2e !important;
+    overflow: hidden ;
+    z-index: 2;
+    color: white !important;
+  }
+  

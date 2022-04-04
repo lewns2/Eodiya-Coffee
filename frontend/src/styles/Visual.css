@@ -1,0 +1,17 @@
+.m-t{
+    margin-top:30px;
+}
+.graph{
+    margin-top:20px;
+    margin:20px auto;
+}
+.color1{
+    background-color: blue;
+    width: 20px;
+    height: 20px;
+}
+.color2{
+    background-color: red;
+    width: 20px;
+    height: 20px;
+}
