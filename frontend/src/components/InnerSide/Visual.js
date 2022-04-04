@@ -1,10 +1,12 @@
-import React, {  Fragment } from 'react';
-import Paper from '@material-ui/core/Paper';
+import React, {  Fragment, useEffect, useState } from 'react';
+// import Paper from '@material-ui/core/Paper';
 import "../../styles/Visual.css"
-import {
-  Chart,
-  PieSeries,
-} from '@devexpress/dx-react-chart-material-ui';
+import Chart from "react-apexcharts";
+
+// import {
+//   Chart,
+//   PieSeries,
+// } from '@devexpress/dx-react-chart-material-ui';
 import Box from '@mui/material/Box';
 
 function chartData(arg, value){
@@ -12,81 +14,100 @@ function chartData(arg, value){
 }
 
 const Visual = ({dongData}) => {
-    const openData = [
-        chartData('개업', dongData.openingStore),
-        chartData('폐업', dongData.closureStore),
-    ];
-    const genData = [
-        chartData('남성', dongData.maleLikePeople),
-        chartData('여성', dongData.femaleLikePeople),
-    ];
-    // const ageData = [
-    //     chartData('10대', dongData.likePeopleAge10),
-    //     chartData('20대', dongData.likePeopleAge20),
-    //     chartData('30대', dongData.likePeopleAge30),
-    //     chartData('40대', dongData.likePeopleAge40),
-    //     chartData('50대', dongData.likePeopleAge50),
-    //     chartData('60대', dongData.likePeopleAge60),
-    // ];
+    const [options1, setOption]= useState({
+        chart: {
+            width: 380,
+            type: 'donut',
+          },
+        series: [dongData.openingStore, dongData.closureStore],
+        labels: ["개업", "폐업"],
+        responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+      });
+      const [options2, setOption2]= useState({
+        chart: {
+            width: 380,
+            type: 'donut',
+          },
+        series: [dongData.maleLikePeople, dongData.femaleLikePeople],
+        labels: ['남성', '여성'],
+        responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+      });
+    //   const [options3, setOption3]= useState({
+    //     chart: {
+    //         width: 380,
+    //         type: 'donut',
+    //       },
+    //     series: [dongData.likePeopleAge10, dongData.likePeopleAge20, dongData.likePeopleAge30, dongData.likePeopleAge40, dongData.likePeopleAge50, dongData.likePeopleAge60],
+    //     labels: ['10대', '20대', '30대', '40대', '50대', '60대' ],
+    //     responsive: [{
+    //         breakpoint: 480,
+    //         options: {
+    //           chart: {
+    //             width: 200
+    //           },
+    //           legend: {
+    //             position: 'bottom'
+    //           }
+    //         }
+    //       }]
+    //   });
     return (
         <Fragment>
-            <h2 className='m-t'>개업/ 폐업시각화</h2>
             <Box
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
               }}
             >
-                <Paper className='graph'>
-                    <Chart
-                        data={openData}
-                        width="300"
-                        height={300}
-                    >
-                        <PieSeries
-                            valueField="value"
-                            argumentField="arg"
-                            innerRadius={0.3}
-                        />
-                    </Chart>
-                </Paper>
-                <Box sx={{display:"flex", justifyContent: 'space-around' }}>
-                    <div className='color1'></div><h3>개업</h3><div className='color2'></div><h3>폐업</h3> 
-                </Box>
+                <h2 className='m-t'>개업/ 폐업시각화</h2>
+                <div id="chart">
+                <Chart
+                options={options1}
+                series={options1.series}
+                type="donut"
+                width="500"
+                />
+                </div>
+                
                 <h2 className='m-t'>남여 성비</h2>
-                <Paper className='graph'>
-                    <Chart
-                        data={genData}
-                        width="300"
-                        height={300}
-                    >
-                        <PieSeries
-                            valueField="value"
-                            argumentField="arg"
-                            innerRadius={0.3}
-                        />
-                    </Chart>
-                </Paper>
-                <Box sx={{display:"flex", justifyContent: 'space-around' }}>
-                    <div className='color1'></div><h3>남성</h3><div className='color2'></div><h3>여성</h3> 
-                </Box>
-                {/* <h2 className='m-t'>세대별 방문비</h2>
-                <Paper className='graph'>
-                    <Chart
-                        data={ageData}
-                        width="300"
-                        height={300}
-                    >
-                        <PieSeries
-                            valueField="value"
-                            argumentField="arg"
-                            innerRadius={0.3}
-                        />
-                    </Chart>
-                </Paper>
-                <Box sx={{display:"flex", justifyContent: 'space-around' }}>
-                    <div className='color1'></div><h3>남성</h3><div className='color2'></div><h3>여성</h3> 
-                </Box> */}
+                <div id="chart">
+                <Chart
+                options={options2}
+                series={options2.series}
+                type="donut"
+                width="500"
+                />
+                </div>
+
+                {/* <h2 className='m-t'>세대별 이용비율</h2>
+                <div id="chart">
+                <Chart
+                options={options3}
+                series={options3.series}
+                type="donut"
+                width="500"
+                />
+                </div> */}
             </Box>
         </Fragment>
     );
