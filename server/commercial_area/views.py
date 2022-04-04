@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import JsonResponse
+from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -167,27 +168,30 @@ def dong_info_location(request, guName, dongName):
     data = {
         'locationInfo' : []
     }
-    commecialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
-    num = len(commecialArea)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    num = len(commercialArea)
     if num == 0:
         data['locationInfo'].append('상권이 없습니다.')
     else:
         bankNumber, hospitalNumber, pharmacyNumber, kindergardenNumber, schoolNumber, universityNumber, departmentStoreNumber, supermarketNumber, theaterNumber, hotelNumber, busTerminalNumber, subwayNumber, busStopNumber = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         
-        for i in range(len(commecialArea)):
-            bankNumber += commecialArea[i].commercialareabuilding.bankNumber
-            hospitalNumber += commecialArea[i].commercialareabuilding.hospitalNumber
-            pharmacyNumber += commecialArea[i].commercialareabuilding.pharmacyNumber
-            kindergardenNumber += commecialArea[i].commercialareabuilding.kindergardenNumber
-            schoolNumber += commecialArea[i].commercialareabuilding.schoolNumber
-            universityNumber += commecialArea[i].commercialareabuilding.universityNumber
-            departmentStoreNumber += commecialArea[i].commercialareabuilding.departmentStoreNumber
-            supermarketNumber += commecialArea[i].commercialareabuilding.supermarketNumber
-            theaterNumber += commecialArea[i].commercialareabuilding.theaterNumber
-            hotelNumber += commecialArea[i].commercialareabuilding.hotelNumber
-            busTerminalNumber += commecialArea[i].commercialareabuilding.busTerminalNumber
-            subwayNumber += commecialArea[i].commercialareabuilding.subwayNumber
-            busStopNumber += commecialArea[i].commercialareabuilding.busStopNumber
+        for i in range(len(commercialArea)):
+            try:
+                bankNumber += commercialArea[i].commercialareabuilding.bankNumber
+                hospitalNumber += commercialArea[i].commercialareabuilding.hospitalNumber
+                pharmacyNumber += commercialArea[i].commercialareabuilding.pharmacyNumber
+                kindergardenNumber += commercialArea[i].commercialareabuilding.kindergardenNumber
+                schoolNumber += commercialArea[i].commercialareabuilding.schoolNumber
+                universityNumber += commercialArea[i].commercialareabuilding.universityNumber
+                departmentStoreNumber += commercialArea[i].commercialareabuilding.departmentStoreNumber
+                supermarketNumber += commercialArea[i].commercialareabuilding.supermarketNumber
+                theaterNumber += commercialArea[i].commercialareabuilding.theaterNumber
+                hotelNumber += commercialArea[i].commercialareabuilding.hotelNumber
+                busTerminalNumber += commercialArea[i].commercialareabuilding.busTerminalNumber
+                subwayNumber += commercialArea[i].commercialareabuilding.subwayNumber
+                busStopNumber += commercialArea[i].commercialareabuilding.busStopNumber
+            except:
+                continue
     data['locationInfo'].append(
         {
             'bankNumber' : bankNumber,
@@ -213,5 +217,41 @@ def dong_info_location(request, guName, dongName):
 @permission_classes([AllowAny])
 def dong_info_recommend(request, guName, dongName):
     data = {
-        'recommendInfo' : []
+        'recommend1' : [],
+        'recommend2' : [],
+        'recommend3' : [],
     }
+    ### recommend1
+    
+    seoulCommercialArea = CommercialArea.objects.all()
+    seoulAvg = 0
+    for i in range(len(seoulCommercialArea)):
+        seoulAvg += seoulCommercialArea[i].commercialarearevenue.quarterRevenue
+    seoulAvg /= len(seoulCommercialArea)
+    ### 1
+    ### 상권 평균 매출 >= 서울시 평균 매출 and 상권 == 다이나믹 or 상권 == 상권확장
+    commercialArea1 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='다이나믹')
+    commercialArea2 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='상권확장')
+    commercialArea = commercialArea1 | commercialArea2
+    ### 2
+    ### 상권 평균 매출 >= 서울시 평균 매출
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
+    
+    commercialArea = commercialArea.order_by('-commercialarearevenue__quarterRevenue')
+    num = len(commercialArea)
+    if num == 0:
+        data['recommend1'].append('상권이 없습니다.')
+    else:
+        for i in range(len(commercialArea)):
+            print(commercialArea[i].commercialarearevenue.quarterRevenue)
+            if commercialArea[i].commercialarearevenue.quarterRevenue >= seoulAvg:
+                data['recommend1'].append(
+                    {
+                        'commercialAreaName' : commercialArea[i].commercialAreaName,
+                        'commercialQuarterRevenue' : commercialArea[i].commercialarearevenue.quarterRevenue,
+                        'commercialAreaChange' : commercialArea[i].commercialAreaChange,
+                    }
+                )
+        if data['recommend1'] == []:
+            data['recommend1'].append('상권이 없습니다.')
+    return JsonResponse(data)
