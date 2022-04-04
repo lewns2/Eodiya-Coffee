@@ -23,6 +23,7 @@ const drawerWidth = 600;
 const Sidebar = ({open, dongData, getOpen}) => {
     const [value, setValue] = React.useState('1');
     const [facdongdata, setFacdongdata] = React.useState();
+    const [recodongdata, setRecodongdata] = React.useState();
     const theme = useTheme();
 
     const guselectName = useSelector(state => state.setMap.eodiyaMap.guNum);
@@ -52,11 +53,36 @@ const Sidebar = ({open, dongData, getOpen}) => {
                 console.log(response, "from search");
             });
     }
+
+    const getRecoData = (g, d) =>{
+        axios
+            .get(
+                `/search/${g}/${d}/recommend`,
+                {
+                headers: {
+                    "Content-type": "application/json",
+                    Accept: "*/*",
+                },
+                }
+            )
+            .then((response) => {
+                console.log(response.data, "from search");
+                setRecodongdata(response.data)
+            })
+            .catch((response) => {
+                console.log("Error!");
+                console.log(response, "from search");
+            });
+    }
     // const [faciData, setFaciData] = React.useState([]);
     const handleChange = (event, newValue) => {
         if(newValue==3){
             getFacData(guselectName, dongselectName);
         }
+            // }else if(newValue==4){
+        //     getRecoData(guselectName, dongselectName);
+            
+        // }
         setValue(newValue);
     };
     //  Sidebar 닫기 누르면 닫기
@@ -111,7 +137,7 @@ const Sidebar = ({open, dongData, getOpen}) => {
                             <Facilities facdongdata={facdongdata}/>
                         </TabPanel >
                         <TabPanel value="4">
-                            <Recommend  dongData={dongData[0]}/>
+                            <Recommend  recoData={recodongdata}/>
                         </TabPanel>
                     </TabContext>
                 </Drawer>

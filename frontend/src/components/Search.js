@@ -13,7 +13,7 @@ const Search =(props) => {
     }, [keyword])
     useEffect(() =>{
         setKeyword(props.setSearchKeyword)
-    })
+    },[])
         return (
             <div className='Search'>
                 <Searchbar setKeyword={setKeyword}></Searchbar>
