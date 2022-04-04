@@ -66,23 +66,24 @@ const Sidebar = ({open, dongData, getOpen}) => {
                 }
             )
             .then((response) => {
-                console.log(response.data, "from search");
+                console.log(response.data, "from reco");
                 setRecodongdata(response.data)
             })
             .catch((response) => {
                 console.log("Error!");
-                console.log(response, "from search");
+                console.log(response, "from reco");
             });
     }
     // const [faciData, setFaciData] = React.useState([]);
     const handleChange = (event, newValue) => {
-        if(newValue==3){
+        console.log(newValue);
+        if(newValue == 3){
             getFacData(guselectName, dongselectName);
-        }
-            // }else if(newValue==4){
-        //     getRecoData(guselectName, dongselectName);
-            
         // }
+        }else if(newValue == 4){
+            getRecoData(guselectName, dongselectName);
+            console.log("asdasdasdas");
+        }
         setValue(newValue);
     };
     //  Sidebar 닫기 누르면 닫기
