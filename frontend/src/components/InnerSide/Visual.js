@@ -20,6 +20,14 @@ const Visual = ({dongData}) => {
         chartData('남성', dongData.maleLikePeople),
         chartData('여성', dongData.femaleLikePeople),
     ];
+    // const ageData = [
+    //     chartData('10대', dongData.likePeopleAge10),
+    //     chartData('20대', dongData.likePeopleAge20),
+    //     chartData('30대', dongData.likePeopleAge30),
+    //     chartData('40대', dongData.likePeopleAge40),
+    //     chartData('50대', dongData.likePeopleAge50),
+    //     chartData('60대', dongData.likePeopleAge60),
+    // ];
     return (
         <Fragment>
             <h2 className='m-t'>개업/ 폐업시각화</h2>
@@ -62,6 +70,23 @@ const Visual = ({dongData}) => {
                 <Box sx={{display:"flex", justifyContent: 'space-around' }}>
                     <div className='color1'></div><h3>남성</h3><div className='color2'></div><h3>여성</h3> 
                 </Box>
+                {/* <h2 className='m-t'>남여 성비</h2>
+                <Paper className='graph'>
+                    <Chart
+                        data={ageData}
+                        width="300"
+                        height={300}
+                    >
+                        <PieSeries
+                            valueField="value"
+                            argumentField="arg"
+                            innerRadius={0.3}
+                        />
+                    </Chart>
+                </Paper>
+                <Box sx={{display:"flex", justifyContent: 'space-around' }}>
+                    <div className='color1'></div><h3>남성</h3><div className='color2'></div><h3>여성</h3> 
+                </Box> */}
             </Box>
         </Fragment>
     );
