@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -13,14 +13,50 @@ import { Divider } from '@mui/material';
 import Primary from './InnerSide/Primary';
 import Recommend from './InnerSide/Recommend';
 import Visual from './InnerSide/Visual';
+import Facilities from './InnerSide/Facilities';
+import { useDispatch, useSelector } from "react-redux";
+import actionCreators from '../actions/actionCreators';
+import axios from "axios";
 // Sidebar 넓이
 const drawerWidth = 600;
 
 const Sidebar = ({open, dongData, getOpen}) => {
     const [value, setValue] = React.useState('1');
+    const [facdongdata, setFacdongdata] = React.useState();
     const theme = useTheme();
 
+    const guselectName = useSelector(state => state.setMap.eodiyaMap.guNum);
+    const dongselectName = useSelector(state => state.setMap.eodiyaMap.dongNum);
+    
+    useEffect (()=>{
+        setValue('1');
+    }, [dongData])
+
+    const getFacData = (g, d) =>{
+        axios
+            .get(
+                `/search/${g}/${d}/location`,
+                {
+                headers: {
+                    "Content-type": "application/json",
+                    Accept: "*/*",
+                },
+                }
+            )
+            .then((response) => {
+                console.log(response.data.locationInfo[0], "from search");
+                setFacdongdata(response.data.locationInfo[0])
+            })
+            .catch((response) => {
+                console.log("Error!");
+                console.log(response, "from search");
+            });
+    }
+    // const [faciData, setFaciData] = React.useState([]);
     const handleChange = (event, newValue) => {
+        if(newValue==3){
+            getFacData(guselectName, dongselectName);
+        }
         setValue(newValue);
     };
     //  Sidebar 닫기 누르면 닫기
@@ -72,7 +108,7 @@ const Sidebar = ({open, dongData, getOpen}) => {
                             <Visual dongData={dongData[0]}/>
                         </TabPanel>
                         <TabPanel value="3">
-                            <h3>주요시설 현황</h3>
+                            <Facilities facdongdata={facdongdata}/>
                         </TabPanel >
                         <TabPanel value="4">
                             <Recommend  dongData={dongData[0]}/>

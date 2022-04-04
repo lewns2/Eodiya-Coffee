@@ -10,10 +10,10 @@ const EodiyaMap = () => {
     const map = useSelector(state => state.setMap.map);
 
     const { getGeo } = useGeolocation();
-    const test = useSelector(state => state.setMap.eodiyaMap);
+    // const test = useSelector(state => state.setMap.eodiyaMap);
     
     useEffect(() => {
-        console.log(test);
+        // console.log(test);
         getGeo();
       }, [map, getGeo]);
 
