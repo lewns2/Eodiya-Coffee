@@ -70,7 +70,7 @@ const Visual = ({dongData}) => {
                 <Box sx={{display:"flex", justifyContent: 'space-around' }}>
                     <div className='color1'></div><h3>남성</h3><div className='color2'></div><h3>여성</h3> 
                 </Box>
-                {/* <h2 className='m-t'>남여 성비</h2>
+                {/* <h2 className='m-t'>세대별 방문비</h2>
                 <Paper className='graph'>
                     <Chart
                         data={ageData}

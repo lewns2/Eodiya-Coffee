@@ -7,9 +7,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function recommendData(rank, dong, per){
-    return {rank, dong, per};
-}
 
 const Recommend = ({recoData}) => {
     const[dongData1, setDongData1] = useState([]);

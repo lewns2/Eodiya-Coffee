@@ -91,7 +91,15 @@ const Comm =({open, getOpen, getOpen2}) =>{
         var n =1;
         const result = [];
         for(let i=0; i<gu.length; i++){
-            result.push(<MenuItem key={i} value={n++}>{gu[i]}</MenuItem>)
+            result.push(<MenuItem key={i} value={i}>{gu[i]}</MenuItem>)
+        }
+        return result;
+    }
+    const dongList = () => {
+        var n =1;
+        const result = [];
+        for(let i=0; i<dong[selectgu].length; i++){
+            result.push(<MenuItem key={i} value={i}>{dong[selectgu][i]}</MenuItem>)
         }
         return result;
     }
@@ -170,7 +178,6 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 <Typography>상권 분석</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                <Typography>
                     <FormControl sx={{m:1}}>
                         <InputLabel id="demo-simple-select-label">구</InputLabel>
                         <Select
@@ -180,9 +187,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
                             label="구"
                             onChange={handleGuSelect}
                         >
-                            {gu.map((g, index) => (
-                                <MenuItem key={index} value={index}>{g}</MenuItem>
-                            ))}
+                            {guList()}
                         </Select>
                     </FormControl>
                     <FormControl sx={{m:1}}>
@@ -194,16 +199,10 @@ const Comm =({open, getOpen, getOpen2}) =>{
                             label="동"
                             onChange={handleDongSelect}
                         >
-                            {dong[selectgu].map((dg, index) => (
-                                <MenuItem key={index} value={index}>{dg}</MenuItem>
-                            ))}
+                            {dongList()}
                         </Select>
                     </FormControl>
-                {/* <Button variant='outlined' onClick={handleDisplay}>행정 구역보기</Button>
-                <Button variant='outlined'>버튼</Button>
-                <Button variant='outlined'>버튼</Button> */}
-                <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
-                </Typography>
+                    <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
             <Accordion>
