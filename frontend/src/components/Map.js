@@ -8,7 +8,6 @@ import RightSide from '../components/Sidebar';
 
 import actionCreators from '../actions/actionCreators';
 import useGetArea from '../actions/useGetArea';
-
 import '../styles/Map.css';
 import '../styles/Location.css'
 
@@ -76,15 +75,22 @@ const Map=(props)=>{
     const getOpen = (isopen) =>{
       setOpen(isopen);
     } 
-
+    //카페 현황
+    const [cafeGu, setCafeGu] = React.useState("");
+    const [cafeDong, setCafeDong] = React.useState("");
+    const getCafeGu = (cafeGu) =>{
+      setCafeGu(cafeGu);
+    }
+    const getCafeDong = (cafeDong) =>{
+      setCafeDong(cafeDong);
+    }
+   
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-  
+
   const dispatch = useDispatch();
   const { getArea } = useGetArea();
-  
   useEffect(() => {
-    
     // 1. 지도 객체 생성
     const container = document.getElementById('map');
     const options = {
@@ -92,10 +98,8 @@ const Map=(props)=>{
       level : 8,
     };
     const map = new kakao.maps.Map(container, options);
-
     // 2. 지도에 시군구동 이미지 마커 띄우기
     var imageSrc = markerImg; 
-
     for(var i=0; i<locationSeoulGu.length; i++) {
 
       var imageSize = new kakao.maps.Size(60, 60);
@@ -156,17 +160,33 @@ const Map=(props)=>{
           }
       }    
     }
+    //주소-좌표 변환 객체 생성
+    var geocoder = new kakao.maps.services.Geocoder();
 
+    function move() {
+      if(cafeGu !== "" && cafeDong !== ""){
+        console.log('이동...........')
+        geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
+          if(status === kakao.maps.services.Status.OK){
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            map.setLevel(4);
+            map.panTo(coords);
+          }
+        })
+      }
+    }
+    move();
     dispatch(actionCreators.setMap(map), [map]);
-
-  }, []);
+  },[cafeDong]);
 
   return (
     <div className="Map">
       <div id="map" style={{width:"100vw", height:"90vh"}}>
         <StyledEngineProvider injectFirst>
           <Search setSearchKeyword={setSearchKeyword}/>
-          <Comm open={open} getOpen={getOpen} getOpen2={getOpenfromsearch} />
+          <Comm open={open} getOpen={getOpen} getOpen2={getOpenfromsearch} 
+            cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong} 
+            />
           <RightSide open={open} dongData={dongData} getOpen={getOpen}/>
         </StyledEngineProvider >
       </div>
