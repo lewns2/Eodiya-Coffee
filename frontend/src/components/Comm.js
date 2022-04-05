@@ -107,7 +107,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
                 dispatch(actionCreators.setRightSideBarMode(1), []);
                 dispatch(actionCreators.setIsRightOpen(true), []);
-                dispatch(actionCreators.setSearchedDongData(response.data.dongInfo[0]), []);
+                dispatch(actionCreators.setSearchedDongData(response.data.detail[0]), []);
             })
             .catch((response) => {
                 console.log("Error!");
