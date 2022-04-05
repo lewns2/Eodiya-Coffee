@@ -94,8 +94,8 @@ def dong_info(request, guName, dongName):
     data = {
         'dongInfo' : [],
     }
-    commecialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
-    num = len(commecialArea)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    num = len(commercialArea)
     if num == 0:
         data['dongInfo'].append('상권이 없습니다.')
     else:
@@ -104,25 +104,33 @@ def dong_info(request, guName, dongName):
         timeGroupDict = dict()
         numberStore, openingStore, closureStore, openingRate, closureRate = 0, 0, 0, 0, 0
         likePeople, maleLikePeople, femaleLikePeople = 0, 0, 0
-        for i in range(len(commecialArea)):
-            quarterRevenue += commecialArea[i].commercialarearevenue.quarterRevenue
-            perRevenue += commecialArea[i].commercialarearevenue.perRevenue
-            if ageGroupDict.get(commecialArea[i].commercialarearevenue.ageGroup) == None:
-                ageGroupDict[commecialArea[i].commercialarearevenue.ageGroup] = 1
+        likePeopleAge10, likePeopleAge20, likePeopleAge30, likePeopleAge40, likePeopleAge50, likePeopleAge60 = 0, 0, 0, 0, 0, 0
+        
+        for i in range(len(commercialArea)):
+            quarterRevenue += commercialArea[i].commercialarearevenue.quarterRevenue
+            perRevenue += commercialArea[i].commercialarearevenue.perRevenue
+            if ageGroupDict.get(commercialArea[i].commercialarearevenue.ageGroup) == None:
+                ageGroupDict[commercialArea[i].commercialarearevenue.ageGroup] = 1
             else:
-                ageGroupDict[commecialArea[i].commercialarearevenue.ageGroup] += 1
-            if timeGroupDict.get(commecialArea[i].commercialarearevenue.timeGroup) == None:
-                timeGroupDict[commecialArea[i].commercialarearevenue.timeGroup] = 1
+                ageGroupDict[commercialArea[i].commercialarearevenue.ageGroup] += 1
+            if timeGroupDict.get(commercialArea[i].commercialarearevenue.timeGroup) == None:
+                timeGroupDict[commercialArea[i].commercialarearevenue.timeGroup] = 1
             else:
-                timeGroupDict[commecialArea[i].commercialarearevenue.timeGroup] += 1
-            numberStore += commecialArea[i].commercialareanumber.numberStore
-            openingStore += commecialArea[i].commercialareanumber.openingStore
-            closureStore += commecialArea[i].commercialareanumber.closureStore
-            openingRate += commecialArea[i].commercialareanumber.openingRate
-            closureRate += commecialArea[i].commercialareanumber.closureRate
-            likePeople += commecialArea[i].commercialareapeople.likePeople
-            maleLikePeople += commecialArea[i].commercialareapeople.maleLikePeople
-            femaleLikePeople += commecialArea[i].commercialareapeople.femaleLikePeople
+                timeGroupDict[commercialArea[i].commercialarearevenue.timeGroup] += 1
+            numberStore += commercialArea[i].commercialareanumber.numberStore
+            openingStore += commercialArea[i].commercialareanumber.openingStore
+            closureStore += commercialArea[i].commercialareanumber.closureStore
+            openingRate += commercialArea[i].commercialareanumber.openingRate
+            closureRate += commercialArea[i].commercialareanumber.closureRate
+            likePeople += commercialArea[i].commercialareapeople.likePeople
+            maleLikePeople += commercialArea[i].commercialareapeople.maleLikePeople
+            femaleLikePeople += commercialArea[i].commercialareapeople.femaleLikePeople
+            likePeopleAge10 += commercialArea[i].commercialareapeople.likePeopleAge10
+            likePeopleAge20 += commercialArea[i].commercialareapeople.likePeopleAge20
+            likePeopleAge30 += commercialArea[i].commercialareapeople.likePeopleAge30
+            likePeopleAge40 += commercialArea[i].commercialareapeople.likePeopleAge40
+            likePeopleAge50 += commercialArea[i].commercialareapeople.likePeopleAge50
+            likePeopleAge60 += commercialArea[i].commercialareapeople.likePeopleAge60
         quarterRevenue /= num
         perRevenue /= num
         max_temp = max(ageGroupDict.values())
@@ -143,6 +151,12 @@ def dong_info(request, guName, dongName):
         likePeople /= num
         maleLikePeople /= num
         femaleLikePeople /= num
+        likePeopleAge10 /= num
+        likePeopleAge20 /= num
+        likePeopleAge30 /= num
+        likePeopleAge40 /= num
+        likePeopleAge50 /= num
+        likePeopleAge60 /= num
         
         data['dongInfo'].append(
             {
@@ -158,47 +172,51 @@ def dong_info(request, guName, dongName):
                 'likePeople' : round(likePeople, 2),
                 'maleLikePeople' : round(maleLikePeople, 2),
                 'femaleLikePeople' : round(femaleLikePeople, 2),
+                "likePeopleAge10" : round(likePeopleAge10, 2),
+                "likePeopleAge20" : round(likePeopleAge20, 2),
+                "likePeopleAge30" : round(likePeopleAge30, 2),
+                "likePeopleAge40" : round(likePeopleAge40, 2),
+                "likePeopleAge50" : round(likePeopleAge50, 2),
+                "likePeopleAge60" : round(likePeopleAge60, 2),
             }
         )
     return JsonResponse(data)
 
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def dong_info_detail(request, guName, dongName):
-    data = {
-        'detailInfo' : []
-    }
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
-    num = len(commercialArea)
-    if num == 0:
-        data['detailInfo'].append('상권이 없습니다.')
-    else:
-        likePeople, maleLikePeople, femaleLikePeople = 0, 0, 0
-        likePeopleAge10, likePeopleAge20, likePeopleAge30, likePeopleAge40, likePeopleAge50, likePeopleAge60 = 0, 0, 0, 0, 0, 0
-        for i in range(len(commercialArea)):
-            likePeople += commercialArea[i].commercialareapeople.likePeople
-            maleLikePeople += commercialArea[i].commercialareapeople.maleLikePeople
-            femaleLikePeople += commercialArea[i].commercialareapeople.femaleLikePeople
-            likePeopleAge10 += commercialArea[i].commercialareapeople.likePeopleAge10
-            likePeopleAge20 += commercialArea[i].commercialareapeople.likePeopleAge20
-            likePeopleAge30 += commercialArea[i].commercialareapeople.likePeopleAge30
-            likePeopleAge40 += commercialArea[i].commercialareapeople.likePeopleAge40
-            likePeopleAge50 += commercialArea[i].commercialareapeople.likePeopleAge50
-            likePeopleAge60 += commercialArea[i].commercialareapeople.likePeopleAge60
-        data['detailInfo'].append(
-            {
-                "likePeopleAge10" : likePeopleAge10,
-                "likePeopleAge20" : likePeopleAge20,
-                "likePeopleAge30" : likePeopleAge30,
-                "likePeopleAge40" : likePeopleAge40,
-                "likePeopleAge50" : likePeopleAge50,
-                "likePeopleAge60" : likePeopleAge60,
-            }
-        )
-    return JsonResponse(data)
-
-
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def dong_info_detail(request, guName, dongName):
+#     data = {
+#         'detailInfo' : []
+#     }
+#     commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+#     num = len(commercialArea)
+#     if num == 0:
+#         data['detailInfo'].append('상권이 없습니다.')
+#     else:
+#         likePeople, maleLikePeople, femaleLikePeople = 0, 0, 0
+#         likePeopleAge10, likePeopleAge20, likePeopleAge30, likePeopleAge40, likePeopleAge50, likePeopleAge60 = 0, 0, 0, 0, 0, 0
+#         for i in range(len(commercialArea)):
+#             likePeople += commercialArea[i].commercialareapeople.likePeople
+#             maleLikePeople += commercialArea[i].commercialareapeople.maleLikePeople
+#             femaleLikePeople += commercialArea[i].commercialareapeople.femaleLikePeople
+#             likePeopleAge10 += commercialArea[i].commercialareapeople.likePeopleAge10
+#             likePeopleAge20 += commercialArea[i].commercialareapeople.likePeopleAge20
+#             likePeopleAge30 += commercialArea[i].commercialareapeople.likePeopleAge30
+#             likePeopleAge40 += commercialArea[i].commercialareapeople.likePeopleAge40
+#             likePeopleAge50 += commercialArea[i].commercialareapeople.likePeopleAge50
+#             likePeopleAge60 += commercialArea[i].commercialareapeople.likePeopleAge60
+#         data['detailInfo'].append(
+#             {
+#                 "likePeopleAge10" : likePeopleAge10,
+#                 "likePeopleAge20" : likePeopleAge20,
+#                 "likePeopleAge30" : likePeopleAge30,
+#                 "likePeopleAge40" : likePeopleAge40,
+#                 "likePeopleAge50" : likePeopleAge50,
+#                 "likePeopleAge60" : likePeopleAge60,
+#             }
+#         )
+#     return JsonResponse(data)
 
 
 
@@ -256,43 +274,42 @@ def dong_info_location(request, guName, dongName):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def dong_info_recommend(request, guName, dongName):
-    return;
-    # data = {
-    #     'recommend1' : [],
-    #     'recommend2' : [],
-    #     'recommend3' : [],
-    # }
-    # ### recommend1
+    data = {
+        'recommend1' : [],
+        'recommend2' : [],
+        'recommend3' : [],
+    }
+    ### recommend1
     
-    # seoulCommercialArea = CommercialArea.objects.all()
-    # seoulAvg = 0
-    # for i in range(len(seoulCommercialArea)):
-    #     seoulAvg += seoulCommercialArea[i].commercialarearevenue.quarterRevenue
-    # seoulAvg /= len(seoulCommercialArea)
-    # ### 1
-    # ### 상권 평균 매출 >= 서울시 평균 매출 and 상권 == 다이나믹 or 상권 == 상권확장
-    # commercialArea1 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='다이나믹')
-    # commercialArea2 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='상권확장')
-    # commercialArea = commercialArea1 | commercialArea2
-    # ### 2
-    # ### 상권 평균 매출 >= 서울시 평균 매출
-    # commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
+    seoulCommercialArea = CommercialArea.objects.all()
+    seoulAvg = 0
+    for i in range(len(seoulCommercialArea)):
+        seoulAvg += seoulCommercialArea[i].commercialarearevenue.quarterRevenue
+    seoulAvg /= len(seoulCommercialArea)
+    ### 1
+    ### 상권 평균 매출 >= 서울시 평균 매출 and 상권 == 다이나믹 or 상권 == 상권확장
+    commercialArea1 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='다이나믹')
+    commercialArea2 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='상권확장')
+    commercialArea = commercialArea1 | commercialArea2
+    ### 2
+    ### 상권 평균 매출 >= 서울시 평균 매출
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
     
-    # commercialArea = commercialArea.order_by('-commercialarearevenue__quarterRevenue')
-    # num = len(commercialArea)
-    # if num == 0:
-    #     data['recommend1'].append('상권이 없습니다.')
-    # else:
-    #     for i in range(len(commercialArea)):
-    #         print(commercialArea[i].commercialarearevenue.quarterRevenue)
-    #         if commercialArea[i].commercialarearevenue.quarterRevenue >= seoulAvg:
-    #             data['recommend1'].append(
-    #                 {
-    #                     'commercialAreaName' : commercialArea[i].commercialAreaName,
-    #                     'commercialQuarterRevenue' : commercialArea[i].commercialarearevenue.quarterRevenue,
-    #                     'commercialAreaChange' : commercialArea[i].commercialAreaChange,
-    #                 }
-    #             )
-    #     if data['recommend1'] == []:
-    #         data['recommend1'].append('상권이 없습니다.')
-    # return JsonResponse(data)
+    commercialArea = commercialArea.order_by('-commercialarearevenue__quarterRevenue')
+    num = len(commercialArea)
+    if num == 0:
+        data['recommend1'].append('상권이 없습니다.')
+    else:
+        for i in range(len(commercialArea)):
+            print(commercialArea[i].commercialarearevenue.quarterRevenue)
+            if commercialArea[i].commercialarearevenue.quarterRevenue >= seoulAvg:
+                data['recommend1'].append(
+                    {
+                        'commercialAreaName' : commercialArea[i].commercialAreaName,
+                        'commercialQuarterRevenue' : commercialArea[i].commercialarearevenue.quarterRevenue,
+                        'commercialAreaChange' : commercialArea[i].commercialAreaChange,
+                    }
+                )
+        if data['recommend1'] == []:
+            data['recommend1'].append('상권이 없습니다.')
+    return JsonResponse(data)
