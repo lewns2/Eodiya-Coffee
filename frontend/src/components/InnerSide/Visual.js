@@ -29,7 +29,7 @@ const Visual = ({dongData}) => {
               },
               legend: {
                 position: 'bottom'
-              }
+              },
             }
           }]
       });
