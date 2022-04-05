@@ -8,6 +8,8 @@ const SET_MAPLEVEL = "setMaplevel";
 const SET_GUNUM = "setGuNum";
 const SET_DONGNUM = "setDongNum";
 const SET_RIGHTSIDEBARMODE = "setRightSideBarMode";
+const SET_ISRIGHTOPEN = "setIsRightOpen";
+const SET_SEARCHEDDONGDATA = "setSearchedDongData";
 
 
 // action method
@@ -76,6 +78,20 @@ const setRightSideBarMode = (mode) => {
     }
 }
 
+const setIsRightOpen = (isopen) => {
+    return {
+        type : SET_ISRIGHTOPEN,
+        isRightOpen : isopen,
+    }
+}
+
+const setSearchedDongData = (dongdata) => {
+    return {
+        type : SET_SEARCHEDDONGDATA,
+        searchedDongData : dongdata,
+    }
+}
+
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -86,6 +102,8 @@ export const actionCreators = {
     setGuNum,
     setDongNum,
     setRightSideBarMode,
+    setIsRightOpen,
+    setSearchedDongData,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

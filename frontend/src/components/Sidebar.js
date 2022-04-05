@@ -20,19 +20,19 @@ import axios from "axios";
 // Sidebar 넓이
 const drawerWidth = 600;
 
-const Sidebar = ({open, dongData, getOpen}) => {
+const Sidebar = ({getOpen}) => {
     const [value, setValue] = React.useState('1');
     const [facdongdata, setFacdongdata] = React.useState();
     const [recodongdata, setRecodongdata] = React.useState();
     const theme = useTheme();
-
+    const dispatch = useDispatch();
     const guselectName = useSelector(state => state.setMap.eodiyaMap.guNum);
     const dongselectName = useSelector(state => state.setMap.eodiyaMap.dongNum);
     const RightSideBarMode = useSelector(state => state.setMap.eodiyaMap.rightSideBarMode);
-    console.log("rererere", RightSideBarMode);
+    const isopen = useSelector(state => state.setMap.eodiyaMap.isRightOpen);
     useEffect (()=>{
         setValue('1');
-    }, [dongData])
+    }, [isopen])
 
     const getFacData = (g, d) =>{
         axios
@@ -89,7 +89,7 @@ const Sidebar = ({open, dongData, getOpen}) => {
     };
     //  Sidebar 닫기 누르면 닫기
     const handleDrawerClose = () => {
-        getOpen(false);
+        dispatch(actionCreators.setIsRightOpen(false), []);
     };
     
     const DrawerHeader = styled('div')(({ theme }) => ({
@@ -112,7 +112,7 @@ const Sidebar = ({open, dongData, getOpen}) => {
                     }}
                     variant="persistent"
                     anchor="right"
-                    open={open}
+                    open={isopen}
                     >
                     {/* Sidebar 닫는 부분 */}
                     <DrawerHeader>
@@ -126,16 +126,16 @@ const Sidebar = ({open, dongData, getOpen}) => {
                     <TabContext value={value}>
                         <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
                             <Tab label="기본정보" value="1" />
-                            <Tab label="상세정보" value="2" />
+                            {/* <Tab label="상세정보" value="2" /> */}
                             <Tab label="위치정보" value="3" />
                             <Tab label="추천정보" value="4" />
                         </TabList>
                         <TabPanel value="1">
-                            <Primary dongData={dongData[0]}/>
+                            <Primary/>
                         </TabPanel>
-                        <TabPanel value="2">
+                        {/* <TabPanel value="2">
                             <Visual dongData={dongData[0]}/>
-                        </TabPanel>
+                        </TabPanel> */}
                         <TabPanel value="3">
                             <Facilities facdongdata={facdongdata}/>
                         </TabPanel >

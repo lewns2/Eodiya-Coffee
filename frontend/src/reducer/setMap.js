@@ -50,6 +50,28 @@ const setMap = (state = {
         guNum:123,
         dongNum:123,
         rightSideBarMode:1,
+        isRightOpen:false,
+        searchedDongData:{
+            quarterRevenue: 0,
+            perRevenue: 0,
+            ageGroup: 0,
+            timeGroup: 0,
+            numberStore: 0,
+            openingStore: 0,
+            closureStore: 0,
+            openingRate: 0,
+            closureRate: 0,
+            likePeople: 0,
+            maleLikePeople: 0,
+            femaleLikePeople: 0,
+            likePeople: 0,
+            likePeopleAge10: 0,
+            likePeopleAge20: 0,
+            likePeopleAge30: 0,
+            likePeopleAge40: 0,
+            likePeopleAge50: 0,
+            likePeopleAge60: 0
+        }
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -128,6 +150,22 @@ const setMap = (state = {
                 eodiyaMap : {
                     ...state.eodiyaMap,
                     rightSideBarMode: action.rightSideBarMode,
+                }
+            }
+        case "setIsRightOpen":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    isRightOpen: action.isRightOpen,
+                }
+            }
+        case "setSearchedDongData":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    searchedDongData: action.searchedDongData,
                 }
             }
         default:
