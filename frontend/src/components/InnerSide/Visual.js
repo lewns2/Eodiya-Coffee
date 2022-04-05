@@ -3,18 +3,15 @@ import React, {  Fragment, useEffect, useState } from 'react';
 import "../../styles/Visual.css"
 import Chart from "react-apexcharts";
 
+
 // import {
 //   Chart,
 //   PieSeries,
 // } from '@devexpress/dx-react-chart-material-ui';
 import Box from '@mui/material/Box';
 
-function chartData(arg, value){
-    return {arg, value};
-}
-
 const Visual = ({dongData}) => {
-    const [options1, setOption]= useState({
+    const [options1, setOption1]= useState({
         chart: {
             width: 380,
             type: 'donut',
@@ -52,25 +49,40 @@ const Visual = ({dongData}) => {
             }
           }]
       });
-    //   const [options3, setOption3]= useState({
-    //     chart: {
-    //         width: 380,
-    //         type: 'donut',
-    //       },
-    //     series: [dongData.likePeopleAge10, dongData.likePeopleAge20, dongData.likePeopleAge30, dongData.likePeopleAge40, dongData.likePeopleAge50, dongData.likePeopleAge60],
-    //     labels: ['10대', '20대', '30대', '40대', '50대', '60대' ],
-    //     responsive: [{
-    //         breakpoint: 480,
-    //         options: {
-    //           chart: {
-    //             width: 200
-    //           },
-    //           legend: {
-    //             position: 'bottom'
-    //           }
-    //         }
-    //       }]
-    //   });
+      // const [options3, setOption3]= useState({
+      //   chart: {
+      //       width: 380,
+      //       type: 'donut',
+      //     },
+      //   series: [dongData.likePeopleAge10, dongData.likePeopleAge20, dongData.likePeopleAge30, dongData.likePeopleAge40, dongData.likePeopleAge50, dongData.likePeopleAge60],
+      //   labels: ['10대', '20대', '30대', '40대', '50대', '60대' ],
+      //   responsive: [{
+      //       breakpoint: 480,
+      //       options: {
+      //         chart: {
+      //           width: 200
+      //         },
+      //         legend: {
+      //           position: 'bottom'
+      //         }
+      //       }
+      //     }]
+      // });
+      const[options3, setOption3] = useState({
+        chart: {
+          id: "basic-bar"
+        },
+        xaxis: {
+          categories: ['10대', '20대', '30대', '40대', '50대', '60대' ]
+        },
+        series: [
+          {
+            name: "세대별 이용수 평균",
+            data: [dongData.likePeopleAge10, dongData.likePeopleAge20, dongData.likePeopleAge30, dongData.likePeopleAge40, dongData.likePeopleAge50, dongData.likePeopleAge60]
+          }
+        ]
+      });
+    
     return (
         <Fragment>
             <Box
@@ -99,15 +111,15 @@ const Visual = ({dongData}) => {
                 />
                 </div>
 
-                {/* <h2 className='m-t'>세대별 이용비율</h2>
+                <h2 className='m-t'>세대별 이용비율</h2>
                 <div id="chart">
                 <Chart
                 options={options3}
                 series={options3.series}
-                type="donut"
-                width="500"
+                type="bar"
+                width={500}
                 />
-                </div> */}
+                </div>
             </Box>
         </Fragment>
     );
