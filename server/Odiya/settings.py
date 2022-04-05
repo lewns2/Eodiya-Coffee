@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'commercial_area',
     'accounts',
     'cafes',
+    'recommendation',
     # 3rd
     'django_extensions',
     'rest_framework',
