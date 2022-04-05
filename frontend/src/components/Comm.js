@@ -16,6 +16,12 @@ import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
 
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
+import ChildCareRoundedIcon from '@mui/icons-material/ChildCareRounded';
+import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined';
+import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
+import PetsIcon from '@mui/icons-material/Pets';
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
@@ -48,20 +54,41 @@ const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담�
         , ['소공동', '회현동', '명동', '필동', '장충동', '광희동', '을지로동', '신당동', '다산동', '약수동', '청구동', '신당5동', '동화동', '황학동', '중림동']
         , ['면목2동', '면목4동', '면목5동', '면목본동', '면목7동', '면목3.8동', '상봉1동', '상봉2동', '중화1동', '중화2동', '묵1동', '묵2동', '망우본동', '망우3동', '신내1동', '신내2동']];
 
-const tag =[
-        "스터디","디저트","키즈","브런치","무인","애견"
-    ];
+// const tag =[
+//         "스터디","디저트","키즈","브런치","무인","애견"
+//     ];
+const tags = [
+    {'id': 0, 'tag': '스터디'},
+    {'id': 1, 'tag': '디저트'},
+    {'id': 2, 'tag': '키즈'},
+    {'id': 3, 'tag': '브런치'},
+    {'id': 4, 'tag': '무인'},
+    {'id': 5, 'tag': '애견'},
+]
+const theme =[
 
+];
+const ITEM_HEIGHT = 40;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 150,
+    },
+  },
+};
 
-const Comm =({open, getOpen, getOpen2}) =>{
+const icon = [<MenuBookRoundedIcon/>, <CakeRoundedIcon/>, <ChildCareRoundedIcon/>, <BakeryDiningOutlinedIcon/>, <SmartToyOutlinedIcon/>, <PetsIcon/>];
+const Comm =({open, getOpen, getOpen2, cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     var [selectgu, setSelectGu] = useState(0); //상권분석
     var [selectdong, setSelectDong] = useState(0);
-    var [cafegu, setCafeGu] = useState("");     //카페현황 - 구
-    var [cafeDong, setCafeDong] = useState(""); //카페현황 - 동
-    var [displayDivision, setdisplayDivision] = useState(0);
+    var [selecttheme, setSelectTheme] = useState(0);
     
     const dispatch = useDispatch();
 
+    var [displayDivision, setdisplayDivision] = useState(0);
+    var [search, setSearch] = useState('outlined');
     const handleSide = () =>{
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
         axios
@@ -78,6 +105,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 console.log(response.data, "from search");
                 dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
                 dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+                dispatch(actionCreators.setRightSideBarMode(1), []);
                 getOpen(true);
                 getOpen2(response.data.dongInfo);
             })
@@ -86,27 +114,67 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 console.log(response, "from search");
             });
     }
-
+    const handleThemeSide = () =>{
+        console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`)
+        // axios
+        //     .get(
+        //         `/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`,
+        //         {
+        //         headers: {
+        //             "Content-type": "application/json",
+        //             Accept: "*/*",
+        //         },
+        //         }
+        //     )
+        //     .then((response) => {
+        //         console.log(response.data, "from search");
+        //         dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+        //         dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+        //         dispatch(actionCreators.setRightSideBarMode(2), []);
+        //         getOpen(true);
+        //         getOpen2(response.data.dongInfo);
+        //     })
+        //     .catch((response) => {
+        //         console.log("Error!");
+        //         console.log(response, "from search");
+        //     });
+    }
     const guList = () => {
         var n =1;
         const result = [];
         for(let i=0; i<gu.length; i++){
-            result.push(<MenuItem key={i} value={n++}>{gu[i]}</MenuItem>)
+            result.push(<MenuItem key={i} value={i}>{gu[i]}</MenuItem>)
+        }
+        return result;
+    }
+    const dongList = () => {
+        var n =1;
+        const result = [];
+        for(let i=0; i<dong[selectgu].length; i++){
+            result.push(<MenuItem key={i} value={i}>{dong[selectgu][i]}</MenuItem>)
+        }
+        return result;
+    }
+    const themeList = () => {
+        const result = [];
+        for(let i =0; i<theme.length; i++){
+            result.push(<MenuItem key={i} value={theme[i]}>{theme[i]}</MenuItem>)
         }
         return result;
     }
     const handleCafeSelect = (e) => {
         console.log("카페 클릭: "+e.target.value);
-        setCafeGu(e.target.value);
-        // GuDong.map()
-        // console.log(GuDong.length);
+        getCafeGu(e.target.value);
+        //구 누르면 동 초기화
+        if(cafeDong !== ""){
+            getCafeDong("");
+        }
     }
     const cafeDongList = () => {
         const arr = [];
         for(let i=0; i<GuDong.length; i++){
-            // console.log(GuDong[i][0]);
-            if(GuDong[i][0] === cafegu){
-                arr.push(<MenuItem key ={i} value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
+            if(GuDong[i][0] === cafeGu){
+                arr.push(<MenuItem value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
             }
         }
         return arr;
@@ -118,6 +186,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
         }
         return cafeGu;
     }
+
     const handleDisplay = () => {
         displayDivision ^= 1;
         console.log("행정구 활성화 버튼", displayDivision);
@@ -128,32 +197,54 @@ const Comm =({open, getOpen, getOpen2}) =>{
     const handleGuSelect =(e) => {
         console.log("select: "+e.target.value);
         setSelectGu(e.target.value);
-
     }
 
     const handleDongSelect =(e) => {
         setSelectDong(e.target.value);
         console.log(selectdong)
     }
+    const handleThemeSelect =(e) => {
+        setSelectTheme(e.target.value);
+        console.log(selecttheme);
+    }
     const handleCafeDong =(e) => {
         console.log(e.target.value);
-        setCafeDong(e.target.value);
+        getCafeDong(e.target.value);
     }
 
+    function CafeList(t) {
+        if(cafeGu === ""){
+            alert("지역을 선택해주세요");
+        }else if(cafeDong === ""){
+            alert("지역을 선택해주세요");
+        }else{
+            console.log("Click...."+cafeGu+", "+cafeDong+", "+t);
+            axios
+                .get(`/cafes/${cafeGu}/${cafeDong}/${t}`,
+                {
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                }
+                )
+                .then(res =>{
+                    // console.log("카페 응답", res.data);
+                    for(let i=0; i<10; i++){
+                        console.log(res.data[i]);
+                    }
+                })
+                .catch()
+        }
+    }
     function btnList() {
+        //카페 태그 가져오기
         const list = [];
-        for(let i=0; i<tag.length; i++){
-            list.push(<Button key ={i} variant='outlined'>{tag[i]}</Button>)
+        for(let i=0; i<tags.length; i++){
+            list.push(<Button variant='outlined' key={i} onClick={() =>CafeList(tags[i])} >{icon[i]}{tags[i]}</Button>)
         }
         return list;
-        //카페 태그 가져오기
-        // axios.get(`${BASE}/${}`)
-        // .then()
     }
-    const handleConsept=()=>{
-        console.log("카페현황 클릭!");
-        btnList();
-    }
+
     // useEffect(() => {
     //     console.log("chaged:"+selectgu);
     //     // console.log(open);
@@ -170,7 +261,6 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 <Typography>상권 분석</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                <Typography>
                     <FormControl sx={{m:1}}>
                         <InputLabel id="demo-simple-select-label">구</InputLabel>
                         <Select
@@ -180,9 +270,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
                             label="구"
                             onChange={handleGuSelect}
                         >
-                            {gu.map((g, index) => (
-                                <MenuItem key={index} value={index}>{g}</MenuItem>
-                            ))}
+                            {guList()}
                         </Select>
                     </FormControl>
                     <FormControl sx={{m:1}}>
@@ -194,16 +282,10 @@ const Comm =({open, getOpen, getOpen2}) =>{
                             label="동"
                             onChange={handleDongSelect}
                         >
-                            {dong[selectgu].map((dg, index) => (
-                                <MenuItem key={index} value={index}>{dg}</MenuItem>
-                            ))}
+                            {dongList()}
                         </Select>
                     </FormControl>
-                {/* <Button variant='outlined' onClick={handleDisplay}>행정 구역보기</Button>
-                <Button variant='outlined'>버튼</Button>
-                <Button variant='outlined'>버튼</Button> */}
-                <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
-                </Typography>
+                    <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
             <Accordion>
@@ -211,7 +293,6 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
-                onClick={handleConsept}
                 >
                 <Typography>카페 현황</Typography>
                 </AccordionSummary>
@@ -221,9 +302,11 @@ const Comm =({open, getOpen, getOpen2}) =>{
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={cafegu}
+                            value={cafeGu}
                             label="구"
                             onChange={handleCafeSelect}
+                            sx ={{minWidth: 100, maxHeight: 40}}
+                            MenuProps={MenuProps}
                         >
                             {cafeGuList()}
                         </Select>
@@ -236,13 +319,65 @@ const Comm =({open, getOpen, getOpen2}) =>{
                             value={cafeDong}
                             label="동"
                             onChange={handleCafeDong}
+                            sx ={{minWidth: 100, maxHeight: 40}}
+                            MenuProps={MenuProps}
                         >
                             {cafeDongList()}
                         </Select>
                     </FormControl>
-                    <Stack spacing={1}>
-                        {btnList()}
+                    <Stack spacing={0.3} justifyContent="center" mt={2}>
+                        {tags.map((list, index) =>(
+                            <Button variant='outlined' key={list.id} onClick={() => CafeList(list.tag)}>{icon[index]}{list.tag}</Button>
+                        ))}
                     </Stack>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                >
+                <Typography>상권 분석</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">구</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectgu}
+                            label="구"
+                            onChange={handleGuSelect}
+                        >
+                            {guList()}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectdong}
+                            label="동"
+                            onChange={handleDongSelect}
+                        >
+                            {dongList()}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selecttheme}
+                            label="테마"
+                            onChange={handleThemeSelect}
+                        >
+                            {themeList()}
+                        </Select>
+                    </FormControl>
+                    <Button variant='outlined' color="secondary" onClick={handleThemeSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
         </div>
