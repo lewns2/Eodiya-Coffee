@@ -19,7 +19,9 @@ const setMap = (state = {
         guList : locationSeoulGu,
         guMarker : [],
         dongMarker : [],
-        overlay: []
+        overlay: [],
+        guNum:123,
+        dongNum:123,
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -50,7 +52,22 @@ const setMap = (state = {
                     dongMarker: action.dongMarker,
                 }
             }
-        
+        case "setGuNum":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    guNum: action.guNum,
+                }
+            }
+        case "setDongNum":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    dongNum: action.dongNum,
+                }
+            }
         default:
             return state;
     };
