@@ -26,7 +26,7 @@ const setDongMarker = (kakaoMap, dongInfo, polygon) => {
             
             // 마커를 따로 넣어주자.
             marker.setMap(kakaoMap);
-            // markers.push(marker);
+            marker_new.push(marker);
 
             // #2.1 마커 커스텀하기 => 정확히는 그냥 오버레이 덮어씌우기
             var content = dongInfo[i].name;
@@ -98,3 +98,4 @@ const setDongMarker = (kakaoMap, dongInfo, polygon) => {
 }
 
 export default setDongMarker;
+

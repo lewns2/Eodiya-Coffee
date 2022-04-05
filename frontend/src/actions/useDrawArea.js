@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import setDongMarker from "./setDongMarker";
+// import setDongMarker from "./setDongMarker";
+import useSetDongMarker from "./useSetDongMarker";
 
 const {kakao} = window;
 
@@ -16,6 +17,8 @@ export const useDrawArea = () => {
         guMarker : state.setMap.eodiyaMap.guMarker, 
         dongArea : state.setMap.eodiyaMap.dongArea, 
     }))
+
+    const {setDongMarker} = useSetDongMarker();
 
 
     kakaoMap = map;
@@ -76,7 +79,8 @@ export const useDrawArea = () => {
             // polygon.setMap(null);
 
             // 3.
-            setDongMarker(kakaoMap, donginfo, polygon);
+            setDongMarker(polygon)
+            // setDongMarker(kakaoMap, donginfo, polygon);
         });
     }
 
