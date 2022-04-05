@@ -23,18 +23,25 @@ const Map=(props)=>{
     const [open, setOpen] = React.useState(false);
     const [dongData, setDongData] = React.useState([
       {
-        quarterRevenue: "초기값",
-        perRevenue: "초기값",
-        ageGroup: "초기값",
-        timeGroup: "초기값",
-        numberStore: "초기값",
-        openingStore: "초기값",
-        closureStore: "초기값",
-        openingRate: "초기값",
-        closureRate: "초기값",
-        likePeople: "초기값",
-        maleLikePeople: "초기값",
-        femaleLikePeople: "초기값"
+        quarterRevenue: 0,
+        perRevenue: 0,
+        ageGroup: 0,
+        timeGroup: 0,
+        numberStore: 0,
+        openingStore: 0,
+        closureStore: 0,
+        openingRate: 0,
+        closureRate: 0,
+        likePeople: 0,
+        maleLikePeople: 0,
+        femaleLikePeople: 0,
+        likePeople: 0,
+        likePeopleAge10: 0,
+        likePeopleAge20: 0,
+        likePeopleAge30: 0,
+        likePeopleAge40: 0,
+        likePeopleAge50: 0,
+        likePeopleAge60: 0
       }
     ]);
     const getOpenfromsearch = (data) =>{
@@ -123,10 +130,8 @@ const Map=(props)=>{
       <div id="map" style={{width:"100vw", height:"90vh"}}>
         <StyledEngineProvider injectFirst>
           <Search setSearchKeyword={setSearchKeyword}/>
-          <Comm open={open} getOpen={getOpen} getOpen2={getOpenfromsearch} 
-            cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong} 
-            />
-          <RightSide open={open} dongData={dongData} getOpen={getOpen}/>
+          <Comm cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong}/>
+          <RightSide getOpen={getOpen}/>
         </StyledEngineProvider >
       </div>
       <Fab id="centerAddr" className='Location' variant="extended" />

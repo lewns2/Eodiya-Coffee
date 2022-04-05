@@ -80,7 +80,7 @@ const MenuProps = {
 };
 
 const icon = [<MenuBookRoundedIcon/>, <CakeRoundedIcon/>, <ChildCareRoundedIcon/>, <BakeryDiningOutlinedIcon/>, <SmartToyOutlinedIcon/>, <PetsIcon/>];
-const Comm =({open, getOpen, getOpen2, cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
+const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     var [selectgu, setSelectGu] = useState(0); //상권분석
     var [selectdong, setSelectDong] = useState(0);
     var [selecttheme, setSelectTheme] = useState(0);
@@ -106,8 +106,8 @@ const Comm =({open, getOpen, getOpen2, cafeGu, getCafeGu, cafeDong, getCafeDong}
                 dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
                 dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
                 dispatch(actionCreators.setRightSideBarMode(1), []);
-                getOpen(true);
-                getOpen2(response.data.dongInfo);
+                dispatch(actionCreators.setIsRightOpen(true), []);
+                dispatch(actionCreators.setSearchedDongData(response.data.dongInfo[0]), []);
             })
             .catch((response) => {
                 console.log("Error!");
