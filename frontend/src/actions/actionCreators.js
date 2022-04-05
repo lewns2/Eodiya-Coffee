@@ -10,7 +10,8 @@ const SET_DONGNUM = "setDongNum";
 const SET_RIGHTSIDEBARMODE = "setRightSideBarMode";
 const SET_ISRIGHTOPEN = "setIsRightOpen";
 const SET_SEARCHEDDONGDATA = "setSearchedDongData";
-
+const SET_LEFTDONG = "setLeftDong";
+const SET_COMMAREA = "setCommArea"
 
 // action method
 const setMap = (map) => {
@@ -92,6 +93,20 @@ const setSearchedDongData = (dongdata) => {
     }
 }
 
+const setLeftDong = (data) => {
+    return {
+        type : SET_LEFTDONG,
+        leftDong : data, 
+    }
+}
+
+const setCommArea = (data) => {
+    return {
+        type : SET_COMMAREA,
+        commArea : data,
+    }
+}
+
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -104,6 +119,8 @@ export const actionCreators = {
     setRightSideBarMode,
     setIsRightOpen,
     setSearchedDongData,
+    setLeftDong,
+    setCommArea
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

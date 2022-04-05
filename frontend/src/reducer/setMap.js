@@ -71,7 +71,9 @@ const setMap = (state = {
             likePeopleAge40: 0,
             likePeopleAge50: 0,
             likePeopleAge60: 0
-        }
+        },
+        leftDong : [],
+        commArea : [],
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -168,6 +170,23 @@ const setMap = (state = {
                     searchedDongData: action.searchedDongData,
                 }
             }
+        case "setLeftDong":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    leftDong: action.leftDong,
+                }
+            }
+        case "setCommArea":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    commArea: action.commArea,
+                }
+            }
+
         default:
             return state;
     };

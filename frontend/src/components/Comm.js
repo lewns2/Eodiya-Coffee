@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 import '../styles/Comm.css';
 import GuDong from '../utils/GuDong.json';
 import axios from 'axios';
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
 
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
@@ -22,6 +22,10 @@ import ChildCareRoundedIcon from '@mui/icons-material/ChildCareRounded';
 import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined';
 import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 import PetsIcon from '@mui/icons-material/Pets';
+
+import { useSelector, useDispatch } from "react-redux";
+import useSetDongMarker from "../actions/useSetDongMarker"
+
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
@@ -80,6 +84,9 @@ const MenuProps = {
 };
 
 const icon = [<MenuBookRoundedIcon/>, <CakeRoundedIcon/>, <ChildCareRoundedIcon/>, <BakeryDiningOutlinedIcon/>, <SmartToyOutlinedIcon/>, <PetsIcon/>];
+
+const {kakao} = window;
+
 const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     var [selectgu, setSelectGu] = useState(0); //상권분석
     var [selectdong, setSelectDong] = useState(0);
@@ -87,9 +94,15 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     
     const dispatch = useDispatch();
 
+    const { map } = useSelector(state => ({
+        map : state.setMap.eodiyaMap.map,
+    }))
+
     var [displayDivision, setdisplayDivision] = useState(0);
     var [search, setSearch] = useState('outlined');
-    const handleSide = () =>{
+    const handleSide = () => {
+
+        var leftDong = [];
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
         axios
             .get(
@@ -103,11 +116,19 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
             )
             .then((response) => {
                 console.log(response.data, "from search");
+                leftDong = response.data.XYInfo[0];
                 dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
                 dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
                 dispatch(actionCreators.setRightSideBarMode(1), []);
                 dispatch(actionCreators.setIsRightOpen(true), []);
                 dispatch(actionCreators.setSearchedDongData(response.data.detail[0]), []);
+            })
+            .then(()=> {
+                console.log(leftDong);
+                map.setLevel(6);
+                map.panTo(new kakao.maps.LatLng(leftDong.dongCenterYPoint, leftDong.dongCenterXPoint));
+                // setDongMarker();
+
             })
             .catch((response) => {
                 console.log("Error!");

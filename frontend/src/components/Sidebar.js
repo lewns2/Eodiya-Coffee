@@ -17,6 +17,7 @@ import Facilities from './InnerSide/Facilities';
 import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
 import axios from "axios";
+import useDrawCommArea from '../actions/useDrawCommArea';
 // Sidebar 넓이
 const drawerWidth = 600;
 
@@ -30,6 +31,9 @@ const Sidebar = ({getOpen}) => {
     const dongselectName = useSelector(state => state.setMap.eodiyaMap.dongNum);
     const RightSideBarMode = useSelector(state => state.setMap.eodiyaMap.rightSideBarMode);
     const isopen = useSelector(state => state.setMap.eodiyaMap.isRightOpen);
+
+    const {drawCommArea} = useDrawCommArea();
+    
     useEffect (()=>{
         setValue('1');
     }, [isopen])
@@ -68,7 +72,12 @@ const Sidebar = ({getOpen}) => {
             )
             .then((response) => {
                 console.log(response.data, "from reco");
+                console.log(response.data.commercialAreaInfo);
+                dispatch(actionCreators.setCommArea(response.data.commercialAreaInfo));
                 setRecodongdata(response.data)
+            })
+            .then(() => {
+                drawCommArea();
             })
             .catch((response) => {
                 console.log("Error!");
