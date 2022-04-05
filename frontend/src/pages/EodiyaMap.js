@@ -22,7 +22,6 @@ const EodiyaMap = () => {
 
     // const { getGeo } = useGeolocation();
        
-
     useEffect(() => {
         console.log(mapLevel);
         if(mapLevel >= 8) {

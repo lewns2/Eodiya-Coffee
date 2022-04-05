@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 
 const Searchbar = (props) => {
     const [inputText, setInputText] = useState("");
-    const [place, setplace] = useState(props.setKeyword);
+    const [place, setplace] = useState("");
 
     const onChange = (e) => {
         if(e.target.value)
@@ -22,7 +22,9 @@ const Searchbar = (props) => {
         //     props.setKeyword(place);
         // };
     }, [place])
-
+    useEffect(() => {
+        setplace(props.setKeyword)
+    }, [])
 
 
     return (

@@ -5,6 +5,9 @@ const SET_DONGAREA = "setDongArea";
 const SET_GUMARKER = "setGumarker";
 const SET_DONGMARKER = "setDongmarker";
 const SET_MAPLEVEL = "setMaplevel";
+const SET_GUNUM = "setGuNum";
+const SET_DONGNUM = "setDongNum";
+const SET_RIGHTSIDEBARMODE = "setRightSideBarMode";
 
 
 // action method
@@ -52,6 +55,27 @@ const setMaplevel = (data) => {
     }
 }
 
+const setGuNum = (gu) => {
+    return {
+        type : SET_GUNUM,
+        guNum : gu,
+    }
+}
+
+const setDongNum = (dong) => {
+    return {
+        type : SET_DONGNUM,
+        dongNum : dong,
+    }
+}
+
+const setRightSideBarMode = (mode) => {
+    return {
+        type : SET_RIGHTSIDEBARMODE,
+        rightSideBarMode : mode,
+    }
+}
+
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -59,6 +83,9 @@ export const actionCreators = {
     addGuMarker,
     addDongMarker,
     setMaplevel,
+    setGuNum,
+    setDongNum,
+    setRightSideBarMode,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

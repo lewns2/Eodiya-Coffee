@@ -13,6 +13,9 @@ import Stack from '@mui/material/Stack';
 import '../styles/Comm.css';
 import GuDong from '../utils/GuDong.json';
 import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import actionCreators from '../actions/actionCreators';
+
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
@@ -48,15 +51,21 @@ const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담�
 const tag =[
         "스터디","디저트","키즈","브런치","무인","애견"
     ];
+const theme =[
+
+    ];
 
 
 const Comm =({open, getOpen, getOpen2}) =>{
     var [selectgu, setSelectGu] = useState(0); //상권분석
     var [selectdong, setSelectDong] = useState(0);
+    var [selecttheme, setSelectTheme] = useState(0);
     var [cafegu, setCafeGu] = useState("");     //카페현황 - 구
     var [cafeDong, setCafeDong] = useState(""); //카페현황 - 동
     var [displayDivision, setdisplayDivision] = useState(0);
     
+    const dispatch = useDispatch();
+
     const handleSide = () =>{
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
         axios
@@ -71,6 +80,9 @@ const Comm =({open, getOpen, getOpen2}) =>{
             )
             .then((response) => {
                 console.log(response.data, "from search");
+                dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+                dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+                dispatch(actionCreators.setRightSideBarMode(1), []);
                 getOpen(true);
                 getOpen2(response.data.dongInfo);
             })
@@ -79,12 +91,51 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 console.log(response, "from search");
             });
     }
-
+    const handleThemeSide = () =>{
+        console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`)
+        // axios
+        //     .get(
+        //         `/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`,
+        //         {
+        //         headers: {
+        //             "Content-type": "application/json",
+        //             Accept: "*/*",
+        //         },
+        //         }
+        //     )
+        //     .then((response) => {
+        //         console.log(response.data, "from search");
+        //         dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+        //         dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+        //         dispatch(actionCreators.setRightSideBarMode(2), []);
+        //         getOpen(true);
+        //         getOpen2(response.data.dongInfo);
+        //     })
+        //     .catch((response) => {
+        //         console.log("Error!");
+        //         console.log(response, "from search");
+        //     });
+    }
     const guList = () => {
         var n =1;
         const result = [];
         for(let i=0; i<gu.length; i++){
-            result.push(<MenuItem value={n++}>{gu[i]}</MenuItem>)
+            result.push(<MenuItem key={i} value={i}>{gu[i]}</MenuItem>)
+        }
+        return result;
+    }
+    const dongList = () => {
+        var n =1;
+        const result = [];
+        for(let i=0; i<dong[selectgu].length; i++){
+            result.push(<MenuItem key={i} value={i}>{dong[selectgu][i]}</MenuItem>)
+        }
+        return result;
+    }
+    const themeList = () => {
+        const result = [];
+        for(let i =0; i<theme.length; i++){
+            result.push(<MenuItem key={i} value={theme[i]}>{theme[i]}</MenuItem>)
         }
         return result;
     }
@@ -99,7 +150,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
         for(let i=0; i<GuDong.length; i++){
             // console.log(GuDong[i][0]);
             if(GuDong[i][0] === cafegu){
-                arr.push(<MenuItem value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
+                arr.push(<MenuItem key ={i} value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
             }
         }
         return arr;
@@ -107,10 +158,11 @@ const Comm =({open, getOpen, getOpen2}) =>{
     const cafeGuList = () => {
         const cafeGu = [];
         for(let i =0; i<gu.length; i++){
-            cafeGu.push(<MenuItem value={gu[i]}>{gu[i]}</MenuItem>)
+            cafeGu.push(<MenuItem key={i} value={gu[i]}>{gu[i]}</MenuItem>)
         }
         return cafeGu;
     }
+
     const handleDisplay = () => {
         displayDivision ^= 1;
         console.log("행정구 활성화 버튼", displayDivision);
@@ -128,6 +180,10 @@ const Comm =({open, getOpen, getOpen2}) =>{
         setSelectDong(e.target.value);
         console.log(selectdong)
     }
+    const handleThemeSelect =(e) => {
+        setSelectTheme(e.target.value);
+        console.log(selecttheme);
+    }
     const handleCafeDong =(e) => {
         console.log(e.target.value);
         setCafeDong(e.target.value);
@@ -136,7 +192,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
     function btnList() {
         const list = [];
         for(let i=0; i<tag.length; i++){
-            list.push(<Button variant='outlined'>{tag[i]}</Button>)
+            list.push(<Button key ={i} variant='outlined'>{tag[i]}</Button>)
         }
         return list;
         //카페 태그 가져오기
@@ -163,7 +219,6 @@ const Comm =({open, getOpen, getOpen2}) =>{
                 <Typography>상권 분석</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                <Typography>
                     <FormControl sx={{m:1}}>
                         <InputLabel id="demo-simple-select-label">구</InputLabel>
                         <Select
@@ -173,9 +228,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
                             label="구"
                             onChange={handleGuSelect}
                         >
-                            {gu.map((g, index) => (
-                                <MenuItem key={index} value={index}>{g}</MenuItem>
-                            ))}
+                            {guList()}
                         </Select>
                     </FormControl>
                     <FormControl sx={{m:1}}>
@@ -187,16 +240,10 @@ const Comm =({open, getOpen, getOpen2}) =>{
                             label="동"
                             onChange={handleDongSelect}
                         >
-                            {dong[selectgu].map((dg, index) => (
-                                <MenuItem key={index} value={index}>{dg}</MenuItem>
-                            ))}
+                            {dongList()}
                         </Select>
                     </FormControl>
-                {/* <Button variant='outlined' onClick={handleDisplay}>행정 구역보기</Button>
-                <Button variant='outlined'>버튼</Button>
-                <Button variant='outlined'>버튼</Button> */}
-                <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
-                </Typography>
+                    <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
             <Accordion>
@@ -236,6 +283,54 @@ const Comm =({open, getOpen, getOpen2}) =>{
                     <Stack spacing={1}>
                         {btnList()}
                     </Stack>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                >
+                <Typography>상권 분석</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">구</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectgu}
+                            label="구"
+                            onChange={handleGuSelect}
+                        >
+                            {guList()}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectdong}
+                            label="동"
+                            onChange={handleDongSelect}
+                        >
+                            {dongList()}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{m:1}}>
+                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selecttheme}
+                            label="테마"
+                            onChange={handleThemeSelect}
+                        >
+                            {themeList()}
+                        </Select>
+                    </FormControl>
+                    <Button variant='outlined' color="secondary" onClick={handleThemeSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
         </div>

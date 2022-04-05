@@ -47,6 +47,9 @@ const setMap = (state = {
         dongArea : [],
         mapLevel : 8,
         overlay: [],
+        guNum:123,
+        dongNum:123,
+        rightSideBarMode:1,
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -102,7 +105,31 @@ const setMap = (state = {
                     mapLevel: action.mapLevel,
                 }
             }
-        
+
+        case "setGuNum":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    guNum: action.guNum,
+                }
+            }
+        case "setDongNum":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    dongNum: action.dongNum,
+                }
+            }
+        case "setRightSideBarMode":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    rightSideBarMode: action.rightSideBarMode,
+                }
+            }
         default:
             return state;
     };
