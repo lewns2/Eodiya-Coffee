@@ -53,43 +53,17 @@ const useSetDongMarker = () => {
                 path.push(new kakao.maps.LatLng(point.x, point.y));
             }
 
-            switch (dongName) {
-                case "도봉1동":
-                    var polygon = new kakao.maps.Polygon({
-                        map : kakaoMap,
-                        path: path,
-                        strokeWeight: 2,
-                        strokeColor: '#FF00FF',
-                        strokeOpacity: 0.8,
-                        strokeStyle: 'dashed',
-                        fillColor: '#00EEEE',
-                        fillOpacity: 1,
-                    });
-                    break;
-                default:
-                    var polygon = new kakao.maps.Polygon({
-                        map : kakaoMap,
-                        path: path,
-                        strokeWeight: 2, // 선의 두께입니다
-                        strokeColor: 'black', // 선의 색깔입니다
-                        strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                        strokeStyle: 'longdash', // 선의 스타일입니다
-                        fillColor: '#fff', // 채우기 색깔입니다
-                        fillOpacity: 0.3, // 채우기 불투명도 입니다
-                    });
-                    break;
-            }
-
-            // var polygon = new kakao.maps.Polygon({
-            //     map : kakaoMap,
-            //     path: path,
-            //     strokeWeight: 2, // 선의 두께입니다
-            //     strokeColor: 'black', // 선의 색깔입니다
-            //     strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            //     strokeStyle: 'longdash', // 선의 스타일입니다
-            //     fillColor: '#fff', // 채우기 색깔입니다
-            //     fillOpacity: 0.3, // 채우기 불투명도 입니다
-            // });
+            var polygon = new kakao.maps.Polygon({
+                map : kakaoMap,
+                path: path,
+                strokeWeight: 2, // 선의 두께입니다
+                strokeColor: 'black', // 선의 색깔입니다
+                strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'longdash', // 선의 스타일입니다
+                fillColor: '#fff', // 채우기 색깔입니다
+                fillOpacity: 0.3, // 채우기 불투명도 입니다
+            });
+            
             polygons.push(polygon);
             // #2.5.1 영역에 효과 추가하기
             const customOverlay = new kakao.maps.CustomOverlay({});
