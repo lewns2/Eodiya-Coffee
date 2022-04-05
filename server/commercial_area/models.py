@@ -33,8 +33,11 @@ class CommercialAreaRevenue(models.Model):
     femaleRevenue = models.BigIntegerField()  # 여성 매출
 
     # 시간대 10~14시 매출
+    revenue1114 = models.BigIntegerField()
     # 시간대 17~24시 매출
-
+    revenue1721 = models.BigIntegerField()
+    revenue2124 = models.BigIntegerField()
+    
     ageGroup = models.CharField(max_length=50)  # 매출 주 연령대
     timeGroup = models.CharField(max_length=50)  # 매출 주 시간대
 
@@ -61,7 +64,8 @@ class CommercialAreaPeople(models.Model):
     femaleLikePeople = models.IntegerField()  # 여성 생활 인구
 
     # 20대 여성, 30대 여성 데이터
-
+    
+    
     likePeopleAge10 = models.IntegerField()  # 10대 수
     likePeopleAge20 = models.IntegerField()  # 20대 수
     likePeopleAge30 = models.IntegerField()  # 30대 수
@@ -82,8 +86,8 @@ class CommercialAreaPeople(models.Model):
 class CommercialAreaBackground(models.Model):
     commercialArea = models.OneToOneField(
         CommercialArea, on_delete=models.CASCADE)
-    avgIncome = models.IntegerField()  # 평균 소득
-    gradeIncome = models.IntegerField()  # 소득 분위
+    avgIncome = models.IntegerField(null=True)  # 평균 소득
+    gradeIncome = models.IntegerField(null=True)  # 소득 분위
 
 
 class CommercialAreaBuilding(models.Model):
@@ -94,8 +98,11 @@ class CommercialAreaBuilding(models.Model):
     pharmacyNumber = models.IntegerField()
     kindergardenNumber = models.IntegerField()
 
-    # 초 중 고 따로 필요
     schoolNumber = models.IntegerField()
+    # 초 중 고 따로 필요
+    schoolNumber1 = models.IntegerField()#초
+    schoolNumber2 = models.IntegerField()#중
+    schoolNumber3 = models.IntegerField()#고
 
     universityNumber = models.IntegerField()
     departmentStoreNumber = models.IntegerField()
@@ -105,6 +112,9 @@ class CommercialAreaBuilding(models.Model):
     busTerminalNumber = models.IntegerField()
 
     # 공항, 철도
+    airportNumber = models.IntegerField()
+    chuldoNumber = models.IntegerField()
+    
 
     subwayNumber = models.IntegerField()
     busStopNumber = models.IntegerField()
