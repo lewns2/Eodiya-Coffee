@@ -5,16 +5,23 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
+import { StyledEngineProvider } from '@mui/material/styles';
 
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+
+
+// axios.defaults.baseURL = "http://127.0.0.1:8000";
+axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1";
 axios.defaults.withCredentials = false;
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
+
 ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
-      <App />
+      <StyledEngineProvider injectFirst>
+        <App />
+      </StyledEngineProvider>
     </React.StrictMode>
   </BrowserRouter>,
   document.getElementById("root")

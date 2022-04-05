@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-qw7in)3dh8ogt#u8yp)k(i$gs$%rnmry%6wt49^_r-tj(chpj-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     # local
     'commercial_area',
     'accounts',
+    'cafes',
     # 3rd
     'django_extensions',
     'rest_framework',
@@ -140,6 +141,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 로그인 오류로 인해 추가한 코드
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
 }
 

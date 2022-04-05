@@ -1,21 +1,40 @@
 import React from 'react';
 import Nav from './components/Nav';
-// import Signin from './pages/Signin';
-// import Mypage from './pages/Mypage';
-// import Login from './pages/Login';
-import LeftSide from './components/LeftSide';
-import RightSide from './components/RightSide';
 import Map from './components/Map';
-import { Route, Routes } from 'react-router-dom';
+import EodiyaMap from './pages/EodiyaMap';
 import './styles/App.css'
 
+import configureStore from "./store/index";
+import reducers from "./reducer/reducers";
+import { Provider } from "react-redux";
+
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore } from "redux"; 
+
+// const store = configureStore(reducers, {
+// });
+
+const store = createStore(reducers, {}, composeWithDevTools());
+
+console.log(store.getState());
 
 const App = () => {
+  const [isMain, setIsMain] = React.useState(true); 
+  const mainend = () => {
+    setIsMain(!isMain)
+  }
+  const ssd = () => {
+    alert(isMain)
+    setIsMain(false)
+  }
   return (
-    <div>
-      <Nav/>
-      <Map/>
-    </div>
+    <Provider store={store}>
+      <div>
+        <Nav/>
+        <EodiyaMap/>
+
+      </div>
+    </Provider>
   );
 };
 
