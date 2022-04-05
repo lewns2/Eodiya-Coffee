@@ -1,0 +1,73 @@
+*, body, html{
+    box-sizing: border-box;   
+    padding:0;
+    margin: 0;
+}
+body {
+    overflow-y: hidden;
+}
+
+.OutLine {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* 화면에서 스크롤바 안보이게 */
+.OutLine::-webkit-scrollbar {
+    display: none;
+}
+.InLine{
+    height : 100vh;
+    width : 100vw;
+    display: flex;   
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+}
+.InLine:first-child{
+    background:radial-gradient(white, blue);
+}
+.InLineend{
+    height : 97vh;
+    width : 100vw;
+    display: flex;   
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.innerSec{
+    width: 100vw;
+    height: 480px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    align-items: center;
+    justify-content: space-around;
+    padding-left: 30px;
+    padding-right: 30px;
+    background:linear-gradient(to right, white, blue);
+}
+.innerSec{
+    width: 100vw;
+    height: 480px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    align-items: center;
+    justify-content: space-around;
+    padding-left: 30px;
+    padding-right: 30px;
+    background:linear-gradient(to right, white, blue);
+}
+.innerSec:nth-child(2n){
+    background:linear-gradient(to left, white, blue);
+}
+.imgSec{
+    height: 100%;
+    width : auto;
+}
