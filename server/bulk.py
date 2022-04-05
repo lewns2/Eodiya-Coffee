@@ -132,12 +132,8 @@ import pandas as pd
 #     code = df6.iloc[i]['상권_코드']
 #     res6.append(code)
     
-# res7 = []
-# for i in range(len(df7)):
-#     code = df7.iloc[i]['상권_코드']
-#     res7.append(code)
     
-# res = list(set(res1) & set(res2) & set(res3) & set(res4) & set(res5) & set(res6) & set(res7))
+# res = list(set(res1) & set(res2) & set(res3) & set(res4) & set(res5) & set(res6) )
 
 # ### CommercialArea Model
 # instances=  []
