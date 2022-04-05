@@ -24,7 +24,15 @@ const EodiyaMap = () => {
        
     useEffect(() => {
         console.log(mapLevel);
-        if(mapLevel >= 8) {
+        if(mapLevel >= 9) {
+            guMarker.map(value => {
+                value.setMap(null);
+            })
+            dongMarker.map(value => {
+                value.setMap(null);
+            })
+        }
+        else if(mapLevel == 8 || mapLevel == 7) {
             setMarker();
             dongMarker.map(value => {
                 value.setMap(null);
