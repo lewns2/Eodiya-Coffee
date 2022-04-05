@@ -7,16 +7,17 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function recommendData(rank, dong, per){
-    return {rank, dong, per};
-}
 
 const Recommend = ({recoData}) => {
-    const[dongData, setDongData] = useState({});
+    const[dongData1, setDongData1] = useState([]);
+    const[dongData2, setDongData2] = useState([]);
+    const[dongData3, setDongData3] = useState([]);
 
     useEffect(() => {
         if(recoData){
-            setDongData(recoData)
+            setDongData1(recoData.recommend1);
+            setDongData2(recoData.recommend2);
+            setDongData3(recoData.recommend3);
         }
     },[recoData])
 
@@ -34,7 +35,7 @@ const Recommend = ({recoData}) => {
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {dongData.map((recommRows, index) => (
+                    {dongData1.map((recommRows, index) => (
                         <TableRow
                         key={index}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import markerImg from '../assets/marker.png';
+// import markerImg from '../assets/marker.png';
 import { StyledEngineProvider } from '@mui/material/styles';
+import { Fab } from '@mui/material';
 
 import Search from './Search';
 import Comm from './Comm';
 import RightSide from '../components/Sidebar';
 
 import actionCreators from '../actions/actionCreators';
-import useGetArea from '../actions/useGetArea';
 
+import useGetArea from '../actions/useGetArea';
 import '../styles/Map.css';
 import '../styles/Location.css'
 
@@ -16,39 +17,6 @@ import { useDispatch } from "react-redux";
 
 const { kakao } = window;
 
-const locationSeoulGu = [
-  {latlng: new kakao.maps.LatLng(37.59491732, 126.9773213), name: "종로구"},
-  {latlng: new kakao.maps.LatLng(37.56014356, 126.9959681), name: "중구"},
-  {latlng: new kakao.maps.LatLng(37.53138497, 126.979907), name: "용산구"},
-  {latlng: new kakao.maps.LatLng(37.55102969, 127.0410585), name: "성동구"},
-  {latlng: new kakao.maps.LatLng(37.54670608, 127.0857435	), name: "광진구"},
-  {latlng: new kakao.maps.LatLng(37.58195655, 127.0548481), name: "동대문구"},
-  {latlng: new kakao.maps.LatLng(37.59780259, 127.0928803), name: "중랑구"},
-  {latlng: new kakao.maps.LatLng(37.6057019, 127.0175795), name: "성북구"},
-  {latlng: new kakao.maps.LatLng(37.64347391, 127.011189), name: "강북구"},
-  {latlng: new kakao.maps.LatLng(37.66910208, 127.0323688), name: "도봉구"},
-  {latlng: new kakao.maps.LatLng(37.65251105, 127.0750347), name: "노원구"},
-  {latlng: new kakao.maps.LatLng(37.61921128, 126.9270229), name: "은평구"},
-  {latlng: new kakao.maps.LatLng(37.57778531, 126.9390631), name: "서대문구"},
-  {latlng: new kakao.maps.LatLng(37.55931349, 126.90827), name: "마포구"},
-  {latlng: new kakao.maps.LatLng(37.52478941, 126.8554777), name: "양천구"},
-  {latlng: new kakao.maps.LatLng(37.56123543, 126.822807), name: "강서구"},
-  {latlng: new kakao.maps.LatLng(37.49440543, 126.8563006), name: "구로구"},
-  {latlng: new kakao.maps.LatLng(37.46056756, 126.9008202), name: "금천구"},
-  {latlng: new kakao.maps.LatLng(37.52230829, 126.9101695), name: "영등포구"},
-  {latlng: new kakao.maps.LatLng(37.49887688, 126.9516415), name: "동작구"},
-  {latlng: new kakao.maps.LatLng(37.46737569, 126.9453372), name: "관악구"},
-  {latlng: new kakao.maps.LatLng(37.47329547, 127.0312203), name: "서초구"},
-  {latlng: new kakao.maps.LatLng(37.49664389, 127.0629852), name: "강남구"},
-  {latlng: new kakao.maps.LatLng(37.50561924, 127.115295), name: "송파구"},
-  {latlng: new kakao.maps.LatLng(37.55045024, 127.1470118), name: "강동구"},
-];
-
-
-// // [임시] 영역 정보를 담을 전역 변수들
-// const BASE = 'http://127.0.0.1:8000/api/v1';
-
-// let area = [];
 
 const Map=(props)=>{
     //분석하기 클릭하면 
@@ -76,101 +44,92 @@ const Map=(props)=>{
     const getOpen = (isopen) =>{
       setOpen(isopen);
     } 
-
+    //카페 현황
+    const [cafeGu, setCafeGu] = React.useState("");
+    const [cafeDong, setCafeDong] = React.useState("");
+    const getCafeGu = (cafeGu) =>{
+      setCafeGu(cafeGu);
+    }
+    const getCafeDong = (cafeDong) =>{
+      setCafeDong(cafeDong);
+    }
+   
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-  
+
   const dispatch = useDispatch();
   const { getArea } = useGetArea();
-  
   useEffect(() => {
-    
-    // 1. 지도 객체 생성
-    const container = document.getElementById('map');
-    const options = {
-      center : new kakao.maps.LatLng(37.56690518860781, 126.97808628226417),
-      level : 8,
-    };
-    const map = new kakao.maps.Map(container, options);
-
-    // 2. 지도에 시군구동 이미지 마커 띄우기
-    var imageSrc = markerImg; 
-
-    for(var i=0; i<locationSeoulGu.length; i++) {
-
-      var imageSize = new kakao.maps.Size(60, 60);
-      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-      var guName = locationSeoulGu[i].name
       
+      // 1. 지도 객체 생성
+      const container = document.getElementById('map');
+      const options = {
+        center : new kakao.maps.LatLng(37.56690518860781, 126.97808628226417),
+        level : 8,
+      };
+      const map = new kakao.maps.Map(container, options);
+
+      // 2. 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+      var zoomControl = new kakao.maps.ZoomControl();
+      map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+      // 2.1 지도가 확대 또는 축소되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+      kakao.maps.event.addListener(map, 'zoom_changed', function() {        
       
-      var marker = new kakao.maps.Marker({
-        position: locationSeoulGu[i].latlng,
-        title : locationSeoulGu[i].name,
-        image : markerImage,
-        opacity : 0.8,  // 투명도
-      });
-      
-      marker.setMap(map);
-
-      // #2.1 마커 커스텀하기 => 정확히는 그냥 오버레이 덮어씌우기
-      var content = guName;
-
-      var position = locationSeoulGu[i].latlng;
-
-      var customOverlay = new kakao.maps.CustomOverlay({
-        map: map,
-        clickable: true,
-        position: position,
-        content: content,
-        yAnchor: 1.85,
-        xAnchor : 0.45,
+      // 2.2 그냥 리덕스로 관리하자...모르겠다...
+      if(map != null) {
+          var level = map.getLevel();
+          dispatch(actionCreators.setMaplevel(level));
+        } 
       });
 
-        // #2.2 개별 마커 클릭 이벤트
-        kakao.maps.event.addListener(marker, 'click', moveAndDisplayGuArea(marker, locationSeoulGu[i].latlng, locationSeoulGu[i].name));
-    }
       
-    // #2.3 줌인 & 마커 위치로 지도 이동
-    function moveAndDisplayGuArea(customOverlay, loca, guName) {
-      return function() {
-        var moveLatLon = loca;
-        map.setLevel(7); 
-        map.panTo(moveLatLon);
-        // console.log("actions로 가라");
-        getArea(guName);
+      // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+      // function displayCenterInfo(result, status) {
+      //   if (status === kakao.maps.services.Status.OK) {
+      //       var infoDiv = document.getElementById('centerAddr');
+
+      //       for(var i = 0; i < result.length; i++) {
+      //           // 행정동의 region_type 값은 'H' 이므로
+      //           if (result[i].region_type === 'H') {
+      //               infoDiv.innerHTML = result[i].address_name;
+      //               break;
+      //           }
+      //       }
+      //   }    
+      // }
+      
+    //주소-좌표 변환 객체 생성
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    function move() {
+      if(cafeGu !== "" && cafeDong !== ""){
+        console.log('이동...........')
+        geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
+          if(status === kakao.maps.services.Status.OK){
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            map.setLevel(4);
+            map.panTo(coords);
+          }
+        })
       }
     }
-
-    // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
-    function displayCenterInfo(result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-          var infoDiv = document.getElementById('centerAddr');
-
-          for(var i = 0; i < result.length; i++) {
-              // 행정동의 region_type 값은 'H' 이므로
-              if (result[i].region_type === 'H') {
-                  infoDiv.innerHTML = result[i].address_name;
-                  // setNowLocation(result[i].address_name);
-                  break;
-              }
-          }
-      }    
-    }
-
+    move();
     dispatch(actionCreators.setMap(map), [map]);
-
-  }, []);
+  },[cafeDong]);
 
   return (
     <div className="Map">
       <div id="map" style={{width:"100vw", height:"90vh"}}>
         <StyledEngineProvider injectFirst>
           <Search setSearchKeyword={setSearchKeyword}/>
-          <Comm open={open} getOpen={getOpen} getOpen2={getOpenfromsearch} />
+          <Comm open={open} getOpen={getOpen} getOpen2={getOpenfromsearch} 
+            cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong} 
+            />
           <RightSide open={open} dongData={dongData} getOpen={getOpen}/>
         </StyledEngineProvider >
       </div>
-      {/* <Fab id="centerAddr" className='Location' variant="extended" /> */}
+      <Fab id="centerAddr" className='Location' variant="extended" />
     </div>
   );  
 }
