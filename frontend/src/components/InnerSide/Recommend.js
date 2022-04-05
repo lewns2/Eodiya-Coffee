@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,14 +10,15 @@ import Paper from '@mui/material/Paper';
 function recommendData(rank, dong, per){
     return {rank, dong, per};
 }
-const recommRows = [
-    recommendData('1', '**동', 100),
-    recommendData('2', '@@동', 88),
-    recommendData('3', '&&동', 77),
-    recommendData('4', '$$동', 55),
-    recommendData('5', '%%동', 11),
-];
-const Recommend = () => {
+
+const Recommend = ({recoData}) => {
+    const[dongData, setDongData] = useState({});
+
+    useEffect(() => {
+        if(recoData){
+            setDongData(recoData)
+        }
+    },[recoData])
 
     return (
         <Fragment>
@@ -29,19 +30,21 @@ const Recommend = () => {
                         <TableCell>순위</TableCell>
                         <TableCell align="right">지역</TableCell>
                         <TableCell align="right">성공 지수</TableCell>
+                        <TableCell align="right">상권 현황</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {recommRows.map((recommRows) => (
+                    {dongData.map((recommRows, index) => (
                         <TableRow
-                        key={recommRows.name}
+                        key={index}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                         <TableCell component="th" scope="row">
-                            {recommRows.rank}
+                            {index+1}
                         </TableCell>
-                        <TableCell align="right">{recommRows.dong}</TableCell>
-                        <TableCell align="right">{recommRows.per}</TableCell>
+                        <TableCell align="right">{recommRows.commercialAreaName}</TableCell>
+                        <TableCell align="right">{recommRows.commercialQuarterRevenue}</TableCell>
+                        <TableCell align="right">{recommRows.commercialAreaChange}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>

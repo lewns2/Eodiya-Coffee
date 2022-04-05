@@ -13,6 +13,9 @@ import Stack from '@mui/material/Stack';
 import '../styles/Comm.css';
 import GuDong from '../utils/GuDong.json';
 import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import actionCreators from '../actions/actionCreators';
+
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
@@ -57,6 +60,8 @@ const Comm =({open, getOpen, getOpen2}) =>{
     var [cafeDong, setCafeDong] = useState(""); //카페현황 - 동
     var [displayDivision, setdisplayDivision] = useState(0);
     
+    const dispatch = useDispatch();
+
     const handleSide = () =>{
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
         axios
@@ -71,6 +76,8 @@ const Comm =({open, getOpen, getOpen2}) =>{
             )
             .then((response) => {
                 console.log(response.data, "from search");
+                dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+                dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
                 getOpen(true);
                 getOpen2(response.data.dongInfo);
             })
@@ -84,7 +91,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
         var n =1;
         const result = [];
         for(let i=0; i<gu.length; i++){
-            result.push(<MenuItem value={n++}>{gu[i]}</MenuItem>)
+            result.push(<MenuItem key={i} value={n++}>{gu[i]}</MenuItem>)
         }
         return result;
     }
@@ -99,7 +106,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
         for(let i=0; i<GuDong.length; i++){
             // console.log(GuDong[i][0]);
             if(GuDong[i][0] === cafegu){
-                arr.push(<MenuItem value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
+                arr.push(<MenuItem key ={i} value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
             }
         }
         return arr;
@@ -107,7 +114,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
     const cafeGuList = () => {
         const cafeGu = [];
         for(let i =0; i<gu.length; i++){
-            cafeGu.push(<MenuItem value={gu[i]}>{gu[i]}</MenuItem>)
+            cafeGu.push(<MenuItem key={i} value={gu[i]}>{gu[i]}</MenuItem>)
         }
         return cafeGu;
     }
@@ -136,7 +143,7 @@ const Comm =({open, getOpen, getOpen2}) =>{
     function btnList() {
         const list = [];
         for(let i=0; i<tag.length; i++){
-            list.push(<Button variant='outlined'>{tag[i]}</Button>)
+            list.push(<Button key ={i} variant='outlined'>{tag[i]}</Button>)
         }
         return list;
         //카페 태그 가져오기
