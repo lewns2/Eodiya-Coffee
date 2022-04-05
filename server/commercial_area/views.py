@@ -182,7 +182,7 @@ def dong_info(request, guName, dongName):
                 "likePeopleAge60" : round(likePeopleAge60, 2),
             }
         )
-    seoulGuDong = SeoulGuDong.objects.filter(guName=guName)
+    seoulGuDong = SeoulGuDong.objects.filter(dongName=dongName)
     for i in range(len(seoulGuDong)):
         str2 = seoulGuDong[i].dongXYPoint.replace('[', '').replace(']', '')
         lst2 = str2.split(', ')
@@ -202,6 +202,7 @@ def dong_info(request, guName, dongName):
                 'dongXYPoint': res2
             }
         )
+        break
         
     
     return JsonResponse(data)
