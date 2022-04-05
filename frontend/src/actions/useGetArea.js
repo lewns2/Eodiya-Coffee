@@ -12,12 +12,11 @@ export const useGetArea = (guName) => {
     const {drawArea} = useDrawArea();
 
     const getArea = async (guName) => {
-        console.log("구 이르르르르르름 : ",guName);
         await axios.get(`${BASE}/${guName}`)
         .then(res => {
             console.log("요청 응답", res);
-            dispatch(actionCreators.addGuMarker(res.data.guInfo, "gu"));
-            dispatch(actionCreators.addDongMarker(res.data.dongInfo, "dong"));
+            dispatch(actionCreators.addGuArea(res.data.guInfo, "gu"));
+            dispatch(actionCreators.addDongArea(res.data.dongInfo, "dong"));
         })
         .catch(error => {
             console.log(error);
