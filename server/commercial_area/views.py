@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 from .models import CommercialArea, SeoulGuDong, CommercialAreaRevenue
 from .serializers import CommercialAreaSerializer, SeoulGuDongSerializer
 from commercial_area import serializers
+import pandas as pd
 
 
 
@@ -279,37 +280,126 @@ def dong_info_recommend(request, guName, dongName):
         'recommend2' : [],
         'recommend3' : [],
     }
-    ### recommend1
+    ### recommend0 ###
     
-    seoulCommercialArea = CommercialArea.objects.all()
-    seoulAvg = 0
-    for i in range(len(seoulCommercialArea)):
-        seoulAvg += seoulCommercialArea[i].commercialarearevenue.quarterRevenue
-    seoulAvg /= len(seoulCommercialArea)
+    # seoulCommercialArea = CommercialArea.objects.all()
+    # seoulAvg = 0
+    # for i in range(len(seoulCommercialArea)):
+    #     seoulAvg += seoulCommercialArea[i].commercialarearevenue.quarterRevenue
+    # seoulAvg /= len(seoulCommercialArea)
+    # print(seoulAvg)
+    ### seoulAvg 상수
+    # seoulAvg = 190096104.8488228
+    
+    
     ### 1
     ### 상권 평균 매출 >= 서울시 평균 매출 and 상권 == 다이나믹 or 상권 == 상권확장
-    commercialArea1 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='다이나믹')
-    commercialArea2 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='상권확장')
-    commercialArea = commercialArea1 | commercialArea2
+    # commercialArea1 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='다이나믹')
+    # commercialArea2 = CommercialArea.objects.filter(seoulGuDong__guName=guName, commercialAreaChange='상권확장')
+    # commercialArea = commercialArea1 | commercialArea2
+    
+    
     ### 2
     ### 상권 평균 매출 >= 서울시 평균 매출
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
+    # commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
     
-    commercialArea = commercialArea.order_by('-commercialarearevenue__quarterRevenue')
-    num = len(commercialArea)
-    if num == 0:
+    # commercialArea = commercialArea.order_by('-commercialarearevenue__quarterRevenue')
+    # num = len(commercialArea)
+    # if num == 0:
+    #     data['recommend1'].append('상권이 없습니다.')
+    # else:
+    #     for i in range(len(commercialArea)):
+    #         if commercialArea[i].commercialarearevenue.quarterRevenue >= seoulAvg:
+    #             data['recommend1'].append(
+    #                 {
+    #                     'commercialAreaName' : commercialArea[i].commercialAreaName,
+    #                     'commercialQuarterRevenue' : commercialArea[i].commercialarearevenue.quarterRevenue,
+    #                     'commercialAreaChange' : commercialArea[i].commercialAreaChange,
+    #                 }
+    #             )
+    #     if data['recommend1'] == []:
+    #         data['recommend1'].append('상권이 없습니다.')
+            
+            
+            
+    ### recommend1 ###
+    ### 시장성 = (기초구역 내 분기 매출액 / 분기 점포수) - (시군구 내 분기 매출액 / 분기 점포수) -> 동 분기 매출액 / 점포수 - 구 분기 매출액 / 점포수
+    guCommercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
+    guRevenue, guStoreNumber = 0, 0
+    len1 = len(guCommercialArea)
+    for i in range(len(guCommercialArea)):
+        guRevenue += guCommercialArea[i].commercialarearevenue.quarterRevenue
+        guStoreNumber += guCommercialArea[i].commercialareanumber.numberStore
+    gu_res = guRevenue // guStoreNumber
+    
+    dongCommercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    len2 = len(dongCommercialArea)
+    res = []
+    for i in range(len(dongCommercialArea)):
+        dongRevenue, dongStoreNumber = 0, 0
+        dongRevenue += dongCommercialArea[i].commercialarearevenue.quarterRevenue
+        dongStoreNumber += dongCommercialArea[i].commercialareanumber.numberStore
+        dong_res = dongRevenue // dongStoreNumber
+        시장성 = dong_res - gu_res
+        res.append([dongCommercialArea[i], 시장성])
+    res.sort(key=lambda x:-x[1])
+    for i in range(len(res)):
+        data['recommend1'].append(
+                        {
+                            'commercialAreaName' : res[i][0].commercialAreaName,
+                            '시장성' : res[i][1]
+                        }
+                    )
+    if data['recommend1'] == []:
         data['recommend1'].append('상권이 없습니다.')
-    else:
-        for i in range(len(commercialArea)):
-            print(commercialArea[i].commercialarearevenue.quarterRevenue)
-            if commercialArea[i].commercialarearevenue.quarterRevenue >= seoulAvg:
-                data['recommend1'].append(
-                    {
-                        'commercialAreaName' : commercialArea[i].commercialAreaName,
-                        'commercialQuarterRevenue' : commercialArea[i].commercialarearevenue.quarterRevenue,
-                        'commercialAreaChange' : commercialArea[i].commercialAreaChange,
-                    }
-                )
-        if data['recommend1'] == []:
-            data['recommend1'].append('상권이 없습니다.')
+    
+    
+    ### recommend2 ###
+    ### 성장성 = 당년 분기 매출액 / 전년 동분기 매출액 -> 이번 분기 매출액 / 전 분기 매출액
+    df1 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-추정매출).csv', encoding='CP949')
+    df1 = df1.loc[(df1['기준_분기_코드'] == 2) & (df1['서비스_업종_코드_명'] == '커피-음료')]
+    res = []
+    for i in range(len(dongCommercialArea)):
+        code = dongCommercialArea[i].commercialAreaCode
+        revenue3 = dongCommercialArea[i].commercialarearevenue.quarterRevenue
+        temp_df = df1.loc[df1['상권_코드'] == code]
+        if temp_df.empty:
+            성장성 = 0
+        else:
+            revenue2 = temp_df['분기당_매출_금액'].values[0]
+            성장성 = revenue3 / revenue2
+        res.append([dongCommercialArea[i].commercialAreaName, 성장성])
+    res.sort(key=lambda x:-x[1])
+    for i in range(len(res)):
+        data['recommend2'].append(
+                        {
+                            'commercialAreaName' : res[i][0],
+                            '성장성' : res[i][1]
+                        }
+                    )
+    if data['recommend2'] == []:
+        data['recommend2'].append('상권이 없습니다.')
+        
+    
+    ### recommend3 ###
+    ### 안정성 = 1 - (폐업 점포수 / 신규 점포수)
+    res = []
+    for i in range(len(dongCommercialArea)):
+        openingStore = dongCommercialArea[i].commercialareanumber.openingStore
+        closureStore = dongCommercialArea[i].commercialareanumber.closureStore
+        if openingStore == 0:
+            안정성 = 0
+        else:
+            안정성 = 1 - (closureStore / openingStore)
+        res.append([dongCommercialArea[i].commercialAreaName, 안정성])
+    res.sort(key=lambda x:-x[1])
+    for i in range(len(res)):
+        data['recommend3'].append(
+                        {
+                            'commercialAreaName' : res[i][0],
+                            '안정성' : res[i][1]
+                        }
+                    )
+    if data['recommend3'] == []:
+        data['recommend3'].append('상권이 없습니다.')
     return JsonResponse(data)
