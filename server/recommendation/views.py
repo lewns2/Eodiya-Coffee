@@ -22,10 +22,30 @@ def study_recommend(request, gu_name):
     if gu_name == 'none':
         coms = CommercialAreaPeople.objects.all().values('commercialArea').annotate(
             sum1020=Sum('likePeopleAge10')+Sum('likePeopleAge20')).order_by('-sum1020')[:20]
-    # 구가 설정되어 요청이 왔을 경우 ----------------------- 아직 미완
-    # else:
-    #     coms = CommercialAreaPeople.objects.filter().values('commercialArea').annotate(
-    #         sum1020=Sum('likePeopleAge10')+Sum('likePeopleAge20')).order_by('-sum1020')[:20]
+    # 구가 설정되어 요청이 왔을 경우
+    else:
+        # 해당 구에 있는 동 목록 뽑아옴
+        dongs = SeoulGuDong.objects.filter(guName=gu_name).values('dongCode')
+        coms_list = []
+        # 각 동에 있는 상권들 불러와서 coms_list에 상권코드를 담아줌
+        for dong in dongs:
+            coms_in_dong = CommercialArea.objects.filter(
+                seoulGuDong_id=dong['dongCode']).values('commercialAreaCode')
+            for com_in_dong in list(coms_in_dong):
+                coms_list.append(com_in_dong['commercialAreaCode'])
+
+        # 상권코드를 하나씩 불러와서 생활인구 조회
+        coms = []
+        for coms_element in coms_list:
+            my_new_search = CommercialAreaPeople.objects.filter(commercialArea=coms_element).values('commercialArea').annotate(
+                sum1020=Sum('likePeopleAge10')+Sum('likePeopleAge20'))
+
+            # 상권 코드와 생활인구를 coms에 저장
+            coms.append(
+                {'commercialArea': my_new_search[0]['commercialArea'], 'sum1020': my_new_search[0]['sum1020']})
+
+        # 상위20개만 정렬
+        coms = sorted(coms, key=lambda x: x['sum1020'], reverse=True)[:20]
 
     # 상권 번호만 추출하여 coms_nums에 저장
     coms_nums = []
@@ -38,6 +58,7 @@ def study_recommend(request, gu_name):
         buildings = CommercialAreaBuilding.objects.filter(
             commercialArea=coms_idx).values('commercialArea', 'schoolNumber2', 'schoolNumber3', 'universityNumber').annotate(
             sumSchools=Sum('schoolNumber2')+Sum('schoolNumber3')+Sum('universityNumber'))
+
         # 출력된 쿼리셋을 리스트 모양으로 만들어서 tmp에 저장
         tmp.append(list(buildings)[0])
 
@@ -46,7 +67,6 @@ def study_recommend(request, gu_name):
 
     # new_tmp의 상위5개만 result에 저장
     result = deepcopy(new_tmp[:5])
-
     # result의 상권번호들을 이용하여 상권명, XY좌표, 중심좌표를 조회함
     for idx in range(len(result)):
         commercial_info = CommercialArea.objects.filter(

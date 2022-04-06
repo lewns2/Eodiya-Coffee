@@ -5,7 +5,7 @@ from pandas.io.json import json_normalize
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Odiya.settings')
 django.setup()
 
-from commercial_area.models import CommercialAreaBuilding, CommercialAreaCompany, SeoulGuDong, CommercialArea, CommercialAreaRevenue, CommercialAreaPeople, CommercialAreaBackground, CommercialAreaNumber
+from commercial_area.models import CommercialAreaBuilding, CommercialAreaCompany, CommercialAreaPlus, SeoulGuDong, CommercialArea, CommercialAreaRevenue, CommercialAreaPeople, CommercialAreaBackground, CommercialAreaNumber
 from cafes.models import CafeList, CafeMenu
 import pandas as pd
 
@@ -102,6 +102,8 @@ df7 = df7.loc[(df7['기준_년_코드'] == 2021) & (df7['기준_분기_코드'] 
 df7.fillna(0, inplace=True)
 df8 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-직장인구).csv', encoding='CP949')
 df8 = df8.loc[(df8['기준_년월_코드'] == 2021) & (df7['기준_분기_코드'] == 3)]
+df9 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-추정매출).csv', encoding='CP949')
+df9 = df9.loc[(df9['기준_분기_코드'] == 2) & (df9['서비스_업종_코드_명'] == '커피-음료')]
 
 ### res Data
 res1 = []
@@ -226,23 +228,6 @@ res = list(set(res1) & set(res2) & set(res3) & set(res4) & set(res5) & set(res6)
 #     instances.append(CommercialAreaNumber(commercialArea=commercialArea, numberStore=numberStore, numberSimilarStore=numberSimilarStore, openingStore=openingStore, closureStore=closureStore, openingRate=openingRate, closureRate=closureRate))
 # CommercialAreaNumber.objects.bulk_create(instances)
     
-# ### CommercialAreaNumber Model    
-# ### 상권-점포
-# instances = []
-# for i in range(len(res)):
-#     code = res[i]
-#     temp_df = df2.loc[df2['상권_코드'] == code]
-#     if temp_df.empty:
-#         continue
-#     numberStore = temp_df['점포_수'].values[0]
-#     numberSimilarStore = temp_df['유사_업종_점포_수'].values[0]
-#     openingStore = temp_df['개업_점포_수'].values[0]
-#     closureStore = temp_df['폐업_점포_수'].values[0]
-#     openingRate = temp_df['개업_율'].values[0]
-#     closureRate = temp_df['폐업_률'].values[0]
-#     commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
-#     instances.append(CommercialAreaNumber(commercialArea=commercialArea, numberStore=numberStore, numberSimilarStore=numberSimilarStore, openingStore=openingStore, closureStore=closureStore, openingRate=openingRate, closureRate=closureRate))
-# CommercialAreaNumber.objects.bulk_create(instances)
     
 # ### CommercialAreaPeople Model
 # ### 상권-생활인구
@@ -454,18 +439,35 @@ res = list(set(res1) & set(res2) & set(res3) & set(res4) & set(res5) & set(res6)
     
 ### CommercialAreaCompany Model
 ### 상권-직장인구
-instances = []
-for i in range(len(res)):
-    code = res[i] 
-    temp_df = df8.loc[df8['상권_코드'] == code]
-    if temp_df.empty:
-        continue
+# instances = []
+# for i in range(len(res)):
+#     code = res[i] 
+#     temp_df = df8.loc[df8['상권_코드'] == code]
+#     if temp_df.empty:
+#         continue
     
-    commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
-    companyPeople = temp_df['총_직장_인구_수']
-    companyMalePeople = temp_df['남성_직장_인구_수']
-    companyFemalePeople = temp_df['여성_직장_인구_수']
+#     commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+#     companyPeople = temp_df['총_직장_인구_수']
+#     companyMalePeople = temp_df['남성_직장_인구_수']
+#     companyFemalePeople = temp_df['여성_직장_인구_수']
     
     
-    instances.append(CommercialAreaCompany(commercialArea=commercialArea, companyPeople=companyPeople, companyMalePeople=companyMalePeople, companyFemalePeople=companyFemalePeople))
-CommercialAreaCompany.objects.bulk_create(instances)
+#     instances.append(CommercialAreaCompany(commercialArea=commercialArea, companyPeople=companyPeople, companyMalePeople=companyMalePeople, companyFemalePeople=companyFemalePeople))
+# CommercialAreaCompany.objects.bulk_create(instances)
+
+# ### CommercialAreaPlus Model
+# ### 상권-추정매출 2분기
+# instances = []
+# for i in range(len(res)):
+#     code = res[i] 
+#     temp_df = df9.loc[df9['상권_코드'] == code]
+#     if temp_df.empty:
+#         temp_df = df1.loc[df1['상권_코드'] == code]
+#         commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+#         quarterRevenue = temp_df['분기당_매출_금액'].values[0]
+#         instances.append(CommercialAreaPlus(commercialArea=commercialArea, quarterRevenue=quarterRevenue))
+#     else: 
+#         commercialArea = CommercialArea.objects.get(commercialAreaCode=code)
+#         quarterRevenue = temp_df['분기당_매출_금액'].values[0]
+#         instances.append(CommercialAreaPlus(commercialArea=commercialArea, quarterRevenue=quarterRevenue))
+# CommercialAreaPlus.objects.bulk_create(instances)
