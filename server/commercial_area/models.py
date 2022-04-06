@@ -43,6 +43,12 @@ class CommercialAreaRevenue(models.Model):
 
 # 경쟁업체 수 필요한데, 이건 추정매출에서 찾아봐도 될듯
 # 직장 인구 수 테이블
+class CommercialAreaCompany(models.Model):
+     commercialArea = models.OneToOneField(CommercialArea, on_delete=models.CASCADE)
+     companyPeople = models.IntegerField()
+     companyMalePeople = models.IntegerField()
+     companyFemalePeople = models.IntegerField()
+     
 
 
 class CommercialAreaNumber(models.Model):
