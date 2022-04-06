@@ -49,16 +49,11 @@ def study_recommend(request, gu_name):
         # 상위20개만 정렬
         coms = sorted(coms, key=lambda x: x['sum1020'], reverse=True)[:20]
 
-    # 상권 번호만 추출하여 coms_nums에 저장
-    coms_nums = []
-    for com in coms:
-        coms_nums.append(com['commercialArea'])
-
     # 상권 번호에 해당하는 집객시설 중 schoolNumber2 ~ universityNumber만 뽑아와서 세 학교의 합산수치를 sumSchools라는 새로운 칼럼으로 나타냄
     tmp = []
-    for coms_idx in coms_nums:
+    for com_idx in coms:
         buildings = CommercialAreaBuilding.objects.filter(
-            commercialArea=coms_idx).values('commercialArea', 'schoolNumber2', 'schoolNumber3', 'universityNumber').annotate(
+            commercialArea=com_idx['commercialArea']).values('commercialArea', 'schoolNumber2', 'schoolNumber3', 'universityNumber').annotate(
             sumSchools=Sum('schoolNumber2')+Sum('schoolNumber3')+Sum('universityNumber'))
 
         # 출력된 쿼리셋을 리스트 모양으로 만들어서 tmp에 저장
@@ -89,17 +84,20 @@ def study_recommend(request, gu_name):
                 result[idx]['sum1020'] = li_com['sum1020']
                 break
     # result가 리스트내의 딕셔너리 형태이므로 바로 Response
+    print(result)
     return Response(result)
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def dessert_recommend(request, gu_name):
     # 출력용 리스트
     result = []
     # 상권 모두 조회하여 coms에 저장
     # 구 상관없이 요청이 왔을 경우
     if gu_name == 'none':
-        coms = CommercialAreaPeople.objects.all().values('commercialArea', 'maleLikePeople', 'femaleLikePeople').annotate(
-            life_people_sum2030=Sum('likePeopleAge20')+Sum('likePeopleAge30')).order_by('-life_people_sum2030')[:20]
+        coms = CommercialAreaPeople.objects.all().values('commercialArea').annotate(maleLifePeople=Sum('maleLikePeople'), femaleLifePeople=Sum('femaleLikePeople'), lifePeopleAge20=Sum('likePeopleAge20'), lifePeopleAge30=Sum(
+            'likePeopleAge30'), life_people_female_sum2030=(Sum('likePeopleAge20') + Sum('likePeopleAge30')) * (Sum('femaleLikePeople') / (Sum('maleLikePeople') + Sum('femaleLikePeople')))).order_by('-life_people_female_sum2030')[:20]
     # 구가 설정되어 요청이 왔을 경우
     else:
         # 해당 구에 있는 동 목록 뽑아옴
@@ -115,22 +113,53 @@ def dessert_recommend(request, gu_name):
         # 상권코드를 하나씩 불러와서 생활인구 조회
         coms = []
         for coms_element in coms_list:
-            my_new_search = CommercialAreaPeople.objects.filter(commercialArea=coms_element).values('commercialArea').annotate(
-                sum1020=Sum('likePeopleAge10')+Sum('likePeopleAge20'))
+            my_new_search = CommercialAreaPeople.objects.filter(commercialArea=coms_element).values('commercialArea', 'maleLikePeople', 'femaleLikePeople', 'likePeopleAge20', 'likePeopleAge30').annotate(
+                life_people_female_sum2030=(Sum('likePeopleAge20') + Sum('likePeopleAge30')) * (Sum('femaleLikePeople') / (Sum('maleLikePeople') + Sum('femaleLikePeople'))))
 
             # 상권 코드와 생활인구를 coms에 저장
             coms.append(
-                {'commercialArea': my_new_search[0]['commercialArea'], 'sum1020': my_new_search[0]['sum1020']})
+                {
+                    'commercialArea': my_new_search[0]['commercialArea'],
+                    'maleLifePeople': my_new_search[0]['maleLikePeople'],
+                    'femaleLifePeople': my_new_search[0]['femaleLikePeople'],
+                    'lifePeopleAge20': my_new_search[0]['likePeopleAge20'],
+                    'lifePeopleAge30': my_new_search[0]['likePeopleAge30'],
+                    'life_people_female_sum2030': my_new_search[0]['life_people_sum2030'],
+                }
+            )
 
         # 상위20개만 정렬
-        coms = sorted(coms, key=lambda x: x['sum1020'], reverse=True)[:20]
+        coms = sorted(
+            coms, key=lambda x: x['life_people_female_sum2030'], reverse=True)[:20]
 
-    # 상권 번호만 추출하여 coms_nums에 저장
-    coms_nums = []
-    for com in coms:
-        coms_nums.append(com['commercialArea'])
-    print(coms)
-    print(coms_nums)
-    # 상권 번호에 해당하는 집객시설 중 schoolNumber2 ~ universityNumber만 뽑아와서 세 학교의 합산수치를 sumSchools라는 새로운 칼럼으로 나타냄
-    tmp = []
-    return
+    for com_idx in coms:
+        # print(com_idx['commercialArea'])
+        background_apartmentAvgPrice = CommercialAreaApartment.objects.filter(
+            commercialAreaCode=com_idx['commercialArea']).values('apartmentAvgPrice')
+        com_idx['apartmentAvgPrice'] = background_apartmentAvgPrice[0]['apartmentAvgPrice']
+        visits = CommercialAreaBuilding.objects.filter(
+            commercialArea=com_idx['commercialArea']).values('universityNumber', 'theaterNumber').annotate(
+            visitor_facilities=Sum('universityNumber')+Sum('theaterNumber'))
+        com_idx['universityCount'] = visits[0]['universityNumber']
+        com_idx['theaterCount'] = visits[0]['theaterNumber']
+        com_idx['visitor_facilities'] = visits[0]['visitor_facilities'] + 10
+    # print(coms)
+    result = sorted(coms, key=lambda x: x['life_people_female_sum2030']
+                    * x['apartmentAvgPrice'] * x['visitor_facilities'], reverse=True)[:5]
+
+    for re in result:
+        re['visitor_facilities'] = re.get('visitor_facilities') - 10
+        commercial_info = CommercialArea.objects.filter(
+            commercialAreaCode=re['commercialArea']).values('commercialAreaName', 'commercialAreaXYPoint', 'commercialCenterXPoint', 'commercialCenterYPoint')
+
+        # eval() : String 형식의 데이터를 List 모양으로 만들어줌
+        tmp_xy = eval(''.join(commercial_info[0]['commercialAreaXYPoint']))
+
+        # result의 각 항목에 해당하는 데이터 저장
+        re['commercialAreaName'] = commercial_info[0]['commercialAreaName']
+        re['commercialAreaXYPoint'] = tmp_xy
+        re['commercialCenterXPoint'] = commercial_info[0]['commercialCenterXPoint']
+        re['commercialCenterYPoint'] = commercial_info[0]['commercialCenterYPoint']
+    print(result)
+    # print(background_avgIncome)
+    return Response(result)

@@ -45,12 +45,14 @@ class CommercialAreaRevenue(models.Model):
 
 # 경쟁업체 수 필요한데, 이건 추정매출에서 찾아봐도 될듯
 # 직장 인구 수 테이블
+
+
 class CommercialAreaCompany(models.Model):
-     commercialArea = models.OneToOneField(CommercialArea, on_delete=models.CASCADE)
-     companyPeople = models.IntegerField()
-     companyMalePeople = models.IntegerField()
-     companyFemalePeople = models.IntegerField()
-     
+    commercialArea = models.OneToOneField(
+        CommercialArea, on_delete=models.CASCADE)
+    companyPeople = models.IntegerField()
+    companyMalePeople = models.IntegerField()
+    companyFemalePeople = models.IntegerField()
 
 
 class CommercialAreaNumber(models.Model):
@@ -124,8 +126,15 @@ class CommercialAreaBuilding(models.Model):
 
     subwayNumber = models.IntegerField()
     busStopNumber = models.IntegerField()
-    
+
+
 class CommercialAreaPlus(models.Model):
     commercialArea = models.OneToOneField(
         CommercialArea, on_delete=models.CASCADE)
     quarterRevenue = models.BigIntegerField()
+
+
+class CommercialAreaApartment(models.Model):
+    commercialAreaCode = models.OneToOneField(
+        CommercialArea, on_delete=models.CASCADE)
+    apartmentAvgPrice = models.BigIntegerField(null=True, default=0)
