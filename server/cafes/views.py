@@ -146,7 +146,8 @@ def get_cafes(request, guName, dongName, tag):
         data = []
         for d in Data:
             if d not in data:
-                data.append(d)     
+                data.append(d)
+     
     
     return JsonResponse(data, safe=False)
 
