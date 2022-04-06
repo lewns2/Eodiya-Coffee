@@ -133,17 +133,17 @@ def kid_recommend(request, gu_name):
         if d not in data:
             data.append(d) 
     # 주요 조건 별로 정렬 후 상위 5개를 출력
-    data_sortedby = sorted(data, key = lambda x:  (-x['schoolTotal'], -x['lifePeople_30']))[:5]
+    data_sorted = sorted(data, key = lambda x:  (-x['schoolTotal'], -x['lifePeople_30']))[:5]
     # print(data_sortedby)
-    return JsonResponse(data_sortedby, safe=False)
+    return JsonResponse(data_sorted, safe=False)
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def play_recommend(request, gu_name):
     Data = []
     tmp_data = {
-        'commercialArea': '',
-        'commercialAreaName': '',
+        'commercialArea': '',  
+        'commercialAreaName': '', 
         'schoolNumber2': 0,
         'schoolNumber3': 0,
         'universityNumber': 0,
@@ -188,6 +188,192 @@ def play_recommend(request, gu_name):
             data.append(d) 
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
-    data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['peopleTotal'],-x['schoolTotal']))[:5]
-    return JsonResponse(data_sortedby_lifepeople, safe=False)
+    data_sorted = sorted(data, key = lambda x: (-x['peopleTotal'],-x['schoolTotal']))[:5]
+    return JsonResponse(data_sorted, safe=False)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def cafebar_recommend(request, gu_name):
+    Data = []
+    tmp_data = {
+        'commercialArea': '',  
+        'commercialAreaName': '', 
+        'lifePeople_20': 0,
+        'lifePeople_30': 0,
+        'peopleTotal': 0,
+        'quarterRevenue': 0,
+        'revenue_1721': 0,
+        'revenue_2124': 0,
+        'revenue_in_night': 0,
+        'commercialAreaCenterXPoint': '',
+        'commercialAreaCenterYPoint': '',
+        'commercialAreaXYPoint': []  
+    }
+    # gu_name이 없는 경우 objects.all을 하면된다.
+    gu_sanggwon = SeoulGuDong.objects.filter(guName = gu_name)
+    # print(gu_sanggwon.values())
+    for sanggwon in gu_sanggwon: # 구 안의 모든 상권을 순회
+        commercial_area_in_gu = CommercialArea.objects.filter(seoulGuDong = sanggwon.dongCode)
+        # print(commercial_area_in_gu.values())
+        for commercial_area in commercial_area_in_gu:
+            tmp_data['commercialArea'] = commercial_area.commercialAreaCode
+            tmp_data['commercialAreaName'] = commercial_area.commercialAreaName
+            tmp_data['commercialAreaCenterXPoint'] = commercial_area.commercialCenterXPoint
+            tmp_data['commercialAreaCenterYPoint'] = commercial_area.commercialCenterYPoint
+            tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint)
+            commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            commercial_lifepeople = CommercialAreaPeople.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+
+            try:
+                tmp_data['quarterRevenue'] = commercial_revenue[0].quarterRevenue
+                tmp_data['revenue_1721'] = commercial_revenue[0].revenue1721
+                tmp_data['revenue_2124'] = commercial_revenue[0].revenue2124
+                tmp_data['lifePeople_20'] = commercial_lifepeople[0].likePeopleAge20
+                tmp_data['lifePeople_30'] = commercial_lifepeople[0].likePeopleAge30
+                tmp_data['peopleTotal'] = commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge30
+                tmp_data['revenue_in_night'] = commercial_revenue[0].revenue2124 + commercial_revenue[0].revenue1721
+            except:
+                pass
+            Data.append(deepcopy(tmp_data))
+    # 중복값 제거
+    data = []
+    for d in Data:
+        if d not in data:
+            data.append(d) 
+    ##########
+    # 주요 조건 별로 정렬 후 상위 5개를 출력
+    data_sorted = sorted(data, key = lambda x: (-x['quarterRevenue'], -x['revenue_in_night'],-x['peopleTotal']))[:5]
+    return JsonResponse(data_sorted, safe=False)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def coffee_recommend(request, gu_name):
+    Data = []
+    tmp_data = {
+        'commercialArea': '',  
+        'commercialAreaName': '', 
+        'lifePeople': 0,
+        'quarterRevenue': 0,
+        'revenue_per_one_person': 0,
+        'subwayNumber': 0,
+        'busstopNumber': 0,
+        'trainstationNumber': 0,
+        'transportationNumber': 0,
+        'busterminalNumber': 0,
+        'schoolNumber': 0,
+        'hospitalNumber': 0, 
+        'hotelNumber': 0, 
+        'theaterNumber': 0,
+        'total_building': 0,
+        'total_infra': 0,
+        'rivalcoffeeshopNumber': 0,
+        'commercialAreaCenterXPoint': '',
+        'commercialAreaCenterYPoint': '',
+        'commercialAreaXYPoint': []  
+    }
+    # gu_name이 없는 경우 objects.all을 하면된다.
+    gu_sanggwon = SeoulGuDong.objects.filter(guName = gu_name)
+    # print(gu_sanggwon.values())
+    for sanggwon in gu_sanggwon: # 구 안의 모든 상권을 순회
+        commercial_area_in_gu = CommercialArea.objects.filter(seoulGuDong = sanggwon.dongCode)
+        # print(commercial_area_in_gu.values())
+        for commercial_area in commercial_area_in_gu:
+            tmp_data['commercialArea'] = commercial_area.commercialAreaCode
+            tmp_data['commercialAreaName'] = commercial_area.commercialAreaName
+            tmp_data['commercialAreaCenterXPoint'] = commercial_area.commercialCenterXPoint
+            tmp_data['commercialAreaCenterYPoint'] = commercial_area.commercialCenterYPoint
+            tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint)
+            commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            commercial_lifepeople = CommercialAreaPeople.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            commercial_building = CommercialAreaBuilding.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            commercial_shop = CommercialAreaNumber.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            
+            try:
+                tmp_data['quarterRevenue'] = commercial_revenue[0].quarterRevenue
+                tmp_data['lifePeople'] = commercial_lifepeople[0].likePeople
+                tmp_data['subwayNumber'] = commercial_building[0].subwayNumber
+                tmp_data['trainstationNumber'] = commercial_building[0].chuldoNumber
+                tmp_data['busstopNumber'] = commercial_building[0].busStopNumber
+                tmp_data['busterminalNumber'] = commercial_building[0].busTerminalNumber
+                tmp_data['schoolNumber'] = commercial_building[0].schoolNumber
+                tmp_data['hospitalNumber'] = commercial_building[0].hospitalNumber
+                tmp_data['hotelNumber'] = commercial_building[0].hotelNumber
+                tmp_data['theaterNumber'] = commercial_building[0].theaterNumber
+                tmp_data['transportationNumber'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber)
+                tmp_data['total_building'] = (commercial_building[0].theaterNumber + commercial_building[0].hotelNumber + commercial_building[0].hospitalNumber + commercial_building[0].schoolNumber)
+                tmp_data['rivalcoffeeshopNumber'] = commercial_shop[0].numberStore
+                tmp_data['revenue_per_one_person'] = round(commercial_revenue[0].quarterRevenue/commercial_lifepeople[0].likePeople, 2)
+                tmp_data['total_infra'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber
+                                           + commercial_building[0].theaterNumber + commercial_building[0].hotelNumber + commercial_building[0].hospitalNumber + commercial_building[0].schoolNumber)
+            
+            except:
+                pass
+            Data.append(deepcopy(tmp_data))
+    # 중복값 제거
+    data = []
+    for d in Data:
+        if d not in data:
+            data.append(d) 
+    ##########
+    # 주요 조건 별로 정렬 후 상위 5개를 출력
+    data_sorted = sorted(data, key = lambda x: (-x['revenue_per_one_person'], x['rivalcoffeeshopNumber'], -x['total_infra']))[:5]
+    return JsonResponse(data_sorted, safe=False)
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def machine_recommend(request, gu_name):
+    Data = []
+    tmp_data = {
+        'commercialArea': '',  
+        'commercialAreaName': '', 
+        'salarymanNumber': 0, 
+        'subwayNumber': 0,
+        'busstopNumber': 0,
+        'trainstationNumber': 0,
+        'busterminalNumber': 0,
+        'transportationNumber': 0,
+        'commercialAreaCenterXPoint': '',
+        'commercialAreaCenterYPoint': '',
+        'commercialAreaXYPoint': []  
+    }
+    # gu_name이 없는 경우 objects.all을 하면된다.
+    gu_sanggwon = SeoulGuDong.objects.filter(guName = gu_name)
+    # print(gu_sanggwon.values())
+    for sanggwon in gu_sanggwon: # 구 안의 모든 상권을 순회
+        commercial_area_in_gu = CommercialArea.objects.filter(seoulGuDong = sanggwon.dongCode)
+        # print(commercial_area_in_gu.values())
+        for commercial_area in commercial_area_in_gu:
+            tmp_data['commercialArea'] = commercial_area.commercialAreaCode
+            tmp_data['commercialAreaName'] = commercial_area.commercialAreaName
+            tmp_data['commercialAreaCenterXPoint'] = commercial_area.commercialCenterXPoint
+            tmp_data['commercialAreaCenterYPoint'] = commercial_area.commercialCenterYPoint
+            tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint)
+            commercial_company = CommercialAreaCompany.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            commercial_building = CommercialAreaBuilding.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+
+            
+            try:
+                tmp_data['subwayNumber'] = commercial_building[0].subwayNumber
+                tmp_data['trainstationNumber'] = commercial_building[0].chuldoNumber
+                tmp_data['busstopNumber'] = commercial_building[0].busStopNumber
+                tmp_data['busterminalNumber'] = commercial_building[0].busTerminalNumber
+                tmp_data['transportationNumber'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber)
+                tmp_data['salarymanNumber'] = commercial_company[0].companyPeople
+            
+            except:
+                pass
+            Data.append(deepcopy(tmp_data))
+    # 중복값 제거
+    data = []
+    for d in Data:
+        if d not in data:
+            data.append(d) 
+    ##########
+    # 주요 조건 별로 정렬 후 상위 5개를 출력
+    data_sorted = sorted(data, key = lambda x: (-x['salarymanNumber'], -x['transportationNumber']))[:5]
+    return JsonResponse(data_sorted, safe=False)
+
+
 
