@@ -105,7 +105,7 @@ class CommercialAreaBuilding(models.Model):
     kindergardenNumber = models.IntegerField()
 
     schoolNumber = models.IntegerField()
-    # 초 중 고 따로 필요
+    # 초 중 고 
     schoolNumber1 = models.IntegerField()#초
     schoolNumber2 = models.IntegerField()#중
     schoolNumber3 = models.IntegerField()#고

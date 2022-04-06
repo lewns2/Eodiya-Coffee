@@ -37,18 +37,50 @@ def recommend(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def recommend_kid(request, gu_name):
-    data = {}
+    Data = []
+    tmp_data = {
+        'commercialArea': '',
+        'commercialAreaName': '',
+        'kindergardenNumber': '',
+        'schoolNumber': 0,
+        'lifePeople': 0,
+        'commercialAreaCenterXPoint': '',
+        'commercialAreaCenterYPoint': '',
+        'commercialAreaXYPoint': []  
+    }
     # gu_name이 없는 경우 objects.all을 하면된다.
     gu_sanggwon = SeoulGuDong.objects.filter(guName = gu_name)
+    cnt = 0
     # print(gu_sanggwon.values())
-    sanggwon_data = []
-    for sanggwon in gu_sanggwon:
-        sanggwon_code = CommercialArea.objects.filter(seoulGuDong_id=sanggwon.dongCode)
+    for sanggwon in gu_sanggwon: # 구 안의 모든 상권을 순회
+        commercial_area_in_gu = CommercialArea.objects.filter(seoulGuDong = sanggwon.dongCode)
+        # print(commercial_area_in_gu.values())
+        for commercial_area in commercial_area_in_gu:
+            tmp_data['commercialArea'] = commercial_area.commercialAreaCode
+            tmp_data['commercialAreaName'] = commercial_area.commercialAreaName
+            tmp_data['commercialAreaCenterXPoint'] = commercial_area.commercialAreaCenterXPoint
+            tmp_data['commercialAreaCenterYPoint'] = commercial_area.commercialAreaCenterYPoint
+    #     sanggwon_code = CommercialArea.objects.all()
+    #     print(sanggwon_code.values())
+    #     # tmp_data['commercialArea'] = sanggwon_code
+    #     for sanggwon in sanggwon_code: # 동 안의 모든 상권을 순회
+    #         # print(sanggwon)
+    #         sanggwon_building = CommercialAreaBuilding.objects.filter(commercialArea_id = sanggwon.commercialAreaCode)
+    #         print(sanggwon_building.values())
+    #         for building in sanggwon_building:
+    #             school = building.kindergardenNumber + building.schoolNumber
+    #             tmp_data['schoolNum'] += school
+    #             print(building)
+    #             break
+    #         print(tmp_data)
+    #     print(tmp_data)
+    # print(tmp_data)
         # print(sanggwon_code.values())
-        sanggwon_data.append(sanggwon_code)
-    print(sanggwon_data[0].values())
+        # sanggwon_data.append(sanggwon_code)
+    # print(sanggwon_data[0].values())
     # for sanggwon in sanggwon_data[0]:
-    #     sanggwon_building = 
+    #     sanggwon_building = CommercialAreaBuilding.objects.filter(commercialArea_id = sanggwon.commercialAreaCode)
+    #     print(sanggwon_building.values())
         
-    
+    data = {}
     return JsonResponse(data)
