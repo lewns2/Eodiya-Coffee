@@ -5,10 +5,12 @@
     border-right: 1px solid;
     border-radius: 0;
     border-color: rgba(64, 194, 133, 0.693);
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(229, 240, 249);
     transition: 0.8s ease;
 }
-
+/* .bg-lb{
+    background-color: rgb(229, 240, 249);
+} */
 .toggle-menu {
     height: 50px;
     border-top-right-radius: 10rem;
