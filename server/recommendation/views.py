@@ -449,3 +449,47 @@ def machine_recommend(request, gu_name):
 
 
 
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def brunch_recommend(request, gu_name):
+    Data = []
+    tmp_data = {
+        'commercialArea': '',
+        'commercialAreaName': '',
+        'revenue1114': '',
+        'commercialAreaCenterXPoint': '',
+        'commercialAreaCenterYPoint': '',
+        'commercialAreaXYPoint': []  
+    }
+   # gu_name이 없는 경우 objects.all을 하면된다.
+    gu_sanggwon = SeoulGuDong.objects.filter(guName = gu_name)
+    # print(gu_sanggwon.values())
+    for sanggwon in gu_sanggwon: # 구 안의 모든 상권을 순회
+        commercial_area_in_gu = CommercialArea.objects.filter(seoulGuDong = sanggwon.dongCode)
+        # print(commercial_area_in_gu.values())
+        for commercial_area in commercial_area_in_gu:
+            tmp_data['commercialArea'] = commercial_area.commercialAreaCode
+            tmp_data['commercialAreaName'] = commercial_area.commercialAreaName
+            tmp_data['commercialAreaCenterXPoint'] = commercial_area.commercialCenterXPoint
+            tmp_data['commercialAreaCenterYPoint'] = commercial_area.commercialCenterYPoint
+            tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint)
+            commercial_background = CommercialAreaBackground.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+
+            try:
+                tmp_data['revenue1114'] = commercial_revenue[0].revenue1114
+                # tmp_data['avgIncome'] = commercial_background[0].avgIncome
+            except:
+                pass
+            Data.append(deepcopy(tmp_data))
+    # 중복값 제거
+    data = []
+    for d in Data:
+        if d not in data:
+            data.append(d) 
+    ##########
+    # 주요 조건 별로 정렬 후 상위 5개를 출력
+    # print(data[0])
+    data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['revenue1114']))[:5]
+    return JsonResponse(data_sortedby_lifepeople, safe=False)
