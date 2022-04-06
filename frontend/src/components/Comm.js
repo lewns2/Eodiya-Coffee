@@ -70,7 +70,7 @@ const tags =[
 //     {'id': 4, 'tag': '무인'},
 //     {'id': 5, 'tag': '애견'},
 // ]
-const theme =["키즈카페", "디저트카페", "스터디카페", "북카페", "브런치카페", "무인 카페", "커피 전문점", "술 & 카페", "액티비티?오락?카페"];
+const theme =["술카페", "커피전문점", "무인카페", "브런치카페", "키즈카페", "스터디카페", "보드게임카페", "디저트카페"];
 const ITEM_HEIGHT = 40;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -107,11 +107,33 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         getSelectedDongData(gu[selectgu], dong[selectgu][selectdong]);
     }
     const handleThemeSide = () =>{
-        console.log(`recommend/play/${gu[selectgu]}`)
-        
+        var URL = "recommendation/recommend/"
+        if (selecttheme == 0){
+            URL = URL + "cafebar/"
+        }else if(selecttheme == 1){
+            URL = URL + "coffee/"
+        }else if(selecttheme == 2){
+            URL = URL + "machine/"
+        }else if(selecttheme == 3){
+            URL = URL + "brunch/"
+        }else if(selecttheme == 4){
+            URL = URL + "kids/"
+        }else if(selecttheme == 5){
+            URL = URL + "study/"
+        }else if(selecttheme == 6){
+            URL = URL + "play/"
+        }else if(selecttheme == 7){
+            URL = URL + "dessert/"
+        }
+        if(selecttheme == 25){
+            URL = URL + "none"
+        }else{
+            URL = URL + `${gu[selectgu]}`
+        }
+        console.log("url:", URL);
         axios
             .get(
-                `recommendation/recommend/study/${gu[selectgu]}`,
+                URL,
                 {
                 headers: {
                     "Content-type": "application/json",
@@ -123,9 +145,10 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 console.log(response.data, "from search");
                 dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
                 dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
-                dispatch(actionCreators.setRightSideBarMode(2), []);
                 dispatch(actionCreators.setIsRightOpen(true), []);
-                // dispatch(actionCreators.setSearchedThemeData(response.data), []);
+                dispatch(actionCreators.setRightSideBarMode(2), []);
+                dispatch(actionCreators.setThemeGuData(response.data), []);
+                dispatch(actionCreators.setThemeNum(selecttheme), []);
             })
             .catch((response) => {
                 console.log("Error!");
@@ -238,11 +261,6 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         return list;
     }
 
-    // useEffect(() => {
-    //     console.log("chaged:"+selectgu);
-    //     // console.log(open);
-        
-    // },);
     return (
         <div className='Comm'>
             <Accordion>

@@ -74,6 +74,8 @@ const setMap = (state = {
             likePeopleAge50: 0,
             likePeopleAge60: 0
         },
+        themeGuData: [],
+        themeNum:0,
         leftDong : [],
         commArea : [],
         cafeList : [],
@@ -231,6 +233,22 @@ const setMap = (state = {
                 eodiyaMap:{
                     ...state.eodiyaMap,
                     guPoly : action.guPoly,
+                }
+            }
+        case "setThemeGuData":
+            return{
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    themeGuData : action.themeGuData,
+                }
+            }
+        case "setThemeNum":
+            return{
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    themeNum : action.themeNum,
                 }
             }
         default:

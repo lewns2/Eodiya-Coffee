@@ -17,6 +17,8 @@ const SET_GUOVERLAY = "setGuOverlay";
 const SET_ISLOADING = "setIsLoading";
 const SET_CAFEMARKER = "setCafeMarker";
 const SET_GUPOLY = "setGuPoly"
+const SET_THEMEGUDATA = "setThemeGuData";
+const SET_THEMENUM = "setThemeNum";
 
 // action method
 const setMap = (map) => {
@@ -145,6 +147,21 @@ const setGuPoly = (data) => {
         guPoly : data,
     }
 }
+const setThemeGuData = (data) => {
+    return {
+        type: SET_THEMEGUDATA,
+        themeGuData : data
+    }
+    
+}
+const setThemeNum = (selecttheme) => {
+    return {
+        type: SET_THEMENUM,
+        themeNum : selecttheme
+    
+    }
+}
+
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -164,6 +181,8 @@ export const actionCreators = {
     setIsLoading,
     setCafeMarker,
     setGuPoly,
+    setThemeGuData,
+    setThemeNum,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)
