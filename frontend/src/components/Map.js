@@ -13,11 +13,10 @@ import useGetArea from '../actions/useGetArea';
 import '../styles/Map.css';
 import '../styles/Location.css'
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useCafeMarker from '../actions/useCafeMarker';
 
 const { kakao } = window;
-
-
 const Map=(props)=>{
     //분석하기 클릭하면 
     const [open, setOpen] = React.useState(false);
@@ -56,9 +55,9 @@ const Map=(props)=>{
    
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-
   const dispatch = useDispatch();
   const { getArea } = useGetArea();
+  useCafeMarker();
   useEffect(() => {
       
       // 1. 지도 객체 생성
@@ -83,7 +82,6 @@ const Map=(props)=>{
         } 
       });
 
-      
       // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
       // function displayCenterInfo(result, status) {
       //   if (status === kakao.maps.services.Status.OK) {
@@ -108,7 +106,7 @@ const Map=(props)=>{
         geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
           if(status === kakao.maps.services.Status.OK){
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            map.setLevel(4);
+            map.setLevel(6);
             map.panTo(coords);
           }
         })

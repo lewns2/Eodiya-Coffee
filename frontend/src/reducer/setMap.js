@@ -50,9 +50,12 @@ const setMap = (state = {
         guNum:123,
         dongNum:123,
         rightSideBarMode:1,
+        cafeList : [],
+        cafeMarker :[],
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
+    console.log(state);
     switch (action.type) {
         case "setMap":
             console.log("setting...", action);
@@ -128,6 +131,14 @@ const setMap = (state = {
                 eodiyaMap : {
                     ...state.eodiyaMap,
                     rightSideBarMode: action.rightSideBarMode,
+                }
+            }
+        case "setCafeList":
+            return {
+                ...state,
+                eodiyaMap :{
+                    ...state.eodiyaMap,
+                    cafeList: action.cafeList,
                 }
             }
         default:

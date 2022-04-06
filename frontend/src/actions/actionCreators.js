@@ -8,8 +8,8 @@ const SET_MAPLEVEL = "setMaplevel";
 const SET_GUNUM = "setGuNum";
 const SET_DONGNUM = "setDongNum";
 const SET_RIGHTSIDEBARMODE = "setRightSideBarMode";
-
-
+const SET_CAFELIST = "setCafeList";
+const SET_CAFEMARKER = "addCafeMarker"
 // action method
 const setMap = (map) => {
     return {
@@ -76,6 +76,18 @@ const setRightSideBarMode = (mode) => {
     }
 }
 
+const setCafeList = (data) => {
+    return {
+        type: SET_CAFELIST,
+        cafeList: data,
+    }
+}
+const addCafeMarker = (data) =>{
+    return {
+        type: SET_CAFEMARKER,
+        cafemarker : data
+    }
+}
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -86,6 +98,8 @@ export const actionCreators = {
     setGuNum,
     setDongNum,
     setRightSideBarMode,
+    setCafeList,
+    addCafeMarker,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)
