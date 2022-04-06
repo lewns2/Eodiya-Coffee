@@ -65,22 +65,14 @@ export const useDrawArea = () => {
             customOverlay.setMap(null);
         });
 
-        // # 2.6 다각형 클릭 시, 줌인 & 동 마커 표시
+        // # 2.6 다각형 클릭 시, 줌인 & 동 구역 그리기
         kakao.maps.event.addListener(polygon, 'click', function() {
             kakaoMap.setLevel(6);
-            console.log("1. 구 마커가 사라져야 해 \n2. 구 폴리곤이 사라져야해 \n3. 동 마커가 나와야 해");
-            console.log(map);
-            console.log(markers);
-            // 1. 
             for(var i=0; i<markers.length; i++) {
                 markers[i].setMap(null);
             }
-            // 2.
-            // polygon.setMap(null);
-
-            // 3.
+            polygon.setMap(null);
             setDongMarker(polygon)
-            // setDongMarker(kakaoMap, donginfo, polygon);
         });
     }
 

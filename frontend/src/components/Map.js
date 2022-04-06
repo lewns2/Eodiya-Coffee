@@ -13,28 +13,34 @@ import useGetArea from '../actions/useGetArea';
 import '../styles/Map.css';
 import '../styles/Location.css'
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useCafeMarker from '../actions/useCafeMarker';
 
 const { kakao } = window;
-
-
 const Map=(props)=>{
     //분석하기 클릭하면 
     const [open, setOpen] = React.useState(false);
     const [dongData, setDongData] = React.useState([
       {
-        quarterRevenue: "초기값",
-        perRevenue: "초기값",
-        ageGroup: "초기값",
-        timeGroup: "초기값",
-        numberStore: "초기값",
-        openingStore: "초기값",
-        closureStore: "초기값",
-        openingRate: "초기값",
-        closureRate: "초기값",
-        likePeople: "초기값",
-        maleLikePeople: "초기값",
-        femaleLikePeople: "초기값"
+        quarterRevenue: 0,
+        perRevenue: 0,
+        ageGroup: 0,
+        timeGroup: 0,
+        numberStore: 0,
+        openingStore: 0,
+        closureStore: 0,
+        openingRate: 0,
+        closureRate: 0,
+        likePeople: 0,
+        maleLikePeople: 0,
+        femaleLikePeople: 0,
+        likePeople: 0,
+        likePeopleAge10: 0,
+        likePeopleAge20: 0,
+        likePeopleAge30: 0,
+        likePeopleAge40: 0,
+        likePeopleAge50: 0,
+        likePeopleAge60: 0
       }
     ]);
     const getOpenfromsearch = (data) =>{
@@ -56,9 +62,9 @@ const Map=(props)=>{
    
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-
   const dispatch = useDispatch();
   const { getArea } = useGetArea();
+  const {marker} = useCafeMarker();
   useEffect(() => {
       
       // 1. 지도 객체 생성
@@ -82,37 +88,47 @@ const Map=(props)=>{
           dispatch(actionCreators.setMaplevel(level));
         } 
       });
-
-      
-      // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
-      // function displayCenterInfo(result, status) {
-      //   if (status === kakao.maps.services.Status.OK) {
-      //       var infoDiv = document.getElementById('centerAddr');
-
-      //       for(var i = 0; i < result.length; i++) {
-      //           // 행정동의 region_type 값은 'H' 이므로
-      //           if (result[i].region_type === 'H') {
-      //               infoDiv.innerHTML = result[i].address_name;
-      //               break;
-      //           }
-      //       }
-      //   }    
-      // }
       
     //주소-좌표 변환 객체 생성
-    var geocoder = new kakao.maps.services.Geocoder();
+      var geocoder = new kakao.maps.services.Geocoder();
 
-    function move() {
-      if(cafeGu !== "" && cafeDong !== ""){
-        console.log('이동...........')
-        geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
-          if(status === kakao.maps.services.Status.OK){
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            map.setLevel(4);
-            map.panTo(coords);
-          }
-        })
+      function move() {
+        if(cafeGu !== "" && cafeDong !== ""){
+          console.log('이동...........')
+          geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
+            if(status === kakao.maps.services.Status.OK){
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+              map.setLevel(6);
+              map.panTo(coords);
+            }
+          })
+        }
+
+        // #4.3 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+      kakao.maps.event.addListener(map, 'idle', function() {
+          searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+      });
+
+      function searchAddrFromCoords(coords, callback) {
+        // 좌표로 행정동 주소 정보를 요청합니다
+        geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
       }
+
+      // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+      function displayCenterInfo(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var infoDiv = document.getElementById('centerAddr');
+
+            for(var i = 0; i < result.length; i++) {
+                // 행정동의 region_type 값은 'H' 이므로
+                if (result[i].region_type === 'H') {
+                    infoDiv.innerHTML = result[i].address_name;
+                    break;
+                }
+            }
+        }    
+      }
+
     }
     move();
     dispatch(actionCreators.setMap(map), [map]);
@@ -123,10 +139,8 @@ const Map=(props)=>{
       <div id="map" style={{width:"100vw", height:"90vh"}}>
         <StyledEngineProvider injectFirst>
           <Search setSearchKeyword={setSearchKeyword}/>
-          <Comm open={open} getOpen={getOpen} getOpen2={getOpenfromsearch} 
-            cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong} 
-            />
-          <RightSide open={open} dongData={dongData} getOpen={getOpen}/>
+          <Comm cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong}/>
+          <RightSide getOpen={getOpen}/>
         </StyledEngineProvider >
       </div>
       <Fab id="centerAddr" className='Location' variant="extended" />

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Mypage from '../pages/Mypage';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import '../styles/Navbar.css'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import React from 'react';
@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
+import HowTo from './HowTo';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -43,6 +43,7 @@ function Nav() {
     const [LoginIsOpen, setLoginOpen] = useState(false);
     const [MypageIsOpen, setMypageOpen] = useState(false);
     const [RegisterIsOpen, setRegisterIsOpen] = useState(false);
+    const [HowToIsOpen, setHowToIsOpen] = useState(false);
     const [IsLogin, setIsLogin] = useState(false);
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
@@ -53,6 +54,7 @@ function Nav() {
         setLoginOpen(false);
         setMypageOpen(false);
         setRegisterIsOpen(false);
+        setHowToIsOpen(false);
         setIsLogin(CheckLogin);
     }
     const CheckLogin= () => {
@@ -72,6 +74,8 @@ function Nav() {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Eodiya
                 </Typography>
+                    <Button color="inherit" onClick={() => setHowToIsOpen(true)}>사용가이드</Button>
+
                     {!IsLogin && (
                             <>
                                 <Button color="inherit" onClick={() => setLoginOpen(true)}>로그인</Button>
@@ -100,6 +104,11 @@ function Nav() {
                         onClose={handleCloseModal}>
                         <div style={modalStyle} className={classes.paper}> 
                             <Register closemodal ={handleCloseModal}/>
+                        </div>
+                    </Modal>
+                    <Modal open={HowToIsOpen}>
+                        <div>
+                            <HowTo/>
                         </div>
                     </Modal>
                 </Toolbar>
