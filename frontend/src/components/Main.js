@@ -1,7 +1,9 @@
 import React from "react";
 import '../styles/Main.css';
 import '../assets/mapread.png';
-import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import { Button, CardActionArea, CardActions } from '@mui/material';
 
 export default function Main(props){
     const zeroRef = React.useRef(null);
@@ -15,20 +17,16 @@ export default function Main(props){
         const cancelWheel = e => wheelTimeout.current && e.preventDefault()
         document.body.addEventListener('wheel', cancelWheel, {passive:false})
         return () => document.body.removeEventListener('wheel', cancelWheel)
-    }, [])
-
+    }, []);
     const onZeroClick = () => {
         zeroRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
-
     const onOneClick = () => {
         oneRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
-
     const onTwoClick = () => {
         twoRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
-
     const onThreeClick = () => {
         threeRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -75,23 +73,43 @@ export default function Main(props){
             <div className="InLine" ref={zeroRef} onWheel = {(e) =>updown(0, e)}>
                 <img src={require('../assets/Eodiya-removebg-preview.png')} alt="사진"/>
                 <p>저희 Eodiya는 여러분의 빅데이터 분석으로 카페창업의 위치 선정을 도와주는 추천 시스템입니다.</p>
+                <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    '& > :not(style)': {
+                    m: 7,
+                    width: 250,
+                    height: 250,
+                    },
+                }}
+                >
+                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
+                    <img className="imgSec" src={ require('../assets/mapread.png') }  alt="사진"/>
+                    <p className="m-15">카페 창업에 좋은 위치를 알고 싶을때!</p>
+                </Paper>
+                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
+                    <img className="imgSec" src={ require('../assets/checkfile.png') }  alt="사진"/>
+                    <p className="m-15">주변에 어떤 상권 정보가 필요할 때!</p>
+                </Paper>
+                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
+                    <img className="imgSec" src={ require('../assets/caffeetwo.png') }  alt="사진"/>
+                    <p className="m-15">카페의 타겟층을 특정하고 싶을때</p>
+                </Paper>
+                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
+                    <img className="imgSec" src={ require('../assets/diary.png') }  alt="사진"/>
+                    <p className="m-15">주변 카페 정보를 알고 싶을때!</p>
+                </Paper>
+                </Box>
             </div>
             <div className="InLine" ref={oneRef} onWheel = {(e) =>updown(1, e)}>
-                <h2>이런 사람에게 좋아요!</h2>
                 <div className="innerSec">
-                    <img className="imgSec" src={ require('../assets/mapread.png') }  alt="사진"/><p>어디에 어떤 환경이 카페 창업에 좋은 위치인지 모르는 경우!</p>
-                </div>
-                <div className="innerSec">
-                    <p>이 주변에 창업을 하려고하는데 주변에 어떤 상권이 존재하는지 잘 모를때!</p><img className="imgSec" src={require('../assets/checkfile.png')} alt="사진"/>
+                    <img className="imgSec2" src={require('../assets/검색그래프.png')} alt="사진"/><p className="m-15"> 카페 창업을 위한 위치를 정하고 분석하면 선택 위치의 카페의 개/폐업률, 사용 주 연령대 층, 해당 위치 근처의 주 상권, 근처 편의시설의 수 등의 정보를 확인 하고 있습니다.</p>
                 </div>
             </div>
             <div className="InLine" ref={twoRef} onWheel = {(e) =>updown(2, e)}>
-                <h2>이런 사람에게 좋아요!</h2>
-                <div className="innerSec">
-                    <img className="imgSec" src={require('../assets/caffeetwo.png')} alt="사진"/><p>어떤 유형의 손님이 많이 찾는지 알고 싶을때!</p>
-                </div>
-                <div className="innerSec">
-                    <p>카페 메뉴선정들 주변은 어떻게 하고 있는지 알고싶을때!</p><img className="imgSec" src={require('../assets/diary.png')} alt="사진"/>
+                <div className="innerSec2">
+                    <p className="m-15"> 카페 창업을 위한 위치를 정하고 분석하면 선택 위치의 카페의 개/폐업률, 사용 주 연령대 층, 해당 위치 근처의 주 상권, 근처 편의시설의 수 등의 정보를 확인 하고 있습니다.</p><img className="imgSec2" src={require('../assets/검색그래프.png')} alt="사진"/>
                 </div>
             </div>
             <div className="InLineend" ref={threeRef} onWheel = {(e) =>updown(3, e)}>

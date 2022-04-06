@@ -17,22 +17,27 @@ import Facilities from './InnerSide/Facilities';
 import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
 import axios from "axios";
+import useDrawCommArea from '../actions/useDrawCommArea';
+import { red } from '@mui/material/colors';
 // Sidebar 넓이
 const drawerWidth = 600;
 
-const Sidebar = ({open, dongData, getOpen}) => {
+const Sidebar = ({getOpen}) => {
     const [value, setValue] = React.useState('1');
     const [facdongdata, setFacdongdata] = React.useState();
     const [recodongdata, setRecodongdata] = React.useState();
     const theme = useTheme();
-
+    const dispatch = useDispatch();
     const guselectName = useSelector(state => state.setMap.eodiyaMap.guNum);
     const dongselectName = useSelector(state => state.setMap.eodiyaMap.dongNum);
     const RightSideBarMode = useSelector(state => state.setMap.eodiyaMap.rightSideBarMode);
-    console.log("rererere", RightSideBarMode);
+    const isopen = useSelector(state => state.setMap.eodiyaMap.isRightOpen);
+
+    const {drawCommArea} = useDrawCommArea();
+    
     useEffect (()=>{
         setValue('1');
-    }, [dongData])
+    }, [dongselectName])
 
     const getFacData = (g, d) =>{
         axios
@@ -56,6 +61,7 @@ const Sidebar = ({open, dongData, getOpen}) => {
     }
 
     const getRecoData = (g, d) =>{
+        dispatch(actionCreators.setIsLoading(true));
         axios
             .get(
                 `/search/${g}/${d}/recommend`,
@@ -68,7 +74,13 @@ const Sidebar = ({open, dongData, getOpen}) => {
             )
             .then((response) => {
                 console.log(response.data, "from reco");
+                console.log(response.data.commercialAreaInfo);
+                dispatch(actionCreators.setCommArea(response.data.commercialAreaInfo));
+                dispatch(actionCreators.setIsLoading(false));
                 setRecodongdata(response.data)
+            })
+            .then(() => {
+                drawCommArea();
             })
             .catch((response) => {
                 console.log("Error!");
@@ -89,7 +101,7 @@ const Sidebar = ({open, dongData, getOpen}) => {
     };
     //  Sidebar 닫기 누르면 닫기
     const handleDrawerClose = () => {
-        getOpen(false);
+        dispatch(actionCreators.setIsRightOpen(false), []);
     };
     
     const DrawerHeader = styled('div')(({ theme }) => ({
@@ -108,14 +120,15 @@ const Sidebar = ({open, dongData, getOpen}) => {
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                         width: drawerWidth,
+                        backgroundColor:'rgb(229, 240, 249)',
                         },
                     }}
                     variant="persistent"
                     anchor="right"
-                    open={open}
+                    open={isopen}
                     >
                     {/* Sidebar 닫는 부분 */}
-                    <DrawerHeader>
+                    <DrawerHeader sx={{backgroundColor:'rgb(34, 158, 251)'}}>
                         <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>
@@ -126,16 +139,16 @@ const Sidebar = ({open, dongData, getOpen}) => {
                     <TabContext value={value}>
                         <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
                             <Tab label="기본정보" value="1" />
-                            <Tab label="상세정보" value="2" />
+                            {/* <Tab label="상세정보" value="2" /> */}
                             <Tab label="위치정보" value="3" />
                             <Tab label="추천정보" value="4" />
                         </TabList>
                         <TabPanel value="1">
-                            <Primary dongData={dongData[0]}/>
+                            <Primary/>
                         </TabPanel>
-                        <TabPanel value="2">
+                        {/* <TabPanel value="2">
                             <Visual dongData={dongData[0]}/>
-                        </TabPanel>
+                        </TabPanel> */}
                         <TabPanel value="3">
                             <Facilities facdongdata={facdongdata}/>
                         </TabPanel >

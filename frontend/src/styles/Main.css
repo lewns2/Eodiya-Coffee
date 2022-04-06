@@ -11,7 +11,9 @@ body {
     height: 100vh;
     overflow-y: auto;
 }
-
+.m-15{
+    margin:15px;
+}
 /* 화면에서 스크롤바 안보이게 */
 .OutLine::-webkit-scrollbar {
     display: none;
@@ -23,11 +25,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
+    font-size: 20px;
 }
-.InLine:first-child{
-    background:radial-gradient(white, blue);
-}
+/* .InLine:first-child{
+    background:radial-gradient(white, white, rgb(0, 176, 252));
+} */
 .InLineend{
     height : 97vh;
     width : 100vw;
@@ -38,9 +40,9 @@ body {
 }
 .innerSec{
     width: 100vw;
-    height: 480px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    height: 90%;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: row;
     margin: auto;
@@ -48,13 +50,13 @@ body {
     justify-content: space-around;
     padding-left: 30px;
     padding-right: 30px;
-    background:linear-gradient(to right, white, blue);
+    /* background:linear-gradient(to left, white, rgb(0, 176, 252)); */
 }
-.innerSec{
+.innerSec2{
     width: 100vw;
-    height: 480px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    height: 90%;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: row;
     margin: auto;
@@ -62,12 +64,16 @@ body {
     justify-content: space-around;
     padding-left: 30px;
     padding-right: 30px;
-    background:linear-gradient(to right, white, blue);
+    /* background:linear-gradient(to left, white, rgb(0, 176, 252)); */
 }
 .innerSec:nth-child(2n){
-    background:linear-gradient(to left, white, blue);
+    /* background:linear-gradient(to left, white, rgb(0, 176, 252)); */
 }
 .imgSec{
-    height: 100%;
-    width : auto;
+    height: 140px;
+    width: 100px;
+}
+.imgSec2{
+    height: 600px;
+    width: 1000px;
 }

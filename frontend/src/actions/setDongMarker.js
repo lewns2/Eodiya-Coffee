@@ -5,48 +5,6 @@ const {kakao} = window;
 // 동 마커 그리기 && 동 구역 들고 있음.
 const setDongMarker = (kakaoMap, dongInfo, polygon) => {
 
-    console.log(dongInfo);
-    var marker_new = [];
-    var imageSrc = markerImg; 
-        
-    var imageSize = new kakao.maps.Size(30, 30);;
-    
-    for(var i=0; i<dongInfo.length; i++) {
-            // var imageSize = new kakao.maps.Size(60, 60); 
-        
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-            var latlng = new kakao.maps.LatLng(dongInfo[i].dongCenterYPoint, dongInfo[i].dongCenterXPoint)
-            var marker = new kakao.maps.Marker({
-                position: latlng,
-                title : dongInfo[i].dongName,
-                image : markerImage,
-                opacity : 0.8,  // 투명도
-            });
-            
-            // 마커를 따로 넣어주자.
-            marker.setMap(kakaoMap);
-            marker_new.push(marker);
-
-            // #2.1 마커 커스텀하기 => 정확히는 그냥 오버레이 덮어씌우기
-            var content = dongInfo[i].name;
-
-            var position = new kakao.maps.LatLng(dongInfo[i].dongCenterYPoint, dongInfo[i].dongCenterXPoint);
-
-            var customOverlay = new kakao.maps.CustomOverlay({
-                map: kakaoMap,
-                clickable: true,
-                position: position,
-                content: content,
-                yAnchor: 1.85,
-                xAnchor : 0.45,
-            });
-            
-
-            // #2.2 개별 마커 클릭 이벤트
-            kakao.maps.event.addListener(marker, 'click', moveAndDisplayDongArea(marker, latlng, dongInfo[i].dongName, dongInfo[i].dongXYPoint));
-    }
-
     function moveAndDisplayDongArea(customOverlay, loca, dongName, dongXYPoint) {
             return function() {
                 var moveLatLon = loca;
@@ -90,8 +48,6 @@ const setDongMarker = (kakaoMap, dongInfo, polygon) => {
                     polygon.setOptions({ fillColor: '#fff' });
                     customOverlay.setMap(null);
                 });
-
-                // getArea(dongName);
             }
     }
 
@@ -99,3 +55,4 @@ const setDongMarker = (kakaoMap, dongInfo, polygon) => {
 
 export default setDongMarker;
 
+/**/
