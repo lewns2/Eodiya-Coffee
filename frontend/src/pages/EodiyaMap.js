@@ -53,7 +53,6 @@ const EodiyaMap = () => {
 
     return (
         <div>
-            <h3>REDUX 테스트용입니다.</h3>
             <Map></Map>
         </div>
     )

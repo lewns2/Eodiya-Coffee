@@ -61,9 +61,8 @@ const Map=(props)=>{
     }
    
     // 2. 검색 키워드를 관리하는 훅
-    const [searchKeyword, setSearchKeyword] = useState("");
+    const [searchKeyword, setSearchKeyword] = useState("서울");
   const dispatch = useDispatch();
-  const { getArea } = useGetArea();
   const {marker} = useCafeMarker();
   useEffect(() => {
       
@@ -74,6 +73,33 @@ const Map=(props)=>{
         level : 8,
       };
       const map = new kakao.maps.Map(container, options);
+
+      
+
+      // #3.1 장소 검색 객체를 생성
+      const ps = new window.kakao.maps.services.Places();
+
+      // #3.2 키워드로 장소를 검색
+      ps.keywordSearch(searchKeyword, placesSearchCB);
+
+      console.log("Map : ", searchKeyword, "로 변경되었음.")
+
+      // #3.3 키워드 검색 완료 시 호출되는 콜백함수
+      function placesSearchCB(data, status, pagination) {
+        if (status === kakao.maps.services.Status.OK) {
+          
+          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+          // LatLngBounds 객체에 좌표를 추가
+          let bounds = new kakao.maps.LatLngBounds();
+
+          for (let i=0; i<data.length; i++) {
+              bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+          }       
+
+          // 3.4 검색된 장소 위치를 기준으로 지도 범위를 재설정
+          map.setBounds(bounds);
+        }
+      }
 
       // 2. 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
       var zoomControl = new kakao.maps.ZoomControl();
@@ -88,6 +114,8 @@ const Map=(props)=>{
           dispatch(actionCreators.setMaplevel(level));
         } 
       });
+
+      
       
     //주소-좌표 변환 객체 생성
       var geocoder = new kakao.maps.services.Geocoder();
@@ -128,6 +156,8 @@ const Map=(props)=>{
             }
         }    
       }
+      
+
 
     }
     move();
@@ -138,7 +168,7 @@ const Map=(props)=>{
     <div className="Map">
       <div id="map" style={{width:"100vw", height:"90vh"}}>
         <StyledEngineProvider injectFirst>
-          <Search setSearchKeyword={setSearchKeyword}/>
+          <Search value = {searchKeyword} setSearchKeyword={setSearchKeyword}/>
           <Comm cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong}/>
           <RightSide getOpen={getOpen}/>
         </StyledEngineProvider >

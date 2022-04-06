@@ -97,7 +97,7 @@ const useDrawCommArea = () => {
             kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
                 polygon.setOptions({ fillColor: '#fff' });
                         
-                customOverlay.setPosition(mouseEvent.latLng);
+                customOverlay.setPosition(new kakao.maps.LatLng(value.centerYPoint, value.centerXPoint));
                 customOverlay.setMap(kakaoMap);
             });
 
