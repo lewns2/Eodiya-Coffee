@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 // import useGeolocation from "../actions/useGeolocation";
 import useSetMarker from "../actions/useSetMarker";
+import useCafeMarker from "../actions/useCafeMarker";
 
 
 
@@ -11,7 +12,7 @@ const EodiyaMap = () => {
 
     // useSelector는 reducer에 정의되어 있는 것을 가져온다.
     // const map = useSelector(state => state.setMap.map);
-    const { map, mapLevel, guMarker, dongMarker } = useSelector(state => ({
+    const { map, mapLevel, guMarker, dongMarker} = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
         mapLevel : state.setMap.eodiyaMap.mapLevel,
         guMarker : state.setMap.eodiyaMap.guMarker,
@@ -19,7 +20,6 @@ const EodiyaMap = () => {
     }))
 
     const {setMarker} = useSetMarker();
-
     // const { getGeo } = useGeolocation();
        
     useEffect(() => {

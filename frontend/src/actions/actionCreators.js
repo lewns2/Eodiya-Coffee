@@ -12,7 +12,8 @@ const SET_ISRIGHTOPEN = "setIsRightOpen";
 const SET_SEARCHEDDONGDATA = "setSearchedDongData";
 const SET_LEFTDONG = "setLeftDong";
 const SET_COMMAREA = "setCommArea"
-
+const SET_CAFELIST = "setCafeList";
+const SET_CAFEMARKER = "addCafeMarker"
 // action method
 const setMap = (map) => {
     return {
@@ -107,6 +108,18 @@ const setCommArea = (data) => {
     }
 }
 
+const setCafeList = (data) => {
+    return {
+        type: SET_CAFELIST,
+        cafeList: data,
+    }
+}
+const addCafeMarker = (data) =>{
+    return {
+        type: SET_CAFEMARKER,
+        cafemarker : data
+    }
+}
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -120,7 +133,9 @@ export const actionCreators = {
     setIsRightOpen,
     setSearchedDongData,
     setLeftDong,
-    setCommArea
+    setCommArea,
+    setCafeList,
+    addCafeMarker,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

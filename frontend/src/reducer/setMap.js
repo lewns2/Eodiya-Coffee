@@ -74,9 +74,12 @@ const setMap = (state = {
         },
         leftDong : [],
         commArea : [],
+        cafeList : [],
+        cafeMarker :[],
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
+    console.log(state);
     switch (action.type) {
         case "setMap":
             console.log("setting...", action);
@@ -187,6 +190,14 @@ const setMap = (state = {
                 }
             }
 
+        case "setCafeList":
+            return {
+                ...state,
+                eodiyaMap :{
+                    ...state.eodiyaMap,
+                    cafeList: action.cafeList,
+                }
+            }
         default:
             return state;
     };
