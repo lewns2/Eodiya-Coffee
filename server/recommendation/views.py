@@ -32,3 +32,23 @@ def recommend(request):
     # new_coms = CommercialAreaPeopleSerializer1020(coms, many=True).data
     # print(new_coms)
     return JsonResponse({'1': '1'})
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def recommend_kid(request, gu_name):
+    data = {}
+    # gu_name이 없는 경우 objects.all을 하면된다.
+    gu_sanggwon = SeoulGuDong.objects.filter(guName = gu_name)
+    # print(gu_sanggwon.values())
+    sanggwon_data = []
+    for sanggwon in gu_sanggwon:
+        sanggwon_code = CommercialArea.objects.filter(seoulGuDong_id=sanggwon.dongCode)
+        # print(sanggwon_code.values())
+        sanggwon_data.append(sanggwon_code)
+    print(sanggwon_data[0].values())
+    # for sanggwon in sanggwon_data[0]:
+    #     sanggwon_building = 
+        
+    
+    return JsonResponse(data)
