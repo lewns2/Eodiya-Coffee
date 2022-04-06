@@ -49,7 +49,7 @@ def signout(request):
     if user:
         if check_password(password, user.password):
             user.delete()
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_200_OK)
 
         return Response({"비밀번호가": "틀림"})
 
