@@ -166,8 +166,10 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     const dongList = () => {
         
         const result = [];
-        for(let i=0; i<dong[selectgu].length; i++){
-            result.push(<MenuItem key={i} value={i}>{dong[selectgu][i]}</MenuItem>)
+        if(dong[selectgu]){
+            for(let i=0; i<dong[selectgu].length; i++){
+                result.push(<MenuItem key={i} value={i}>{dong[selectgu][i]}</MenuItem>)
+            }
         }
         return result;
     }
