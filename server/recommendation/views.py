@@ -186,7 +186,7 @@ def play_recommend(request, gu_name):
     for d in Data:
         if d not in data:
             data.append(d) 
-    
+    ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
     data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['peopleTotal'],-x['schoolTotal']))[:5]
     return JsonResponse(data_sortedby_lifepeople, safe=False)
