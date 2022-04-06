@@ -353,7 +353,6 @@ def machine_recommend(request, gu_name):
             commercial_company = CommercialAreaCompany.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             commercial_building = CommercialAreaBuilding.objects.filter(commercialArea = commercial_area.commercialAreaCode)
 
-            
             try:
                 tmp_data['subwayNumber'] = commercial_building[0].subwayNumber
                 tmp_data['trainstationNumber'] = commercial_building[0].chuldoNumber
