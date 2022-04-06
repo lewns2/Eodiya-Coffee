@@ -11,9 +11,10 @@ const SET_RIGHTSIDEBARMODE = "setRightSideBarMode";
 const SET_ISRIGHTOPEN = "setIsRightOpen";
 const SET_SEARCHEDDONGDATA = "setSearchedDongData";
 const SET_LEFTDONG = "setLeftDong";
-const SET_COMMAREA = "setCommArea"
+const SET_COMMAREA = "setCommArea";
 const SET_CAFELIST = "setCafeList";
-const SET_CAFEMARKER = "addCafeMarker"
+const SET_CAFEMARKER = "addCafeMarker";
+const SET_ISLOADING = "setIsLoading";
 // action method
 const setMap = (map) => {
     return {
@@ -120,6 +121,12 @@ const addCafeMarker = (data) =>{
         cafemarker : data
     }
 }
+const setIsLoading = (isLoading) =>{
+    return {
+        type: SET_ISLOADING,
+        isLoading : isLoading
+    }
+}
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -136,6 +143,7 @@ export const actionCreators = {
     setCommArea,
     setCafeList,
     addCafeMarker,
+    setIsLoading,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

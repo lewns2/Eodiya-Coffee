@@ -24,16 +24,23 @@ export const useSelectDongData = () => {
             )
             .then((response) => {
                 console.log(response.data, "from search");
-                leftDong = response.data.XYInfo[0];
-                dispatch(actionCreators.setGuNum(guName), guName);
-                dispatch(actionCreators.setDongNum(dongName), [dongName]);
-                dispatch(actionCreators.setRightSideBarMode(1), []);
-                dispatch(actionCreators.setIsRightOpen(true), []);
-                dispatch(actionCreators.setSearchedDongData(response.data.detail[0]), []);
+                if (response.data.detail[0] != "상권이 없습니다."){
+                    leftDong = response.data.XYInfo[0];
+                    dispatch(actionCreators.setGuNum(guName), [guName]);
+                    dispatch(actionCreators.setDongNum(dongName), [dongName]);
+                    dispatch(actionCreators.setRightSideBarMode(1), []);
+                    dispatch(actionCreators.setIsRightOpen(true), []);
+                    dispatch(actionCreators.setSearchedDongData(response.data.detail[0]), []);
+                }else{
+                    alert("상권이 없습니다! 다른 동을 선택해주세요")
+                    dispatch(actionCreators.setIsRightOpen(false), []);
+                }
             })
             .then(()=> {
-                map.setLevel(6);
-                map.panTo(new kakao.maps.LatLng(leftDong.dongCenterYPoint, leftDong.dongCenterXPoint));
+                if(leftDong.length != 0){
+                    map.setLevel(6);
+                    map.panTo(new kakao.maps.LatLng(leftDong.dongCenterYPoint, leftDong.dongCenterXPoint));
+                }
             })
             .catch((response) => {
                 console.log("Error!");

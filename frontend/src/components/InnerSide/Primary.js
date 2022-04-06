@@ -112,9 +112,9 @@ function Primary() {
                 </Table>
             </TableContainer> */}
             <h3 className='m-Y'>해당 동의 연 평균 매출은 
-                <span> {moneyDot(dongData.quarterRevenue)}원</span>
+                <b className="font-red"> {moneyDot(dongData.quarterRevenue)}원</b>
                 이며 주문당 평균 단가는 
-                <span>{moneyDot(dongData.perRevenue)}원</span>
+                <b className="font-red">{moneyDot(dongData.perRevenue)}원</b>
                 으로 추정합니다.
             </h3>
             <div className='m-Y' id="chart">
@@ -127,9 +127,9 @@ function Primary() {
             </div>
             <p>본 데이터는 동 별 평균 데이터이며 몇몇 지역은 크게 차이날 수 있습니다.</p>
             <h3 className='m-Y'>해당 동의 이용하는 세대는
-            <span> {dongData.ageGroup}</span>
+            <b className="font-red"> {dongData.ageGroup}</b>
             이며 핫 타임은  
-            <span> {dongData.timeGroup} </span>
+            <b className="font-red"> {dongData.timeGroup} </b>
             사이입니다.
             </h3>
             <hr/>
@@ -161,7 +161,7 @@ function Primary() {
                 </Table>
             </TableContainer> */}
             <h3 className='m-Y'>해당 동의 평균 카페의 수는 
-                <span> {dongData.numberStore}점포</span>
+                <b className="font-red"> {dongData.numberStore}점포</b>
                  입니다.
             </h3>
             <div id="chart">
@@ -174,13 +174,13 @@ function Primary() {
             </div>
             <p>본 데이터는 동 별 평균 데이터이며 몇몇 지역은 크게 차이날 수 있습니다.</p>
             <h3 className='m-Y'>해당 동의 개업 점포수는 평균적으로
-                <span> {dongData.openingStore}점포</span>
+                <b className="font-red"> {dongData.openingStore}점포</b>
                  이며
-                <span> {dongData.openingRate}%</span>
+                <b className="font-red"> {dongData.openingRate}%</b>
                  입니다. 폐업 점포수는
-                <span> {dongData.closureStore}점포</span>
+                <b className="font-red"> {dongData.closureStore}점포</b>
                  이며
-                <span> {dongData.closureRate}%</span>
+                <b className="font-red"> {dongData.closureRate}%</b>
                  입니다.
             </h3>
             <hr/>
@@ -208,7 +208,7 @@ function Primary() {
                 </Table>
             </TableContainer> */}
             <h3 className='m-Y'>해당 동의 평균 생활인구는
-                <span> {dongData.likePeople}명</span>
+                <b className="font-red"> {dongData.likePeople}명</b>
                  입니다.
             </h3>
             <div id="chart">
@@ -221,9 +221,9 @@ function Primary() {
             </div>
             <p>본 데이터는 동 별 평균 데이터이며 몇몇 지역은 크게 차이날 수 있습니다.</p>
             <h3 className='m-Y'>해당 동의 생활인구는 남성이
-                <span> {dongData.maleLikePeople}명</span>
+                <b className="font-red"> {dongData.maleLikePeople}명</b>
                  이며, 여성이
-                <span> {dongData.femaleLikePeople}명</span>
+                <b className="font-red"> {dongData.femaleLikePeople}명</b>
                  입니다.
             </h3>
         </div>

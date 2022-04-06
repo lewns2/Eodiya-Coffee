@@ -76,6 +76,7 @@ const setMap = (state = {
         commArea : [],
         cafeList : [],
         cafeMarker :[],
+        isLoading :false,
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -198,6 +199,14 @@ const setMap = (state = {
                     cafeList: action.cafeList,
                 }
             }
+        case "setIsLoading":
+        return {
+            ...state,
+            eodiyaMap :{
+                ...state.eodiyaMap,
+                isLoading: action.isLoading,
+            }
+        }
         default:
             return state;
     };

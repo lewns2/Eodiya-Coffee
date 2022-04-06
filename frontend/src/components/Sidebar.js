@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
 import axios from "axios";
 import useDrawCommArea from '../actions/useDrawCommArea';
+import { red } from '@mui/material/colors';
 // Sidebar 넓이
 const drawerWidth = 600;
 
@@ -60,6 +61,7 @@ const Sidebar = ({getOpen}) => {
     }
 
     const getRecoData = (g, d) =>{
+        dispatch(actionCreators.setIsLoading(true));
         axios
             .get(
                 `/search/${g}/${d}/recommend`,
@@ -74,6 +76,7 @@ const Sidebar = ({getOpen}) => {
                 console.log(response.data, "from reco");
                 console.log(response.data.commercialAreaInfo);
                 dispatch(actionCreators.setCommArea(response.data.commercialAreaInfo));
+                dispatch(actionCreators.setIsLoading(false));
                 setRecodongdata(response.data)
             })
             .then(() => {
@@ -117,6 +120,7 @@ const Sidebar = ({getOpen}) => {
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                         width: drawerWidth,
+                        backgroundColor:'rgb(229, 240, 249)',
                         },
                     }}
                     variant="persistent"
@@ -124,7 +128,7 @@ const Sidebar = ({getOpen}) => {
                     open={isopen}
                     >
                     {/* Sidebar 닫는 부분 */}
-                    <DrawerHeader>
+                    <DrawerHeader sx={{backgroundColor:'rgb(34, 158, 251)'}}>
                         <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>

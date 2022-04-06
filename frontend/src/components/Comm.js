@@ -263,6 +263,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             id="demo-simple-select"
                             value={selectgu}
                             label="구"
+                            sx ={{minWidth: 100, maxHeight: 40}}
+                            MenuProps={MenuProps}
                             onChange={handleGuSelect}
                         >
                             {guList()}
@@ -275,6 +277,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             id="demo-simple-select"
                             value={selectdong}
                             label="동"
+                            sx ={{minWidth: 100, maxHeight: 40}}
+                            MenuProps={MenuProps}
                             onChange={handleDongSelect}
                         >
                             {dongList()}
@@ -334,7 +338,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 >
-                <Typography>상권 분석</Typography>
+                <Typography>테마 분석</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <FormControl sx={{m:1}}>
@@ -344,6 +348,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             id="demo-simple-select"
                             value={selectgu}
                             label="구"
+                            sx ={{minWidth: 100, maxHeight: 40}}
+                            MenuProps={MenuProps}
                             onChange={handleGuSelect}
                         >
                             {guList()}
@@ -356,6 +362,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             id="demo-simple-select"
                             value={selectdong}
                             label="동"
+                            sx ={{minWidth: 100, maxHeight: 40}}
+                            MenuProps={MenuProps}
                             onChange={handleDongSelect}
                         >
                             {dongList()}
@@ -368,6 +376,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             id="demo-simple-select"
                             value={selecttheme}
                             label="테마"
+                            sx ={{minWidth: 100, maxHeight: 40}}
+                            MenuProps={MenuProps}
                             onChange={handleThemeSelect}
                         >
                             {themeList()}
