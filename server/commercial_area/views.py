@@ -66,26 +66,49 @@ def commercial_area_gu(request, guName):
 @permission_classes([AllowAny])
 def commercial_area_dong(request, guName, dongName):
     data = {
-        'commercialAreaInfo' : [],
+        'A' : [],
     }
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
-    for i in range(len(commercialArea)):
-        str1 = commercialArea[i].commercialAreaXYPoint.replace('[', '').replace(']', '')
-        lst1 = str1.split(', ')
-        res1 = []
-        temp = []
-        for j in range(len(lst1)):
-            temp.append(float(lst1[j]))
-            if j%2 == 1:
-                res1.append(temp)
-                temp = []
-        data['commercialAreaInfo'].append(
-            {
-                'commercialAreaCode' : commercialArea[i].commercialAreaCode,
-                'commercialAreaName' : commercialArea[i].commercialAreaName,
-                'commercialAreaXYPoint' : res1,
-            }
-        )
+    # data = {
+    #     'commercialAreaInfo' : [],
+    # }
+    # commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    # for i in range(len(commercialArea)):
+    #     str1 = commercialArea[i].commercialAreaXYPoint.replace('[', '').replace(']', '')
+    #     lst1 = str1.split(', ')
+    #     res1 = []
+    #     temp = []
+    #     for j in range(len(lst1)):
+    #         temp.append(float(lst1[j]))
+    #         if j%2 == 1:
+    #             res1.append(temp)
+    #             temp = []
+    #     data['commercialAreaInfo'].append(
+    #         {
+    #             'commercialAreaCode' : commercialArea[i].commercialAreaCode,
+    #             'commercialAreaName' : commercialArea[i].commercialAreaName,
+    #             'commercialAreaXYPoint' : res1,
+    #         }
+    #     )
+    # data = {
+    #     'dongInfo' : []
+    # }
+    # commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    # num = len(commercialArea)
+    # if num == 0:
+    #     data['dongInfo'].append('상권이 없습니다.')
+    # else:
+    #     likePeople = 0
+    #     numberStore = 0
+    #     for i in range(len(commercialArea)):
+    #         likePeople += commercialArea[i].commercialareapeople.likePeople
+    #         numberStore += commercialArea[i].commercialareanumber.numberStore
+    #     data['dongInfo'].append(
+    #         {
+    #             'likePeople' : likePeople,
+    #             'numberStore' : numberStore,
+    #         }
+    #     )
+
     return JsonResponse(data)
 
 
@@ -182,29 +205,43 @@ def dong_info(request, guName, dongName):
                 "likePeopleAge60" : round(likePeopleAge60, 2),
             }
         )
-    seoulGuDong = SeoulGuDong.objects.filter(dongName=dongName)
-    for i in range(len(seoulGuDong)):
-        str2 = seoulGuDong[i].dongXYPoint.replace('[', '').replace(']', '')
-        lst2 = str2.split(', ')
-        res2 = []
-        temp = []
-        for j in range(len(lst2)):
-            temp.append(float(lst2[j]))
-            if j%2 == 1:
-                res2.append(temp)
-                temp = []
-        data['XYInfo'].append(
-            {
-                'dongCode': seoulGuDong[i].dongCode,
-                'dongName': seoulGuDong[i].dongName,
-                'dongCenterXPoint': seoulGuDong[i].dongCenterXPoint,
-                'dongCenterYPoint': seoulGuDong[i].dongCenterYPoint,
-                'dongXYPoint': res2
-            }
-        )
-        break
         
-    
+
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    num = len(commercialArea)
+    if num == 0:
+        data['XYInfo'].append('상권이 없습니다.')
+    else:
+        likePeople = 0
+        numberStore = 0
+        for i in range(len(commercialArea)):
+            likePeople += commercialArea[i].commercialareapeople.likePeople
+            numberStore += commercialArea[i].commercialareanumber.numberStore
+        
+        seoulGuDong = SeoulGuDong.objects.filter(dongName=dongName)
+        for i in range(len(seoulGuDong)):
+            str2 = seoulGuDong[i].dongXYPoint.replace('[', '').replace(']', '')
+            lst2 = str2.split(', ')
+            res2 = []
+            temp = []
+            for j in range(len(lst2)):
+                temp.append(float(lst2[j]))
+                if j%2 == 1:
+                    res2.append(temp)
+                    temp = []
+            data['XYInfo'].append(
+                {
+                    'dongCode': seoulGuDong[i].dongCode,
+                    'dongName': seoulGuDong[i].dongName,
+                    'likePeople' : likePeople,
+                    'numberStore' : numberStore,
+                    'dongCenterXPoint': seoulGuDong[i].dongCenterXPoint,
+                    'dongCenterYPoint': seoulGuDong[i].dongCenterYPoint,
+                    'dongXYPoint': res2
+                }
+            )
+            break   
+        
     return JsonResponse(data)
 
 
@@ -348,26 +385,32 @@ def dong_info_recommend(request, guName, dongName):
             
             
     ### recommend1 ###
-    ### 시장성 = (기초구역 내 분기 매출액 / 분기 점포수) - (시군구 내 분기 매출액 / 분기 점포수) -> 동 분기 매출액 / 점포수 - 구 분기 매출액 / 점포수
-    guCommercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
-    guRevenue, guStoreNumber = 0, 0
-    len1 = len(guCommercialArea)
+    ### ### 시장성 = (기초구역 내 분기 매출액 / 분기 점포수) - (시군구 내 분기 매출액 / 분기 점포수) -> 상권 분기 매출액 / 점포수 - 동 분기 매출액 / 점포수
+    # guCommercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName)
+    # guRevenue, guStoreNumber = 0, 0
+    # len1 = len(guCommercialArea)
     
-    for i in range(len(guCommercialArea)):
-        guRevenue += guCommercialArea[i].commercialarearevenue.quarterRevenue
-        guStoreNumber += guCommercialArea[i].commercialareanumber.numberStore
-    gu_res = guRevenue // guStoreNumber
+    # for i in range(len(guCommercialArea)):
+    #     guRevenue += guCommercialArea[i].commercialarearevenue.quarterRevenue
+    #     guStoreNumber += guCommercialArea[i].commercialareanumber.numberStore
+    # gu_res = guRevenue // guStoreNumber
     
     dongCommercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
-    len2 = len(dongCommercialArea)
-    res = []
+    dongRevenue, dongStoreNumber = 0, 0
     for i in range(len(dongCommercialArea)):
-        dongRevenue, dongStoreNumber = 0, 0
         dongRevenue += dongCommercialArea[i].commercialarearevenue.quarterRevenue
         dongStoreNumber += dongCommercialArea[i].commercialareanumber.numberStore
-        dong_res = dongRevenue // dongStoreNumber
-        시장성 = dong_res - gu_res
-        res.append([dongCommercialArea[i], 시장성])
+    dong_res = dongRevenue / dongStoreNumber
+    
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    res = []
+    for i in range(len(commercialArea)):
+        revenue, storeNumber = 0, 0
+        revenue += commercialArea[i].commercialarearevenue.quarterRevenue
+        storeNumber += commercialArea[i].commercialareanumber.numberStore
+        commercialArea_res = revenue / storeNumber
+        시장성 = commercialArea_res - dong_res
+        res.append([commercialArea[i], 시장성, commercialArea_res, dong_res])
     res.sort(key=lambda x:-x[1])
     score = []
     score1 = []
@@ -377,7 +420,9 @@ def dong_info_recommend(request, guName, dongName):
         data['recommend1'].append(
                         {
                             'commercialAreaName' : res[i][0].commercialAreaName,
-                            '시장성' : res[i][1]
+                            '시장성' : round(res[i][1], 3),
+                            'commercialArea_res' : round(res[i][2], 3),
+                            'dong_res' : round(res[i][3], 3),
                         }
                     )
     if data['recommend1'] == []:
@@ -386,18 +431,12 @@ def dong_info_recommend(request, guName, dongName):
     
     ### recommend2 ###
     ### 성장성 = 당년 분기 매출액 / 전년 동분기 매출액 -> 이번 분기 매출액 / 전 분기 매출액
-    df1 = pd.read_csv('../Data/commercialAreaData/서울시 우리마을가게 상권분석서비스(상권-추정매출).csv', encoding='CP949')
-    df1 = df1.loc[(df1['기준_분기_코드'] == 2) & (df1['서비스_업종_코드_명'] == '커피-음료')]
     res = []
     for i in range(len(dongCommercialArea)):
         code = dongCommercialArea[i].commercialAreaCode
         revenue3 = dongCommercialArea[i].commercialarearevenue.quarterRevenue
-        temp_df = df1.loc[df1['상권_코드'] == code]
-        if temp_df.empty:
-            성장성 = 0
-        else:
-            revenue2 = temp_df['분기당_매출_금액'].values[0]
-            성장성 = revenue3 / revenue2
+        revenue2 = dongCommercialArea[i].commercialareaplus.quarterRevenue
+        성장성 = revenue3 / revenue2
         res.append([dongCommercialArea[i].commercialAreaName, 성장성])
     res.sort(key=lambda x:-x[1])
     score2 = []
@@ -406,7 +445,7 @@ def dong_info_recommend(request, guName, dongName):
         data['recommend2'].append(
                         {
                             'commercialAreaName' : res[i][0],
-                            '성장성' : res[i][1]
+                            '성장성' : round(res[i][1], 4)
                         }
                     )
     if data['recommend2'] == []:
@@ -420,7 +459,7 @@ def dong_info_recommend(request, guName, dongName):
         openingStore = dongCommercialArea[i].commercialareanumber.openingStore
         closureStore = dongCommercialArea[i].commercialareanumber.closureStore
         if openingStore == 0:
-            안정성 = 0
+            안정성 = 0.5
         else:
             안정성 = 1 - (closureStore / openingStore)
         res.append([dongCommercialArea[i].commercialAreaName, 안정성])
@@ -431,7 +470,7 @@ def dong_info_recommend(request, guName, dongName):
         data['recommend3'].append(
                         {
                             'commercialAreaName' : res[i][0],
-                            '안정성' : res[i][1]
+                            '안정성' : round(res[i][1], 3)
                         }
                     )
     if data['recommend3'] == []:
@@ -455,9 +494,9 @@ def dong_info_recommend(request, guName, dongName):
     
     score.sort(key=lambda x:-x[1])
     for i in range(len(score)):
-        if i < len(score) // 3:
+        if i < round(len(score) / 3):
             score[i][1] = 'Good'
-        elif len(score) // 3 <= i < len(score) * 2 // 3:
+        elif round(len(score) / 3) <= i <= round(len(score) * 2 / 3):
             score[i][1] = 'Normal'
         else:
             score[i][1] = 'Bad'
@@ -474,11 +513,22 @@ def dong_info_recommend(request, guName, dongName):
             if j%2 == 1:
                 res1.append(temp)
                 temp = []
+        minX, minY = 1000000, 1000000
+        maxX, maxY = 0, 0
+        for j in range(len(res1)):
+            minX = min(minX, res1[j][0])
+            minY = min(minY, res1[j][1])
+            maxX = max(maxX, res1[j][0])
+            maxY = max(maxY, res1[j][1])
+        centerXPoint = (minX + maxX) / 2
+        centerYPoint = (minY + maxY) / 2
         data['commercialAreaInfo'].append(
             {
                 'grade' : score[i][1],
                 'commercialAreaCode' : commercialArea[i].commercialAreaCode,
                 'commercialAreaName' : commercialArea[i].commercialAreaName,
+                'centerXPoint' : centerXPoint,
+                'centerYPoint' : centerYPoint,
                 'commercialAreaXYPoint' : res1,
             }
         )
@@ -510,7 +560,7 @@ def dong_info_similar(request, guName, dongName):
                  '독산2동', '오금동', '천호2동', '증산동', '낙성대동', '도화동', '연남동', '금호2.3가동', '독산1동', '휘경2동', '고덕2동', '발산1동', '후암동', '원효로1동',
                  '성현동', '대학동', '중화2동', '송천동', '청구동', '응암3동', '쌍문2동', '송정동', '홍제1동', '목1동', '잠실본동', '천호1동', '반포1동', '이태원1동',
                  '용산2가동', '당산1동', '성수1가1동', '상계1동', '방배2동', '화 곡1동', '자양3동', '북가좌2동', '양재1동', '개봉2동', '개포2동', '신월5동', '을지로동',
-                 '광장동', '길음2동', '신월1동', '상계2동', '성내1동', '동화동', '논현1동', '서초2동', '종암동', '홍제2동', '조원동', '청 담동', '행운동', '도곡2동', '암사3동',
+                 '광장동', '길음2동', '신월1동', '상계2동', '성내1동', '동화동', '논현1동', '서초2동', '종암동', '홍제2동', '조원동', '청담동', '행운동', '도곡2동', '암사3동',
                  '응암1동', '신월2동', '양평2동', '반포4동', '장충동', '창3동', '중계4동', '방이2동', '역촌동', '대림3동', '월계1동', '황학동', '망원2동', '답십리1동', '정릉4동',
                  '화곡3동', '문정1동', '공릉1동', '신정4동', '도림동', '방학1동', '번1동', '갈현1동', '망우본동', '용신동', '구산동', '성수2가3동', '방배1동', '신월4동', '신사1동',
                  '송파1동', '일원1동', '회현동', '사직동', '쌍문1동', '회기동', '등촌2동', '혜화동', '역삼1동', '노량진1동', '보문동', '난곡동', '길동', '이문1동', '자양1동',
@@ -521,41 +571,73 @@ def dong_info_similar(request, guName, dongName):
                  '번3동', '개봉3동', '상도2동', '목2동', '장안1동', '수유1동', '인수동', '독산4동', '명일1동', '청룡동', '목4동', '남현동', '구의1동', '중곡3동', '방배3동',
                  '천호3동', '인헌동', '방학2동', '둔촌2동', '부암동', '남가좌2동', '신당동', '신당5동', '독산3동', '동선동', '정릉2동', '방학3동', '대치4동', '양재2동']
       
-    dong_info =[]
-    for i in range(len(dong_list)):
-        commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dong_list[i])
-        if len(commercialArea) == 0:
-            dong_info.append([0, '{}', '{}'.format(i, i)])
+    similar = '없음'
+    gap = int(1e18)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    num = len(commercialArea)
+    if num == 0:
+        data['similar'].append(similar)
+        return JsonResponse(data)
+    quarterRevenue_ = 0
+    ageGroupDict = dict()
+    timeGroupDict = dict()
+    for i in range(len(commercialArea)):
+        quarterRevenue_ += commercialArea[i].commercialarearevenue.quarterRevenue
+        if ageGroupDict.get(commercialArea[i].commercialarearevenue.ageGroup) == None:
+            ageGroupDict[commercialArea[i].commercialarearevenue.ageGroup] = 1
         else:
-            quarterRevenue = 0
-            ageGroupDict = dict()
-            timeGroupDict = dict()
+            ageGroupDict[commercialArea[i].commercialarearevenue.ageGroup] += 1
+        if timeGroupDict.get(commercialArea[i].commercialarearevenue.timeGroup) == None:
+            timeGroupDict[commercialArea[i].commercialarearevenue.timeGroup] = 1
+        else:
+            timeGroupDict[commercialArea[i].commercialarearevenue.timeGroup] += 1
+    quarterRevenue_ /= num
+    max_temp = max(ageGroupDict.values())
+    for key in ageGroupDict:
+        if ageGroupDict[key] == max_temp:
+            ageGroup_ = key
+            break
+    max_temp = max(timeGroupDict.values())
+    for key in timeGroupDict:
+        if timeGroupDict[key] == max_temp:
+            timeGroup_ = key
+            break
+    
+    
+    for k in range(len(dong_list)):
+        if dong_list[k] == dongName: continue
+        dongCommercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dong_list[k])
+        num = len(dongCommercialArea)
+        if num == 0: continue
+        quarterRevenue = 0
+        ageGroupDict = dict()
+        timeGroupDict = dict()
+        for i in range(len(dongCommercialArea)):
+            quarterRevenue += dongCommercialArea[i].commercialarearevenue.quarterRevenue
+            if ageGroupDict.get(dongCommercialArea[i].commercialarearevenue.ageGroup) == None:
+                ageGroupDict[dongCommercialArea[i].commercialarearevenue.ageGroup] = 1
+            else:
+                ageGroupDict[dongCommercialArea[i].commercialarearevenue.ageGroup] += 1
+            if timeGroupDict.get(dongCommercialArea[i].commercialarearevenue.timeGroup) == None:
+                timeGroupDict[dongCommercialArea[i].commercialarearevenue.timeGroup] = 1
+            else:
+                timeGroupDict[dongCommercialArea[i].commercialarearevenue.timeGroup] += 1
+        quarterRevenue /= num
+        max_temp = max(ageGroupDict.values())
+        for key in ageGroupDict:
+            if ageGroupDict[key] == max_temp:
+                ageGroup = key
+                break
+        max_temp = max(timeGroupDict.values())
+        for key in timeGroupDict:
+            if timeGroupDict[key] == max_temp:
+                timeGroup = key
+                break
         
-            for i in range(len(commercialArea)):
-                quarterRevenue += commercialArea[i].commercialarearevenue.quarterRevenue
-                if ageGroupDict.get(commercialArea[i].commercialarearevenue.ageGroup) == None:
-                    ageGroupDict[commercialArea[i].commercialarearevenue.ageGroup] = 1
-                else:
-                    ageGroupDict[commercialArea[i].commercialarearevenue.ageGroup] += 1
-                if timeGroupDict.get(commercialArea[i].commercialarearevenue.timeGroup) == None:
-                    timeGroupDict[commercialArea[i].commercialarearevenue.timeGroup] = 1
-                else:
-                    timeGroupDict[commercialArea[i].commercialarearevenue.timeGroup] += 1
-            quarterRevenue /= len(commercialArea)
-            max_temp = max(ageGroupDict.values())
-            for key in ageGroupDict:
-                if ageGroupDict[key] == max_temp:
-                    ageGroup = key
-                    break
-            max_temp = max(timeGroupDict.values())
-            for key in timeGroupDict:
-                if timeGroupDict[key] == max_temp:
-                    timeGroup = key
-                    break
-            dong_info.append([quarterRevenue, ageGroup, timeGroup])
-    ans = dongName
-    gap = 0
-    for i in range(len(dong_info)):
-        if dong_list[i] == dongName:
-            continue
-        
+        if ageGroup_ == ageGroup and timeGroup_ == timeGroup:
+            if abs(quarterRevenue_ - quarterRevenue) < gap:
+                similar = dong_list[k]
+                gap = abs(quarterRevenue_ - quarterRevenue)
+                
+    data['similar'].append(similar)
+    return JsonResponse(data)

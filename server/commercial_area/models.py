@@ -124,3 +124,8 @@ class CommercialAreaBuilding(models.Model):
 
     subwayNumber = models.IntegerField()
     busStopNumber = models.IntegerField()
+    
+class CommercialAreaPlus(models.Model):
+    commercialArea = models.OneToOneField(
+        CommercialArea, on_delete=models.CASCADE)
+    quarterRevenue = models.BigIntegerField()
