@@ -166,8 +166,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 guArray.map(value => {
                     if(value.name === gu[selectgu]) {
                         console.log(value.name, gu[selectgu]);
-                        map.panTo(new kakao.maps.LatLng(value.lat, value.lng));
                         map.setLevel(6);
+                        map.panTo(new kakao.maps.LatLng(value.lat, value.lng));
                     }
                 })
             })
