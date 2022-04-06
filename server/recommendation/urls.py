@@ -3,5 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('recommend/', views.recommend)
+    path('recommend/study/<str:gu_name>/', views.study_recommend)
+    # path('recommend/brunch/<str:gu_name>/', views.recommend)
+    # path('recommend/<str:gu_name>/', views.recommend)
 ]
