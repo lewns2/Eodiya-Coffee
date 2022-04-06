@@ -26,6 +26,7 @@ import PetsIcon from '@mui/icons-material/Pets';
 
 import { useSelector, useDispatch } from "react-redux";
 import useSetDongMarker from "../actions/useSetDongMarker"
+import useSetThemeMarker from "../actions/useSetThemeMarker";
 
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
@@ -93,9 +94,13 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     
     const dispatch = useDispatch();
     const {getSelectedDongData} = useSelectDongData();
+    const { setThemeMarker } = useSetThemeMarker();
 
-    const { map } = useSelector(state => ({
+    const { map, guMarker, guOverlay, guArray } = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
+        guMarker : state.setMap.eodiyaMap.guMarker,
+        guOverlay : state.setMap.eodiyaMap.guOverlay,
+        guArray : state.setMap.eodiyaMap.guArray,
     }))
 
     var [displayDivision, setdisplayDivision] = useState(0);
@@ -142,7 +147,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 }
             )
             .then((response) => {
-                console.log(response.data, "from search");
+                console.log(response.data, "from theme search");
+                setThemeMarker(response.data);
                 dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
                 dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
                 dispatch(actionCreators.setIsRightOpen(true), []);
@@ -150,6 +156,22 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 dispatch(actionCreators.setThemeGuData(response.data), []);
                 dispatch(actionCreators.setThemeNum(selecttheme), []);
             })
+            .then(() => {
+                guMarker.map(value => {
+                    value.setMap(null);
+                })
+                guOverlay.map(value => {
+                    value.setMap(null);
+                })
+                guArray.map(value => {
+                    if(value.name === gu[selectgu]) {
+                        console.log(value.name, gu[selectgu]);
+                        map.panTo(new kakao.maps.LatLng(value.lat, value.lng));
+                        map.setLevel(6);
+                    }
+                })
+            })
+    
             .catch((response) => {
                 console.log("Error!");
                 console.log(response, "from search");
