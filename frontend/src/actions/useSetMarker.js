@@ -11,13 +11,17 @@ var kakaoMap = {};
 var guList = [];
 var marker_old = [];
 var guOverlay = [];
+var old_guPoly = []
+var old_dongPoly = [];
 
 const useSetMarker = () => {
     
-    const { map, guArray, guMarker } = useSelector(state => ({
+    const { map, guArray, guMarker,dongMarker, guPoly } = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
         guArray : state.setMap.eodiyaMap.guArray,
         guMarker : state.setMap.eodiyaMap.guMarker,
+        dongMarker : state.setMap.eodiyaMap.dongMarker,
+        guPoly : state.setMap.eodiyaMap.guPoly,
     }))
     const dispatch = useDispatch();
     const { getArea } = useGetArea();
@@ -25,6 +29,8 @@ const useSetMarker = () => {
     kakaoMap = map;
     guList = guArray;
     marker_old = guMarker;
+    old_dongPoly = dongMarker;
+    old_guPoly = guPoly;
 
     const setMarker = () => {
         
@@ -68,6 +74,12 @@ const useSetMarker = () => {
             // // #2.3 줌인 & 마커 위치로 지도 이동
             function moveAndDisplayGuArea(customOverlay, lat, lng, guName) {
                 return function() {
+                    old_dongPoly.map(value => {
+                        value.setMap(null);
+                    })
+                    old_guPoly.map(value => {
+                        value.setMap(null);
+                    })
                     map.setLevel(7); 
                     map.panTo(new kakao.maps.LatLng(lat, lng));
                     getArea(guName);

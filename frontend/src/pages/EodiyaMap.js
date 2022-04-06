@@ -21,7 +21,6 @@ const EodiyaMap = () => {
     }))
 
     const {setMarker} = useSetMarker();
-    // const { getGeo } = useGeolocation();
        
     useEffect(() => {
         console.log(mapLevel);

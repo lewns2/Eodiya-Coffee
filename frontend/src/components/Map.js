@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useCafeMarker from '../actions/useCafeMarker';
 
 const { kakao } = window;
+var kakaoMap = {};
 const Map=(props)=>{
     //분석하기 클릭하면 
     const [open, setOpen] = React.useState(false);
@@ -61,9 +62,14 @@ const Map=(props)=>{
     }
    
     // 2. 검색 키워드를 관리하는 훅
-    const [searchKeyword, setSearchKeyword] = useState("서울");
+    const [searchKeyword, setSearchKeyword] = useState("");
   const dispatch = useDispatch();
   const {marker} = useCafeMarker();
+
+  const { map } = useSelector(state => ({
+    map : state.setMap.eodiyaMap.map,
+  }))
+  kakaoMap = map;
   useEffect(() => {
       
       // 1. 지도 객체 생성
@@ -74,15 +80,12 @@ const Map=(props)=>{
       };
       const map = new kakao.maps.Map(container, options);
 
-      
 
       // #3.1 장소 검색 객체를 생성
       const ps = new window.kakao.maps.services.Places();
 
       // #3.2 키워드로 장소를 검색
       ps.keywordSearch(searchKeyword, placesSearchCB);
-
-      console.log("Map : ", searchKeyword, "로 변경되었음.")
 
       // #3.3 키워드 검색 완료 시 호출되는 콜백함수
       function placesSearchCB(data, status, pagination) {
@@ -168,11 +171,12 @@ const Map=(props)=>{
     <div className="Map">
       <div id="map" style={{width:"100vw", height:"90vh"}}>
         <StyledEngineProvider injectFirst>
-          <Search value = {searchKeyword} setSearchKeyword={setSearchKeyword}/>
+          <Search setSearchKeyword={setSearchKeyword}/>
           <Comm cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong}/>
           <RightSide getOpen={getOpen}/>
         </StyledEngineProvider >
       </div>
+      {searchKeyword}
       <Fab id="centerAddr" className='Location' variant="extended" />
     </div>
   );  

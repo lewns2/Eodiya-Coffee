@@ -11,6 +11,8 @@ export const useSelectDongData = () => {
         map : state.setMap.eodiyaMap.map,
     }))
     const getSelectedDongData=(guName, dongName) =>{
+
+        console.log("누가 왔니 : ", guName, dongName);
         var leftDong = [];
         axios
             .get(

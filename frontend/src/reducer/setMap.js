@@ -43,7 +43,7 @@ const setMap = (state = {
         guArray : locationSeoulGu,
         guMarker : [],
         guOverlay : [],
-        guPolygon : [],
+        guPoly : [],
         dongMarker : [],
         guArea : [],
         dongArea : [],
@@ -223,6 +223,14 @@ const setMap = (state = {
                 eodiyaMap:{
                     ...state.eodiyaMap,
                     cafeMarker : action.cafeMarker,
+                }
+            }
+        case "setGuPoly":
+            return {
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    guPoly : action.guPoly,
                 }
             }
         default:
