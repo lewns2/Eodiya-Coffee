@@ -113,7 +113,6 @@ def get_cafes(request, guName, dongName, tag):
         'cafePoint': [],
         'cafeTagKeyword': [],
     }
-    tmp_cafes = []
 
     # print(word_grouping[tag])
     for cafe in cafes:
@@ -146,13 +145,11 @@ def get_cafes(request, guName, dongName, tag):
                         tmp_cc.append(c['commercialAreaCode'])
                     tmp_cc = list(set(tmp_cc))  # 중복제거
                     tmp_data['commercialCode'] = tmp_cc
-
         Data.append(deepcopy(tmp_data))
         data = []
         for d in Data:
             if d not in data:
                 data.append(d)
-
     return JsonResponse(data, safe=False)
 
 
