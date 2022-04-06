@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore } from "redux"; 
 import Main from './components/Main';
-
+import { ThemeProvider } from '@mui/material/styles';
 // const store = configureStore(reducers, {
 // });
 
@@ -28,14 +28,24 @@ const App = () => {
     alert(isMain)
     setIsMain(false)
   }
+
+ const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      "BinggraeMelona-Bold"
+    ].join(','),
+  }
+});
   return (
-    <Provider store={store}>
-      <div>
-        {/* <Nav/>
-        <EodiyaMap/> */}
-        <Main/>
-      </div>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <div>
+          <Nav/>
+          <EodiyaMap/>
+          {/* <Main/> */}
+        </div>
+      </Provider>
+    </ThemeProvider>
   );
 };
 
