@@ -17,16 +17,21 @@ import axios from 'axios';
 import actionCreators from '../actions/actionCreators';
 import useSelectDongData from '../actions/useSelectDongData';
 
+import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
 import ChildCareRoundedIcon from '@mui/icons-material/ChildCareRounded';
-import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined';
-import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 import PetsIcon from '@mui/icons-material/Pets';
+import VideogameAssetRoundedIcon from '@mui/icons-material/VideogameAssetRounded';
+import CoffeeRoundedIcon from '@mui/icons-material/CoffeeRounded';
+import LibraryBooksRoundedIcon from '@mui/icons-material/LibraryBooksRounded';
+import EmojiFoodBeverageRoundedIcon from '@mui/icons-material/EmojiFoodBeverageRounded';
+import RollerSkatingRoundedIcon from '@mui/icons-material/RollerSkatingRounded';
+import SportsBarRoundedIcon from '@mui/icons-material/SportsBarRounded';
 
 import { useSelector, useDispatch } from "react-redux";
 import useSetDongMarker from "../actions/useSetDongMarker"
-
+import IconButton from '@mui/material/IconButton';
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
@@ -62,14 +67,6 @@ const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담�
 const tags =[
         "브런치", "키즈", "반려동물", "오락", "책", "디저트", "커피전문", "공부", "다방", "테마", "카페Bar" 
     ];
-// const tags = [
-//     {'id': 0, 'tag': '스터디'},
-//     {'id': 1, 'tag': '디저트'},
-//     {'id': 2, 'tag': '키즈'},
-//     {'id': 3, 'tag': '브런치'},
-//     {'id': 4, 'tag': '무인'},
-//     {'id': 5, 'tag': '애견'},
-// ]
 const theme =[
 
 ];
@@ -83,14 +80,14 @@ const MenuProps = {
     },
   },
 };
-
-const icon = [<MenuBookRoundedIcon/>, <CakeRoundedIcon/>, <ChildCareRoundedIcon/>, <BakeryDiningOutlinedIcon/>, <SmartToyOutlinedIcon/>, <PetsIcon/>];
+//            브런치                    키즈                    반려동물        오락                        책                          디저트                  커피                공부                    다방                테마            bar
+const icon = [<RestaurantRoundedIcon/>, <ChildCareRoundedIcon/>, <PetsIcon/>, <VideogameAssetRoundedIcon/>, <MenuBookRoundedIcon/>, <CakeRoundedIcon/>,<CoffeeRoundedIcon/> ,<LibraryBooksRoundedIcon/>,<EmojiFoodBeverageRoundedIcon/>, <RollerSkatingRoundedIcon/>,<SportsBarRoundedIcon/>];
 
 const {kakao} = window;
 
 const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
-    var [selectgu, setSelectGu] = useState(0); //상권분석
-    var [selectdong, setSelectDong] = useState(0);
+    var [selectgu, setSelectGu] = useState(0);          //상권분석
+    var [selectdong, setSelectDong] = useState(0);      
     var [selecttheme, setSelectTheme] = useState(0);
     
     const dispatch = useDispatch();
@@ -224,7 +221,11 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 )
                 .then(res =>{
                     console.log("카페 응답", res.data);
-                    dispatch(actionCreators.setCafeList(res.data));
+                    if(res.data.length===1 &&'' ===res.data[0].dongCode){
+                        alert('해당 하는 카페가 없어요. 다른 카테고리를 선택해주세요');
+                    }else{
+                        dispatch(actionCreators.setCafeList(res.data));
+                    }
                 })
                 .catch(res =>{
                     console.log('서버랑 연결 실패');
@@ -235,7 +236,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         //카페 태그 가져오기
         const list = [];
         for(let i=0; i<tags.length; i++){
-            list.push(<Button variant='outlined' key={i} onClick={() =>CafeList(tags[i])} >{tags[i]}</Button>)
+            list.push(<Button variant='outlined' size='small' key={i} onClick={() =>CafeList(tags[i])} >{icon[i]}{tags[i]}</Button>)
+            // list.push(<IconButton size='small' edge='end' key={i} onClick={() =>CafeList(tags[i])} >{tags[i]}</IconButton>)
         }
         return list;
     }

@@ -62,10 +62,10 @@ const Map=(props)=>{
    
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-  const dispatch = useDispatch();
-  const { getArea } = useGetArea();
-  const {marker} = useCafeMarker();
-  useEffect(() => {
+    const dispatch = useDispatch();
+    const { getArea } = useGetArea();
+    useCafeMarker();
+    useEffect(() => {
       
       // 1. 지도 객체 생성
       const container = document.getElementById('map');

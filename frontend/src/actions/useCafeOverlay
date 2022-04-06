@@ -1,0 +1,8 @@
+import { useSelector } from "react-redux"
+
+const useCafeOverlay = (value) =>{
+    const info = value;
+        console.log(value);
+}
+
+export default useCafeOverlay;
