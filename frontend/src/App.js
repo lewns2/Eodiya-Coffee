@@ -31,8 +31,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <div>
-        {/* <Nav/> */}
-        {/* <EodiyaMap/> */}
+        <Nav/>
+        <EodiyaMap/>
         <Main/>
       </div>
     </Provider>
