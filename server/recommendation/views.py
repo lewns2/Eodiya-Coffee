@@ -90,3 +90,47 @@ def study_recommend(request, gu_name):
                 break
     # result가 리스트내의 딕셔너리 형태이므로 바로 Response
     return Response(result)
+
+
+def dessert_recommend(request, gu_name):
+    # 출력용 리스트
+    result = []
+    # 상권 모두 조회하여 coms에 저장
+    # 구 상관없이 요청이 왔을 경우
+    if gu_name == 'none':
+        coms = CommercialAreaPeople.objects.all().values('commercialArea', 'maleLikePeople', 'femaleLikePeople').annotate(
+            life_people_sum2030=Sum('likePeopleAge20')+Sum('likePeopleAge30')).order_by('-life_people_sum2030')[:20]
+    # 구가 설정되어 요청이 왔을 경우
+    else:
+        # 해당 구에 있는 동 목록 뽑아옴
+        dongs = SeoulGuDong.objects.filter(guName=gu_name).values('dongCode')
+        coms_list = []
+        # 각 동에 있는 상권들 불러와서 coms_list에 상권코드를 담아줌
+        for dong in dongs:
+            coms_in_dong = CommercialArea.objects.filter(
+                seoulGuDong_id=dong['dongCode']).values('commercialAreaCode')
+            for com_in_dong in list(coms_in_dong):
+                coms_list.append(com_in_dong['commercialAreaCode'])
+
+        # 상권코드를 하나씩 불러와서 생활인구 조회
+        coms = []
+        for coms_element in coms_list:
+            my_new_search = CommercialAreaPeople.objects.filter(commercialArea=coms_element).values('commercialArea').annotate(
+                sum1020=Sum('likePeopleAge10')+Sum('likePeopleAge20'))
+
+            # 상권 코드와 생활인구를 coms에 저장
+            coms.append(
+                {'commercialArea': my_new_search[0]['commercialArea'], 'sum1020': my_new_search[0]['sum1020']})
+
+        # 상위20개만 정렬
+        coms = sorted(coms, key=lambda x: x['sum1020'], reverse=True)[:20]
+
+    # 상권 번호만 추출하여 coms_nums에 저장
+    coms_nums = []
+    for com in coms:
+        coms_nums.append(com['commercialArea'])
+    print(coms)
+    print(coms_nums)
+    # 상권 번호에 해당하는 집객시설 중 schoolNumber2 ~ universityNumber만 뽑아와서 세 학교의 합산수치를 sumSchools라는 새로운 칼럼으로 나타냄
+    tmp = []
+    return
