@@ -65,13 +65,21 @@ const useSetDongMarker = () => {
             });
             
             polygons.push(polygon);
+
             // #2.5.1 영역에 효과 추가하기
-            const customOverlay = new kakao.maps.CustomOverlay({});
+            const content = `<div class ="label">` +
+                            `<span class="left"></span><span class="center">${dongName}</span>` +
+                            `<span class="right"></span>` +
+                         `</div>`;
+
+            const customOverlay = new kakao.maps.CustomOverlay({
+                content : content,
+            });
                                 
             kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
                 polygon.setOptions({ fillColor: '#09f' });
                         
-                customOverlay.setPosition(mouseEvent.latLng);
+                customOverlay.setPosition(new kakao.maps.LatLng(dongLat, dongLng));
                 customOverlay.setMap(kakaoMap);
             });
 

@@ -88,36 +88,47 @@ const Map=(props)=>{
           dispatch(actionCreators.setMaplevel(level));
         } 
       });
-
-      // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
-      // function displayCenterInfo(result, status) {
-      //   if (status === kakao.maps.services.Status.OK) {
-      //       var infoDiv = document.getElementById('centerAddr');
-
-      //       for(var i = 0; i < result.length; i++) {
-      //           // 행정동의 region_type 값은 'H' 이므로
-      //           if (result[i].region_type === 'H') {
-      //               infoDiv.innerHTML = result[i].address_name;
-      //               break;
-      //           }
-      //       }
-      //   }    
-      // }
       
     //주소-좌표 변환 객체 생성
-    var geocoder = new kakao.maps.services.Geocoder();
+      var geocoder = new kakao.maps.services.Geocoder();
 
-    function move() {
-      if(cafeGu !== "" && cafeDong !== ""){
-        console.log('이동...........')
-        geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
-          if(status === kakao.maps.services.Status.OK){
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            map.setLevel(6);
-            map.panTo(coords);
-          }
-        })
+      function move() {
+        if(cafeGu !== "" && cafeDong !== ""){
+          console.log('이동...........')
+          geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
+            if(status === kakao.maps.services.Status.OK){
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+              map.setLevel(6);
+              map.panTo(coords);
+            }
+          })
+        }
+
+        // #4.3 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+      kakao.maps.event.addListener(map, 'idle', function() {
+          searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+      });
+
+      function searchAddrFromCoords(coords, callback) {
+        // 좌표로 행정동 주소 정보를 요청합니다
+        geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
       }
+
+      // #4.4 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+      function displayCenterInfo(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var infoDiv = document.getElementById('centerAddr');
+
+            for(var i = 0; i < result.length; i++) {
+                // 행정동의 region_type 값은 'H' 이므로
+                if (result[i].region_type === 'H') {
+                    infoDiv.innerHTML = result[i].address_name;
+                    break;
+                }
+            }
+        }    
+      }
+
     }
     move();
     dispatch(actionCreators.setMap(map), [map]);

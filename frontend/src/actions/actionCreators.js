@@ -14,6 +14,7 @@ const SET_LEFTDONG = "setLeftDong";
 const SET_COMMAREA = "setCommArea"
 const SET_CAFELIST = "setCafeList";
 const SET_CAFEMARKER = "addCafeMarker"
+const SET_GUOVERLAY = "setGuOverlay";
 // action method
 const setMap = (map) => {
     return {
@@ -120,6 +121,14 @@ const addCafeMarker = (data) =>{
         cafemarker : data
     }
 }
+
+const setGuOverlay = (data) => {
+    return {
+        type : SET_GUOVERLAY,
+        guOverlay : data,
+    }
+}
+
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -136,6 +145,7 @@ export const actionCreators = {
     setCommArea,
     setCafeList,
     addCafeMarker,
+    setGuOverlay,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)
