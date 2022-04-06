@@ -64,7 +64,7 @@ const Map=(props)=>{
     const [searchKeyword, setSearchKeyword] = useState("");
   const dispatch = useDispatch();
   const { getArea } = useGetArea();
-  useCafeMarker();
+  const {marker} = useCafeMarker();
   useEffect(() => {
       
       // 1. 지도 객체 생성

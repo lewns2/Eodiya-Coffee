@@ -217,6 +217,14 @@ const setMap = (state = {
                 isLoading: action.isLoading,
             }
         }
+        case "setCafeMarker":
+            return{
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    cafeMarker : action.cafeMarker,
+                }
+            }
         default:
             return state;
     };
