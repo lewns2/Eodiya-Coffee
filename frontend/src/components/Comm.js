@@ -31,7 +31,7 @@ const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
     "서대문구","서초구","성동구","성북구","송파구","양천구",
-    "영등포구","용산구","은평구","종로구","중구","중랑구"];
+    "영등포구","용산구","은평구","종로구","중구","중랑구", "미지정"];
 
 const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담동', '삼성1동', '삼성2동', '대치1동', '대치2동', '대치4동', '역삼1동', '역삼2동', '도곡1동', '도곡2동', '개포1동', '개포2동', '개포4동', '세곡동', '일원본동', '일원1동', '일원2동', '수서동']
         , ['강일동', '상일동', '명일1동', '명일2동', '고덕1동', '고덕2동', '암사1동', '암사2동', '암사3동', '천호1동', '천호2동', '천호3동', '성내1동', '성내2동', '성내3동', '길동', '둔촌1동', '둔촌2동']
@@ -70,9 +70,7 @@ const tags =[
 //     {'id': 4, 'tag': '무인'},
 //     {'id': 5, 'tag': '애견'},
 // ]
-const theme =[
-
-];
+const theme =["키즈카페", "디저트카페", "스터디카페", "북카페", "브런치카페", "무인 카페", "커피 전문점", "술 & 카페", "액티비티?오락?카페"];
 const ITEM_HEIGHT = 40;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -109,41 +107,41 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         getSelectedDongData(gu[selectgu], dong[selectgu][selectdong]);
     }
     const handleThemeSide = () =>{
-        console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`)
+        console.log(`recommend/play/${gu[selectgu]}`)
         
-        // axios
-        //     .get(
-        //         `/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`,
-        //         {
-        //         headers: {
-        //             "Content-type": "application/json",
-        //             Accept: "*/*",
-        //         },
-        //         }
-        //     )
-        //     .then((response) => {
-        //         console.log(response.data, "from search");
-        //         dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
-        //         dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
-        //         dispatch(actionCreators.setRightSideBarMode(2), []);
-        //         getOpen(true);
-        //         getOpen2(response.data.dongInfo);
-        //     })
-        //     .catch((response) => {
-        //         console.log("Error!");
-        //         console.log(response, "from search");
-        //     });
+        axios
+            .get(
+                `recommendation/recommend/study/${gu[selectgu]}`,
+                {
+                headers: {
+                    "Content-type": "application/json",
+                    Accept: "*/*",
+                },
+                }
+            )
+            .then((response) => {
+                console.log(response.data, "from search");
+                dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+                dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+                dispatch(actionCreators.setRightSideBarMode(2), []);
+                dispatch(actionCreators.setIsRightOpen(true), []);
+                // dispatch(actionCreators.setSearchedThemeData(response.data), []);
+            })
+            .catch((response) => {
+                console.log("Error!");
+                console.log(response, "from search");
+            });
     }
-    const guList = () => {
-        var n =1;
+    const guList = (a) => {
+        
         const result = [];
-        for(let i=0; i<gu.length; i++){
+        for(let i=0; i<gu.length-1+a; i++){
             result.push(<MenuItem key={i} value={i}>{gu[i]}</MenuItem>)
         }
         return result;
     }
     const dongList = () => {
-        var n =1;
+        
         const result = [];
         for(let i=0; i<dong[selectgu].length; i++){
             result.push(<MenuItem key={i} value={i}>{dong[selectgu][i]}</MenuItem>)
@@ -153,7 +151,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     const themeList = () => {
         const result = [];
         for(let i =0; i<theme.length; i++){
-            result.push(<MenuItem key={i} value={theme[i]}>{theme[i]}</MenuItem>)
+            result.push(<MenuItem key={i} value={i}>{theme[i]}</MenuItem>)
         }
         return result;
     }
@@ -267,7 +265,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             MenuProps={MenuProps}
                             onChange={handleGuSelect}
                         >
-                            {guList()}
+                            {guList(0)}
                         </Select>
                     </FormControl>
                     <FormControl sx={{m:1}}>
@@ -352,25 +350,11 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             MenuProps={MenuProps}
                             onChange={handleGuSelect}
                         >
-                            {guList()}
+                            {guList(1)}
                         </Select>
                     </FormControl>
                     <FormControl sx={{m:1}}>
-                        <InputLabel id="demo-simple-select-label">동</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={selectdong}
-                            label="동"
-                            sx ={{minWidth: 100, maxHeight: 40}}
-                            MenuProps={MenuProps}
-                            onChange={handleDongSelect}
-                        >
-                            {dongList()}
-                        </Select>
-                    </FormControl>
-                    <FormControl sx={{m:1}}>
-                        <InputLabel id="demo-simple-select-label">동</InputLabel>
+                        <InputLabel id="demo-simple-select-label">테마</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
