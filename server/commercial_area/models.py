@@ -22,6 +22,8 @@ class CommercialArea(models.Model):
     commercialAreaName = models.CharField(max_length=50)  # 상권 이름
     commercialAreaChange = models.CharField(max_length=10)  # 상권의 변동사항
     commercialAreaXYPoint = models.TextField()  # 상권 경계의 X, Y 좌표
+    commercialCenterXPoint = models.FloatField(default=0)  # 상권 중심의 x좌표
+    commercialCenterYPoint = models.FloatField(default=0)  # 상권 중심의 y좌표
 
 
 class CommercialAreaRevenue(models.Model):
@@ -37,7 +39,7 @@ class CommercialAreaRevenue(models.Model):
     # 시간대 17~24시 매출
     revenue1721 = models.BigIntegerField()
     revenue2124 = models.BigIntegerField()
-    
+
     ageGroup = models.CharField(max_length=50)  # 매출 주 연령대
     timeGroup = models.CharField(max_length=50)  # 매출 주 시간대
 
@@ -64,8 +66,7 @@ class CommercialAreaPeople(models.Model):
     femaleLikePeople = models.IntegerField()  # 여성 생활 인구
 
     # 20대 여성, 30대 여성 데이터
-    
-    
+
     likePeopleAge10 = models.IntegerField()  # 10대 수
     likePeopleAge20 = models.IntegerField()  # 20대 수
     likePeopleAge30 = models.IntegerField()  # 30대 수
@@ -100,9 +101,9 @@ class CommercialAreaBuilding(models.Model):
 
     schoolNumber = models.IntegerField()
     # 초 중 고 따로 필요
-    schoolNumber1 = models.IntegerField()#초
-    schoolNumber2 = models.IntegerField()#중
-    schoolNumber3 = models.IntegerField()#고
+    schoolNumber1 = models.IntegerField()  # 초
+    schoolNumber2 = models.IntegerField()  # 중
+    schoolNumber3 = models.IntegerField()  # 고
 
     universityNumber = models.IntegerField()
     departmentStoreNumber = models.IntegerField()
@@ -114,7 +115,6 @@ class CommercialAreaBuilding(models.Model):
     # 공항, 철도
     airportNumber = models.IntegerField()
     chuldoNumber = models.IntegerField()
-    
 
     subwayNumber = models.IntegerField()
     busStopNumber = models.IntegerField()
