@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore } from "redux"; 
+import Main from './components/Main';
 
 // const store = configureStore(reducers, {
 // });
@@ -32,7 +33,7 @@ const App = () => {
       <div>
         <Nav/>
         <EodiyaMap/>
-
+        {/* <Main/> */}
       </div>
     </Provider>
   );

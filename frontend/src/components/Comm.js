@@ -15,6 +15,7 @@ import GuDong from '../utils/GuDong.json';
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
+import useSelectDongData from '../actions/useSelectDongData';
 
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
@@ -86,36 +87,17 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     var [selecttheme, setSelectTheme] = useState(0);
     
     const dispatch = useDispatch();
+    const {getSelectedDongData} = useSelectDongData();
 
     var [displayDivision, setdisplayDivision] = useState(0);
     var [search, setSearch] = useState('outlined');
     const handleSide = () =>{
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
-        axios
-            .get(
-                `/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`,
-                {
-                headers: {
-                    "Content-type": "application/json",
-                    Accept: "*/*",
-                },
-                }
-            )
-            .then((response) => {
-                console.log(response.data, "from search");
-                dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
-                dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
-                dispatch(actionCreators.setRightSideBarMode(1), []);
-                dispatch(actionCreators.setIsRightOpen(true), []);
-                dispatch(actionCreators.setSearchedDongData(response.data.dongInfo[0]), []);
-            })
-            .catch((response) => {
-                console.log("Error!");
-                console.log(response, "from search");
-            });
+        getSelectedDongData(gu[selectgu], dong[selectgu][selectdong]);
     }
     const handleThemeSide = () =>{
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`)
+        
         // axios
         //     .get(
         //         `/search/${gu[selectgu]}/${dong[selectgu][selectdong]}/${theme[selecttheme]}`,
