@@ -38,9 +38,9 @@ def signup(request):
     return
 
 
-@api_view(['DELETE'])
+@api_view(['PUT, DELETE'])
 def signout(request):
-    print(request)
+    # print(request)
     user_email = request.data.get('email')
     password = request.data.get('password')
 
