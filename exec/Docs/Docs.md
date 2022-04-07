@@ -20,7 +20,7 @@
 | Name       | Version |
 | ---------- | ------- |
 | React      |         |
-| Javascript |         |
+| Javascript | 16.14.0 |
 | redux      |         |
 |            |         |
 
@@ -31,6 +31,7 @@
 | python | 3.7.9                   |
 | MySQL  | 8.0.28-0ubuntu0.20.04.3 |
 |        |                         |
+
 
 ### DevOps
 
