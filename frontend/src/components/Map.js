@@ -64,7 +64,7 @@ const Map=(props)=>{
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
   const dispatch = useDispatch();
-  const {marker} = useCafeMarker();
+  useCafeMarker();
 
   const { map } = useSelector(state => ({
     map : state.setMap.eodiyaMap.map,
