@@ -25,10 +25,10 @@ function Facilities({facdongdata}) {
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
-                        <TableCell>병원 수</TableCell>
-                        <TableCell align="right">약국 수</TableCell>
-                        <TableCell align="right">은행 수</TableCell>
-                        <TableCell align="right">슈퍼마켓 수</TableCell>
+                        <TableCell>병원</TableCell>
+                        <TableCell align="right">약국</TableCell>
+                        <TableCell align="right">은행</TableCell>
+                        <TableCell align="right">슈퍼마켓</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -50,9 +50,9 @@ function Facilities({facdongdata}) {
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
-                        <TableCell>유치원 수</TableCell>
-                        <TableCell align="right">학교 수(초중고)</TableCell>
-                        <TableCell align="right">대학교 수</TableCell>
+                        <TableCell>유치원</TableCell>
+                        <TableCell align="right">학교(초중고)</TableCell>
+                        <TableCell align="right">대학교</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -73,9 +73,9 @@ function Facilities({facdongdata}) {
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
-                        <TableCell>버스터미널 수</TableCell>
-                        <TableCell align="right">지하철역 수</TableCell>
-                        <TableCell align="right">버스정거장 수</TableCell>
+                        <TableCell>버스터미널</TableCell>
+                        <TableCell align="right">지하철역</TableCell>
+                        <TableCell align="right">버스정거장</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -96,9 +96,9 @@ function Facilities({facdongdata}) {
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
-                        <TableCell>백화점 수</TableCell>
-                        <TableCell align="right">극장 수</TableCell>
-                        <TableCell align="right">숙박시설 수</TableCell>
+                        <TableCell>백화점</TableCell>
+                        <TableCell align="right">극장</TableCell>
+                        <TableCell align="right">숙박시설</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>

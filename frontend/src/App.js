@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Nav from './components/Nav';
 import Map from './components/Map';
 import EodiyaMap from './pages/EodiyaMap';
@@ -40,9 +40,16 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <div>
-          <Nav/>
-          <EodiyaMap/>
-          {/* <Main/> */}
+          { !isMain &&
+            <Fragment>
+              <Nav/>
+              <EodiyaMap/>
+            </Fragment>
+          }
+          { isMain &&
+            
+              <Main mainend={mainend}/>
+          }
         </div>
       </Provider>
     </ThemeProvider>

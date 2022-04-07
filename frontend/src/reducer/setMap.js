@@ -81,6 +81,7 @@ const setMap = (state = {
         cafeList : [],
         cafeMarker :[],
         isLoading :false,
+        themeArea : [],
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -249,6 +250,14 @@ const setMap = (state = {
                 eodiyaMap:{
                     ...state.eodiyaMap,
                     themeNum : action.themeNum,
+                }
+            }
+        case "themeArea":
+            return {
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    themeArea : action.themeArea,
                 }
             }
         default:
