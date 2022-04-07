@@ -13,7 +13,7 @@ const locationSeoulGu = [
     {lat :37.56014356, lng : 126.9959681, name: "중구"},
     {lat :37.53138497, lng : 126.979907, name: "용산구"},
     {lat :37.55102969, lng : 127.0410585, name: "성동구"},
-    {lat :37.54670608, lng : 127.0857435	, name: "광진구"},
+    {lat :37.54670608, lng : 127.0857435, name: "광진구"},
     {lat :37.58195655, lng : 127.0548481, name: "동대문구"},
     { lat :37.59780259, lng : 127.0928803, name: "중랑구"},
     { lat :37.6057019, lng : 127.0175795, name: "성북구"},
@@ -43,7 +43,7 @@ const setMap = (state = {
         guArray : locationSeoulGu,
         guMarker : [],
         guOverlay : [],
-        guPolygon : [],
+        guPoly : [],
         dongMarker : [],
         guArea : [],
         dongArea : [],
@@ -74,6 +74,8 @@ const setMap = (state = {
             likePeopleAge50: 0,
             likePeopleAge60: 0
         },
+        themeGuData: [],
+        themeNum:0,
         leftDong : [],
         commArea : [],
         cafeList : [],
@@ -223,6 +225,30 @@ const setMap = (state = {
                 eodiyaMap:{
                     ...state.eodiyaMap,
                     cafeMarker : action.cafeMarker,
+                }
+            }
+        case "setGuPoly":
+            return {
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    guPoly : action.guPoly,
+                }
+            }
+        case "setThemeGuData":
+            return{
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    themeGuData : action.themeGuData,
+                }
+            }
+        case "setThemeNum":
+            return{
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    themeNum : action.themeNum,
                 }
             }
         default:

@@ -5,31 +5,26 @@ const { kakao } = window;
 var kakaoMap = {};
 var commAreaList = [];
 
-const useDrawCommArea = () => {
+const useSetThemeMarker = () => {
 
-    const { map, commArea } = useSelector(state => ({
-        map : state.setMap.eodiyaMap.map,
-        commArea : state.setMap.eodiyaMap.commArea,
+    const { map } = useSelector(state => ({
+        map : state.setMap.eodiyaMap.map
     }))
 
     kakaoMap = map;
-    commAreaList = commArea;
 
-    const drawCommArea = () => {
-        console.log(commAreaList);
-        var polygon_new = [];
+    const setThemeMarker = (data) => {
+        console.log(data, "여기는 되나?");
         
         let polygons = [];
-        
-        commAreaList.map(value => {
-            let state = value.grade;
+        let rank = 1;
+        data.map(value => {
+            let state = rank;
             let commName = value.commercialAreaName;
-            let commCode = value.commercialAreaCode;
-
+            console.log("테슽으", commName, state);
+            rank++;
             let path = [];
             let points = [];
-
-            
 
             for(var i=0; i<value.commercialAreaXYPoint.length; i++) {
                 let point = {};
@@ -41,47 +36,58 @@ const useDrawCommArea = () => {
 
             var stateColor = '';
             var polygon;
+            
             switch(state) {
-                case "Good":
+                case 1:
                     polygon = new kakao.maps.Polygon({
                         map : kakaoMap,
                         path: path,
                         strokeStyle: 'solid', // 선의 스타일 입니다
-                        strokeColor: 'green', // 선의 색깔입니다
-                        fillColor: 'green', // 채우기 색깔입니다
+                        strokeColor: '#2985EB', // 선의 색깔입니다
+                        fillColor: '#2985EB', // 채우기 색깔입니다
                         fillOpacity : 0.3,
                         zIndex : 9999999,
                     });
-                    stateColor = 'green';
+                    stateColor = '#2985EB';
                     break;
-                case "Normal":
+                case 2:
                     polygon = new kakao.maps.Polygon({
                         map : kakaoMap,
                         path: path,
                         strokeStyle: 'solid', // 선의 스타일 입니다
-                        strokeColor: 'orange', // 선의 색깔입니다
-                        fillColor: 'orange', // 채우기 색깔입니다
+                        strokeColor: '#13B292', // 선의 색깔입니다
+                        fillColor: '#13B292', // 채우기 색깔입니다
                         fillOpacity : 0.3,
                         zIndex : 9999999,
                     });
-                    stateColor = 'orange';
+                    stateColor = '#13B292';
                     break;
-                case "Bad":
+                case 3:
                     polygon = new kakao.maps.Polygon({
                         map : kakaoMap,
                         path: path,
                         strokeStyle: 'solid', // 선의 스타일 입니다
-                        strokeColor: 'red', // 선의 색깔입니다
-                        fillColor: 'red', // 채우기 색깔입니다
+                        strokeColor: '#99BF15', // 선의 색깔입니다
+                        fillColor: '#99BF15', // 채우기 색깔입니다
                         fillOpacity : 0.3,
                         zIndex : 9999999,
                     });
-                    stateColor = 'red';
+                    stateColor = '#99BF15';
                     break;
                 default:
-                    return;
-                
+                    polygon = new kakao.maps.Polygon({
+                        map : kakaoMap,
+                        path: path,
+                        strokeStyle: 'solid', // 선의 스타일 입니다
+                        strokeColor: '#F3CE00', // 선의 색깔입니다
+                        fillColor: '#F3CE00', // 채우기 색깔입니다
+                        fillOpacity : 0.3,
+                        zIndex : 9999999,
+                    });
+                    stateColor = '#F3CE00';
+                    break;
             }
+            
 
             polygons.push(polygon);
             // #2.5.1 영역에 효과 추가하기
@@ -97,7 +103,7 @@ const useDrawCommArea = () => {
             kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
                 polygon.setOptions({ fillColor: '#fff' });
                         
-                customOverlay.setPosition(new kakao.maps.LatLng(value.centerYPoint, value.centerXPoint));
+                customOverlay.setPosition(new kakao.maps.LatLng(value.commercialCenterYPoint, value.commercialCenterXPoint));
                 customOverlay.setMap(kakaoMap);
             });
 
@@ -105,15 +111,9 @@ const useDrawCommArea = () => {
                 polygon.setOptions({ fillColor: stateColor });
                 customOverlay.setMap(null);
             });
-
-            // # 2.6 다각형 클릭 시, 줌인
-            kakao.maps.event.addListener(polygon, 'click', function() {
-            });
-
-
         })
     }
-    return {drawCommArea}; 
+    return {setThemeMarker}; 
 }
 
-export default useDrawCommArea;
+export default useSetThemeMarker;

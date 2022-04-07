@@ -138,4 +138,4 @@ class CommercialAreaApartment(models.Model):
     commercialAreaCode = models.OneToOneField(
         CommercialArea, on_delete=models.CASCADE)
     apartmentAvgPrice = models.BigIntegerField(null=True, default=0)
-
+    apartmentCount = models.BigIntegerField(null=False, default=0)

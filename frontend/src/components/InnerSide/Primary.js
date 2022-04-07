@@ -1,14 +1,7 @@
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Paper from '@mui/material/Paper';
 import "../../styles/Primary.css"
+
 import React, {  Fragment, useEffect, useState } from 'react';
 import Chart from "react-apexcharts";
-import Box from '@mui/material/Box';
 import { useSelector } from "react-redux";
 
 function Primary() {
@@ -87,30 +80,7 @@ function Primary() {
             <h1>{guselectName} {dongselectName}</h1>
             
             <h2 className='m-Y'>매출 지표</h2>
-            {/* <TableContainer className='m-Y' component={Paper}>
-                <Table sx={{ minWidth: 550 }} aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>평균매출</TableCell>
-                        <TableCell align="right">건단가</TableCell>
-                        <TableCell align="right">매출 주 연령대</TableCell>
-                        <TableCell align="right">매출 주 시간대</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {dongData.quarterRevenue}원
-                            </TableCell>
-                            <TableCell align="right">{dongData.perRevenue}원</TableCell>
-                            <TableCell align="right">{dongData.ageGroup}</TableCell>
-                            <TableCell align="right">{dongData.timeGroup}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer> */}
+
             <h3 className='m-Y'>해당 동의 연 평균 매출은 
                 <b className="font-red"> {moneyDot(dongData.quarterRevenue)}원</b>
                 이며 주문당 평균 단가는 
@@ -134,32 +104,7 @@ function Primary() {
             </h3>
             <hr/>
             <h2 className='m-Y'>업종 지표</h2>
-            {/* <TableContainer className='m-Y' component={Paper}>
-                <Table sx={{ minWidth: 550 }} aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>점포수</TableCell>
-                        <TableCell align="right">개업 점포수</TableCell>
-                        <TableCell align="right">폐업 점포수</TableCell>
-                        <TableCell align="right">개업률</TableCell>
-                        <TableCell align="right">폐업률</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {dongData.numberStore}점포
-                            </TableCell>
-                            <TableCell align="right">{dongData.openingStore}점포</TableCell>
-                            <TableCell align="right">{dongData.closureStore}점포</TableCell>
-                            <TableCell align="right">{dongData.openingRate}</TableCell>
-                            <TableCell align="right">{dongData.closureRate}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer> */}
+
             <h3 className='m-Y'>해당 동의 평균 카페의 수는 
                 <b className="font-red"> {dongData.numberStore}점포</b>
                  입니다.
@@ -185,28 +130,7 @@ function Primary() {
             </h3>
             <hr/>
             <h2 className='m-Y'>인구 지표</h2>
-            {/* <TableContainer className='m-Y' component={Paper}>
-                <Table sx={{ minWidth: 550 }} aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>생활인구</TableCell>
-                        <TableCell align="right">남성 생활 인구</TableCell>
-                        <TableCell align="right">여성 생활 인구</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {dongData.likePeople}명
-                            </TableCell>
-                            <TableCell align="right">{dongData.maleLikePeople}명</TableCell>
-                            <TableCell align="right">{dongData.femaleLikePeople}명</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer> */}
+
             <h3 className='m-Y'>해당 동의 평균 생활인구는
                 <b className="font-red"> {dongData.likePeople}명</b>
                  입니다.
