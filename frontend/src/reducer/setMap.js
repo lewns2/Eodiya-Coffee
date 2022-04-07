@@ -42,6 +42,8 @@ const setMap = (state = {
         map : null,
         guArray : locationSeoulGu,
         guMarker : [],
+        guOverlay : [],
+        guPolygon : [],
         dongMarker : [],
         guArea : [],
         dongArea : [],
@@ -50,9 +52,37 @@ const setMap = (state = {
         guNum:123,
         dongNum:123,
         rightSideBarMode:1,
+        isRightOpen:false,
+        searchedDongData:{
+            quarterRevenue: 0,
+            perRevenue: 0,
+            ageGroup: 0,
+            timeGroup: 0,
+            numberStore: 0,
+            openingStore: 0,
+            closureStore: 0,
+            openingRate: 0,
+            closureRate: 0,
+            likePeople: 0,
+            maleLikePeople: 0,
+            femaleLikePeople: 0,
+            likePeople: 0,
+            likePeopleAge10: 0,
+            likePeopleAge20: 0,
+            likePeopleAge30: 0,
+            likePeopleAge40: 0,
+            likePeopleAge50: 0,
+            likePeopleAge60: 0
+        },
+        leftDong : [],
+        commArea : [],
+        cafeList : [],
+        cafeMarker :[],
+        isLoading :false,
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
+    console.log(state);
     switch (action.type) {
         case "setMap":
             console.log("setting...", action);
@@ -85,6 +115,14 @@ const setMap = (state = {
                 eodiyaMap : {
                     ...state.eodiyaMap,
                     guMarker: action.guMarker,
+                }
+            }
+        case "setGuOverlay":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    guOverlay: action.guOverlay,
                 }
             }
         
@@ -128,6 +166,63 @@ const setMap = (state = {
                 eodiyaMap : {
                     ...state.eodiyaMap,
                     rightSideBarMode: action.rightSideBarMode,
+                }
+            }
+        case "setIsRightOpen":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    isRightOpen: action.isRightOpen,
+                }
+            }
+        case "setSearchedDongData":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    searchedDongData: action.searchedDongData,
+                }
+            }
+        case "setLeftDong":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    leftDong: action.leftDong,
+                }
+            }
+        case "setCommArea":
+            return {
+                ...state,
+                eodiyaMap : {
+                    ...state.eodiyaMap,
+                    commArea: action.commArea,
+                }
+            }
+
+        case "setCafeList":
+            return {
+                ...state,
+                eodiyaMap :{
+                    ...state.eodiyaMap,
+                    cafeList: action.cafeList,
+                }
+            }
+        case "setIsLoading":
+        return {
+            ...state,
+            eodiyaMap :{
+                ...state.eodiyaMap,
+                isLoading: action.isLoading,
+            }
+        }
+        case "setCafeMarker":
+            return{
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    cafeMarker : action.cafeMarker,
                 }
             }
         default:

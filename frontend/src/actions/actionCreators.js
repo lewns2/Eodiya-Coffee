@@ -8,7 +8,14 @@ const SET_MAPLEVEL = "setMaplevel";
 const SET_GUNUM = "setGuNum";
 const SET_DONGNUM = "setDongNum";
 const SET_RIGHTSIDEBARMODE = "setRightSideBarMode";
-
+const SET_ISRIGHTOPEN = "setIsRightOpen";
+const SET_SEARCHEDDONGDATA = "setSearchedDongData";
+const SET_LEFTDONG = "setLeftDong";
+const SET_COMMAREA = "setCommArea";
+const SET_CAFELIST = "setCafeList";
+const SET_GUOVERLAY = "setGuOverlay";
+const SET_ISLOADING = "setIsLoading";
+const SET_CAFEMARKER = "setCafeMarker";
 
 // action method
 const setMap = (map) => {
@@ -76,6 +83,60 @@ const setRightSideBarMode = (mode) => {
     }
 }
 
+const setIsRightOpen = (isopen) => {
+    return {
+        type : SET_ISRIGHTOPEN,
+        isRightOpen : isopen,
+    }
+}
+
+const setSearchedDongData = (dongdata) => {
+    return {
+        type : SET_SEARCHEDDONGDATA,
+        searchedDongData : dongdata,
+    }
+}
+
+const setLeftDong = (data) => {
+    return {
+        type : SET_LEFTDONG,
+        leftDong : data, 
+    }
+}
+
+const setCommArea = (data) => {
+    return {
+        type : SET_COMMAREA,
+        commArea : data,
+    }
+}
+
+const setCafeList = (data) => {
+    return {
+        type: SET_CAFELIST,
+        cafeList: data,
+    }
+}
+const setCafeMarker = (data) =>{
+    return {
+        type: SET_CAFEMARKER,
+        cafeMarker : data
+    }
+}
+
+const setGuOverlay = (data) => {
+    return {
+        type : SET_GUOVERLAY,
+        guOverlay : data,
+    }
+}
+
+const setIsLoading = (isLoading) =>{
+    return {
+        type: SET_ISLOADING,
+        isLoading : isLoading
+    }
+}
 export const actionCreators = {
     setMap,
     addGuArea,
@@ -86,6 +147,14 @@ export const actionCreators = {
     setGuNum,
     setDongNum,
     setRightSideBarMode,
+    setIsRightOpen,
+    setSearchedDongData,
+    setLeftDong,
+    setCommArea,
+    setCafeList,
+    setGuOverlay,
+    setIsLoading,
+    setCafeMarker,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

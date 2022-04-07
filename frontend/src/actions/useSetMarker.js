@@ -10,6 +10,7 @@ const { kakao } = window;
 var kakaoMap = {};
 var guList = [];
 var marker_old = [];
+var guOverlay = [];
 
 const useSetMarker = () => {
     
@@ -35,17 +36,6 @@ const useSetMarker = () => {
         var marker_new = [];
 
         guList.map(value => {
-            // console.log(value);
-
-            // // 커스텀 오버레이를 위함.
-            // // const content = {}
-            // var customOverlay = new kakao.maps.CustomOverlay({
-            //     map: null,
-            //     position: position,
-            //     content: content,
-            //     yAnchor: 1.85,
-            //     xAnchor : 0.45,
-            // });
             
             var imageSrc = markerImg;
             var imageSize = new kakao.maps.Size(60, 60);
@@ -55,16 +45,29 @@ const useSetMarker = () => {
                 map: kakaoMap, // 마커를 표시할 지도
                 position: new kakao.maps.LatLng(value.lat, value.lng), // 마커를 표시할 위치
                 title: value.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                image: markerImage // 마커 이미지 
+                image: markerImage, // 마커 이미지 
             });
 
+            const content = `<div class ="label">` +
+                            `<span class="left"></span><span class="center">${value.name}</span>` +
+                            `<span class="right"></span>` +
+                         `</div>`;
+
+            var customOverlay = new kakao.maps.CustomOverlay({
+                map: map,
+                position: new kakao.maps.LatLng(value.lat, value.lng),
+                content: content,
+                yAnchor: 1.85,
+                xAnchor : 0.45,
+            });
+
+            guOverlay.push(customOverlay);
             marker_new.push(marker);
             kakao.maps.event.addListener(marker, 'click', moveAndDisplayGuArea(marker, value.lat, value.lng, value.name));
 
             // // #2.3 줌인 & 마커 위치로 지도 이동
             function moveAndDisplayGuArea(customOverlay, lat, lng, guName) {
                 return function() {
-                    // var moveLatLon = loca;
                     map.setLevel(7); 
                     map.panTo(new kakao.maps.LatLng(lat, lng));
                     getArea(guName);
@@ -72,7 +75,8 @@ const useSetMarker = () => {
             }
         })
         dispatch(actionCreators.addGuMarker(marker_new));
-        console.log(marker_new);
+        dispatch(actionCreators.setGuOverlay(guOverlay));
+        // console.log(marker_new);
         
         };
         return {setMarker};

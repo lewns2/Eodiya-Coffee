@@ -121,7 +121,7 @@ def dong_info(request, guName, dongName):
         'detail' : [],
         'XYInfo' : [],
     }
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName, seoulGuDong__dongName=dongName)
     num = len(commercialArea)
     if num == 0:
         data['detail'].append('상권이 없습니다.')
@@ -209,7 +209,7 @@ def dong_info(request, guName, dongName):
         )
         
 
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName, seoulGuDong__dongName=dongName)
     num = len(commercialArea)
     if num == 0:
         data['XYInfo'].append('상권이 없습니다.')
@@ -290,7 +290,7 @@ def dong_info_location(request, guName, dongName):
     data = {
         'locationInfo' : []
     }
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName, seoulGuDong__dongName=dongName)
     num = len(commercialArea)
     if num == 0:
         data['locationInfo'].append('상권이 없습니다.')
@@ -397,15 +397,14 @@ def dong_info_recommend(request, guName, dongName):
     #     guStoreNumber += guCommercialArea[i].commercialareanumber.numberStore
     # gu_res = guRevenue // guStoreNumber
     
-    
-    dongCommercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    dongCommercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName, seoulGuDong__dongName=dongName)
     dongRevenue, dongStoreNumber = 0, 0
     for i in range(len(dongCommercialArea)):
         dongRevenue += dongCommercialArea[i].commercialarearevenue.quarterRevenue
         dongStoreNumber += dongCommercialArea[i].commercialareanumber.numberStore
     dong_res = dongRevenue / dongStoreNumber
     
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName, seoulGuDong__dongName=dongName)
     res = []
     for i in range(len(commercialArea)):
         revenue, storeNumber = 0, 0
@@ -505,7 +504,7 @@ def dong_info_recommend(request, guName, dongName):
             score[i][1] = 'Bad'
     
     
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName, seoulGuDong__dongName=dongName)
     for i in range(len(commercialArea)):
         str1 = commercialArea[i].commercialAreaXYPoint.replace('[', '').replace(']', '')
         lst1 = str1.split(', ')
@@ -578,7 +577,7 @@ def dong_info_similar(request, guName, dongName):
       
     similar = '없음'
     gap = int(1e18)
-    commercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
+    commercialArea = CommercialArea.objects.filter(seoulGuDong__guName=guName, seoulGuDong__dongName=dongName)
     num = len(commercialArea)
     if num == 0:
         data['similar'].append(similar)

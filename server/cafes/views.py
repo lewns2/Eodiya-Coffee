@@ -93,8 +93,8 @@ word_grouping = {
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_cafes(request, guName, dongName, tag):
-    Dong = SeoulGuDong.objects.filter(guName = guName, dongName = dongName)
-    cafes = CafeList.objects.filter(guName = guName, dongCode = Dong[0].dongCode)
+    Dong = SeoulGuDong.objects.filter(guName=guName, dongName=dongName)
+    cafes = CafeList.objects.filter(guName=guName, dongCode=Dong[0].dongCode)
     Data = []
     tmp_data = {
         'dongCode': '',
@@ -113,7 +113,7 @@ def get_cafes(request, guName, dongName, tag):
         'cafePoint': [],
         'cafeTagKeyword': [],
     }
-                    
+
     # print(word_grouping[tag])
     for cafe in cafes:
         tmp_tags = cafe.cafeTag.split()
@@ -150,8 +150,6 @@ def get_cafes(request, guName, dongName, tag):
         for d in Data:
             if d not in data:
                 data.append(d)
-     
-    
     return JsonResponse(data, safe=False)
 
 
