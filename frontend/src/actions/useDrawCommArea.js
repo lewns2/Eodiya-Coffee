@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import actionCreators from "./actionCreators";
 const { kakao } = window;
 
 var kakaoMap = {};
@@ -14,6 +14,7 @@ const useDrawCommArea = () => {
 
     kakaoMap = map;
     commAreaList = commArea;
+    const dispatch = useDispatch();
 
     const drawCommArea = () => {
         console.log(commAreaList);
@@ -109,9 +110,9 @@ const useDrawCommArea = () => {
             // # 2.6 다각형 클릭 시, 줌인
             kakao.maps.event.addListener(polygon, 'click', function() {
             });
-
-
         })
+        dispatch(actionCreators.addSanggwonAreaData(polygons));
+        
     }
     return {drawCommArea}; 
 }

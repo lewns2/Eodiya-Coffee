@@ -97,13 +97,14 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     const { setThemeMarker } = useSetThemeMarker();
     const { setCafeMarker } = useCafeMarker();
 
-    const { map, guMarker, guOverlay, guArray, themeAreaData, cafeMarker } = useSelector(state => ({
+    const { map, guMarker, guOverlay, guArray, themeAreaData, cafeMarker, sanggwonAreaData } = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
         guMarker : state.setMap.eodiyaMap.guMarker,
         guOverlay : state.setMap.eodiyaMap.guOverlay,
         guArray : state.setMap.eodiyaMap.guArray,
         themeAreaData : state.setMap.eodiyaMap.themeAreaData,
         cafeMarker : state.setMap.eodiyaMap.cafeMarker,
+        sanggwonAreaData : state.setMap.eodiyaMap.sanggwonAreaData,
     }))
 
     var [displayDivision, setdisplayDivision] = useState(0);
@@ -119,6 +120,10 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         })
 
         cafeMarker.map(value => {
+            value.setMap(null);
+        })
+
+        sanggwonAreaData.map(value => {
             value.setMap(null);
         })
 
@@ -173,6 +178,9 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                     value.setMap(null);
                 })
                 cafeMarker.map(value => {
+                    value.setMap(null);
+                })
+                sanggwonAreaData.map(value => {
                     value.setMap(null);
                 })
                 console.log(response.data, "from theme search");

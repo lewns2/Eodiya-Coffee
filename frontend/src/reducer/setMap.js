@@ -83,6 +83,7 @@ const setMap = (state = {
         isLoading :false,
         themeArea : [],
         themeAreaData : [],
+        sanggwonAreaData : [],
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -267,6 +268,14 @@ const setMap = (state = {
                 eodiyaMap:{
                     ...state.eodiyaMap,
                     themeAreaData : action.themeAreaData,
+                }
+            }
+        case "addSanggwonAreaData":
+            return {
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    sanggwonAreaData : action.sanggwonAreaData,
                 }
             }
         default:
