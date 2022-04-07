@@ -148,7 +148,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
             )
             .then((response) => {
                 console.log(response.data, "from theme search");
-                setThemeMarker(response.data);
+                setThemeMarker(response.data, selecttheme);
                 if(selectgu == 25){
                     dispatch(actionCreators.setGuNum("서울시 전체"), [selectgu]);
                 }else{

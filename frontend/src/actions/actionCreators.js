@@ -19,6 +19,7 @@ const SET_CAFEMARKER = "setCafeMarker";
 const SET_GUPOLY = "setGuPoly"
 const SET_THEMEGUDATA = "setThemeGuData";
 const SET_THEMENUM = "setThemeNum";
+const SET_THEMEAREA = "setThemeArea"
 
 // action method
 const setMap = (map) => {
@@ -162,6 +163,13 @@ const setThemeNum = (selecttheme) => {
     }
 }
 
+const setThemeArea = (data) => {
+    return {
+        type : SET_THEMEAREA,
+        themeArea : data,
+    }
+}
+
 
 export const actionCreators = {
     setMap,
@@ -184,6 +192,7 @@ export const actionCreators = {
     setGuPoly,
     setThemeGuData,
     setThemeNum,
+    setThemeArea,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)
