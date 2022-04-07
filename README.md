@@ -1,4 +1,4 @@
-<img src="/uploads/84e3ad1d3ab6c872a07130faf543f5aa/EodiyaLogo.jpg" width="200" height="200">
+<img src="/uploads/84e3ad1d3ab6c872a07130faf543f5aa/EodiyaLogo.jpg" width="100" height="100">
 
 # 부울경 2반 E203 - 빅데이터 추천
 
@@ -7,10 +7,9 @@
 ### 1. 프로젝트 주제
 
 - 카페 창업 장소 추천 시스템
+- 작업 기간: 2022.02.28 ~ 2022.04.08
 
 ### 2. 기획 배경
-
-### 프로젝트 목표: 창업하기 좋은 상권을 추천해 카페 창업이 성공할 수 있도록 기여
 
 - **2019년에 비해 2021년에 창업한 점포들 중 제과점을 포함한 카페의 비중이 두 배 이상 늘어나고 있다.**
   - 8일 국세청 사업자 통계를 통해 업종별 외식사업체 현황을 전수 분석한 결과 지난 1월 기준 전국 커피음료점은 7만1906곳으로 전년 동기 대비 15.5% 불어났다.
@@ -20,17 +19,16 @@
 - **창업을 성공으로 이끌 수 있느냐 없느냐를 결정하는 요소 가운데 60~70%를 차지하는 것이 점포의 위치이다.**
   - 창업 정보 및 일반 상식
 
+### 창업하기 좋은 상권을 추천해 카페 창업이 성공할 수 있도록 기여하는 것을 목표로 한다.
+
 ### 3. 주요 서비스
 
 - 카페 창업을 위한 주변 상권 분석 정보 제공
   - 매출 지표, 주 고객층, 개폐업 점포 수, 생활 인구, 주변 시설 정보
   - 시장성, 성장성, 안전성 높은 상권 순위
-    ![상권분석gif](/uploads/a278462b85aff7ec63198eb5680a36d6/상권분석gif.gif)
 - 현재 영업 중인 카페 정보 제공
-  ![카페현황gif](/uploads/814fcb15bda2d184be81c261f61bf274/카페현황gif.gif)
-- 테마별 추천 설명~~
+- 해당 위치의 테마별 추천 정보를 제공합니다.
 - 분석 내용을 알아 보기 쉽게 지도를 통해 정보 제공
-  ![지도gif](/uploads/7ea36b02be1c74eafa2be7e33b3f052e/지도gif.gif)
 
 ### 4. 추가 기능
 
@@ -49,7 +47,7 @@
 
 ### 6. 추천 알고리즘
 
-## 2. 사용할 기술스택 📖
+## 2. 기술스택 📖
 
 ### FrontEnd : <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
 
@@ -63,17 +61,15 @@
 
 ### 기타: <img src="https://img.shields.io/badge/GitLab-FCA121?style=for-the-badge&logo=GitLab&logoColor=white"> <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white"> <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
 
-- Backend - Django
+## 3. UI
 
-- DB - Mysql
+![메인페이지_gif](/uploads/d9719a39d74f155fdc059378b8b7b929/메인페이지_gif.gif)
+![상권분석gif](/uploads/a278462b85aff7ec63198eb5680a36d6/상권분석gif.gif)
+![카페현황gif](/uploads/814fcb15bda2d184be81c261f61bf274/카페현황gif.gif)
+![테마분석gif](/uploads/025895e06f03d3187043f18f58637d1e/테마분석gif.gif)
+![지도gif](/uploads/7ea36b02be1c74eafa2be7e33b3f052e/지도gif.gif)
 
-- CI/CD - Jenkins, Docker
-
-- Language - Python, JavaScript
-
-- 기타 - Gitlab, Jira
-
-## 3. 팀원 소개 🧑‍🤝‍🧑
+## 4. 팀원 소개 🧑‍🤝‍🧑
 
 - Backend: 박진성, 조영현, 최명재
 
