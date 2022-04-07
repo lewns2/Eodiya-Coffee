@@ -1,3 +1,4 @@
+from gettext import npgettext
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import JsonResponse
 from django.db.models import Q
@@ -8,6 +9,7 @@ from .models import CommercialArea, SeoulGuDong, CommercialAreaRevenue
 from .serializers import CommercialAreaSerializer, SeoulGuDongSerializer
 from commercial_area import serializers
 import pandas as pd
+
 
 
 
@@ -395,6 +397,7 @@ def dong_info_recommend(request, guName, dongName):
     #     guStoreNumber += guCommercialArea[i].commercialareanumber.numberStore
     # gu_res = guRevenue // guStoreNumber
     
+    
     dongCommercialArea = CommercialArea.objects.filter(seoulGuDong__dongName=dongName)
     dongRevenue, dongStoreNumber = 0, 0
     for i in range(len(dongCommercialArea)):
@@ -532,6 +535,8 @@ def dong_info_recommend(request, guName, dongName):
                 'commercialAreaXYPoint' : res1,
             }
         )
+
+
     return JsonResponse(data)
 
 
