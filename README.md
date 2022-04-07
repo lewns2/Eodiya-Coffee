@@ -1,4 +1,6 @@
-# <img src="README.assets/EodiyaLogo.jpg" width="50" height="50">부울경 2반 E203 - 빅데이터 추천
+<img src="/uploads/84e3ad1d3ab6c872a07130faf543f5aa/EodiyaLogo.jpg" width="100" height="100">
+
+# 부울경 2반 E203 - 빅데이터 추천
 
 ## 1. 프로젝트 기획 📃
 
@@ -61,6 +63,21 @@
 
 ### Backend :<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white">
 
+---
+
+## 2. 사용할 기술스택 📖
+
+- Frontend - React
+- Backend - Django
+- DB - Mysql
+- CI/CD - Docker
+- Language - Python, JavaScript
+- 협업툴 - Gitlab, Jira, Figma, ERD Cloud
+
+---
+
+## 3. 팀원 소개 🧑‍🤝‍🧑
+
 ### DB : <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 
 ### CI/CD : <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
@@ -71,13 +88,11 @@
 
 ## 3. UI
 
-<img src="README.assets/메인페이지 gif.gif">
-<img src="README.assets/상권분석gif.gif">
-<img src="README.assets/카페현황gif.gif">
-<img src="README.assets/테마분석gif.gif">
-<img src="README.assets/지도gif.gif">
-
-![예쁜강아지사진](README.assets/예쁜강아지사진.jpg)
+![메인페이지_gif](README.assets/메인페이지_gif.gif)
+![상권분석gif](README.assets/상권분석gif.gif)
+![카페현황gif](README.assets/카페현황gif.gif)
+![테마분석gif](README.assets/테마분석gif.gif)
+![지도gif](README.assets/지도gif.gif)
 
 ## 4. 팀원 소개 🧑‍🤝‍🧑
 
