@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import basic from '../assets/basic.png';
-import black from '../assets/black.png';
-import plus from '../assets/plus.png';
-import red from '../assets/red.png';
+// import basic from '../assets/basic.png';
+// import black from '../assets/black.png';
+// import plus from '../assets/plus.png';
+// import red from '../assets/red.png';
 const {kakao} = window;
 
 
