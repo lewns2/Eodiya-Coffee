@@ -4,3 +4,10 @@
     margin-bottom: 20px;
     padding-top: 10px;
 }
+.m-20{
+    margin: 20px;
+}
+.font-blue{
+    color: rgb(34, 158, 251);
+    font-size: 25px;
+}
