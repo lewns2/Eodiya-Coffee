@@ -62,10 +62,10 @@ const Map=(props)=>{
    
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
-  const dispatch = useDispatch();
-  const { getArea } = useGetArea();
-  const {marker} = useCafeMarker();
-  useEffect(() => {
+    const dispatch = useDispatch();
+    const { getArea } = useGetArea();
+    useCafeMarker();
+    useEffect(() => {
       
       // 1. 지도 객체 생성
       const container = document.getElementById('map');
@@ -98,7 +98,7 @@ const Map=(props)=>{
           geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
             if(status === kakao.maps.services.Status.OK){
               var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-              map.setLevel(6);
+              map.setLevel(4);
               map.panTo(coords);
             }
           })
