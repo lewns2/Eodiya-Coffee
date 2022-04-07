@@ -254,6 +254,7 @@ def play_recommend(request, gu_name):
         'lifePeople_10': 0,
         'lifePeople_20': 0,
         'peopleTotal': 0,
+        'sort_criteria': 0,
         'commercialAreaCenterXPoint': '',
         'commercialAreaCenterYPoint': '',
         'commercialAreaXYPoint': []
@@ -281,6 +282,7 @@ def play_recommend(request, gu_name):
                     commercial_building[0].universityNumber
                 tmp_data['peopleTotal'] = commercial_lifepeople[0].likePeopleAge20 + \
                     commercial_lifepeople[0].likePeopleAge10
+                tmp_data['sort_criteria'] = tmp_data['peopleTotal'] * tmp_data['schoolTotal']
             except:
                 pass
             Data.append(deepcopy(tmp_data))
@@ -307,6 +309,7 @@ def play_recommend(request, gu_name):
                     tmp_data['lifePeople_20'] = commercial_lifepeople[0].likePeopleAge20
                     tmp_data['schoolTotal'] = commercial_building[0].schoolNumber2 + commercial_building[0].schoolNumber3 + commercial_building[0].universityNumber
                     tmp_data['peopleTotal'] = commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge10
+                    tmp_data['sort_criteria'] = (commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge10) * (commercial_building[0].schoolNumber2 + commercial_building[0].schoolNumber3 + commercial_building[0].universityNumber)
                 except:
                     pass
                 Data.append(deepcopy(tmp_data))
@@ -318,7 +321,7 @@ def play_recommend(request, gu_name):
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
     data_sorted = sorted(
-        data, key=lambda x: (-x['peopleTotal'], -x['schoolTotal']))[:5]
+        data, key=lambda x: (-x['sort_criteria']))[:5]
     return JsonResponse(data_sorted, safe=False)
 
 
@@ -336,6 +339,7 @@ def cafebar_recommend(request, gu_name):
         'revenue_1721': 0,
         'revenue_2124': 0,
         'revenue_in_night': 0,
+        'sort_criteria': 0,
         'commercialAreaCenterXPoint': '',
         'commercialAreaCenterYPoint': '',
         'commercialAreaXYPoint': []
@@ -363,6 +367,8 @@ def cafebar_recommend(request, gu_name):
                     commercial_lifepeople[0].likePeopleAge30
                 tmp_data['revenue_in_night'] = commercial_revenue[0].revenue2124 + \
                     commercial_revenue[0].revenue1721
+                tmp_data['sort_criteria'] = (commercial_revenue[0].quarterRevenue / (commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge30)) + \
+                ((commercial_revenue[0].revenue2124 + commercial_revenue[0].revenue1721) / (commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge30))
             except:
                 pass
             Data.append(deepcopy(tmp_data))
@@ -389,6 +395,8 @@ def cafebar_recommend(request, gu_name):
                     tmp_data['lifePeople_30'] = commercial_lifepeople[0].likePeopleAge30
                     tmp_data['peopleTotal'] = commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge30
                     tmp_data['revenue_in_night'] = commercial_revenue[0].revenue2124 + commercial_revenue[0].revenue1721
+                    tmp_data['sort_criteria'] = (commercial_revenue[0].quarterRevenue / (commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge30)) + \
+                    ((commercial_revenue[0].revenue2124 + commercial_revenue[0].revenue1721) / (commercial_lifepeople[0].likePeopleAge20 + commercial_lifepeople[0].likePeopleAge30))
                 except:
                     pass
                 Data.append(deepcopy(tmp_data))
@@ -400,7 +408,7 @@ def cafebar_recommend(request, gu_name):
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
     data_sorted = sorted(
-        data, key=lambda x: (-x['quarterRevenue'], -x['revenue_in_night'], -x['peopleTotal']))[:5]
+        data, key=lambda x: (-x['sort_criteria']))[:5]
     return JsonResponse(data_sorted, safe=False)
 
 
@@ -426,6 +434,7 @@ def coffee_recommend(request, gu_name):
         'total_building': 0,
         'total_infra': 0,
         'rivalcoffeeshopNumber': 0,
+        'sort_criteria': 0,
         'commercialAreaCenterXPoint': '',
         'commercialAreaCenterYPoint': '',
         'commercialAreaXYPoint': []
@@ -464,7 +473,9 @@ def coffee_recommend(request, gu_name):
                     commercial_revenue[0].quarterRevenue/commercial_lifepeople[0].likePeople, 2)
                 tmp_data['total_infra'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber
                                             + commercial_building[0].theaterNumber + commercial_building[0].hotelNumber + commercial_building[0].hospitalNumber + commercial_building[0].schoolNumber)
-        
+                tmp_data['sort_criteria'] = round(((round(commercial_revenue[0].quarterRevenue/commercial_lifepeople[0].likePeople, 2)) / tmp_data['rivalcoffeeshopNumber']) * \
+                                                  (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber \
+                                                   + commercial_building[0].theaterNumber + commercial_building[0].hotelNumber + commercial_building[0].hospitalNumber + commercial_building[0].schoolNumber), 3)
             except:
                 pass
             Data.append(deepcopy(tmp_data))
@@ -502,7 +513,9 @@ def coffee_recommend(request, gu_name):
                     tmp_data['revenue_per_one_person'] = round(commercial_revenue[0].quarterRevenue/commercial_lifepeople[0].likePeople, 2)
                     tmp_data['total_infra'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber
                                             + commercial_building[0].theaterNumber + commercial_building[0].hotelNumber + commercial_building[0].hospitalNumber + commercial_building[0].schoolNumber)
-                
+                    tmp_data['sort_criteria'] = round(((round(commercial_revenue[0].quarterRevenue/commercial_lifepeople[0].likePeople, 2)) / tmp_data['rivalcoffeeshopNumber']) * \
+                                    (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber \
+                                    + commercial_building[0].theaterNumber + commercial_building[0].hotelNumber + commercial_building[0].hospitalNumber + commercial_building[0].schoolNumber), 3)
                 except:
                     pass
                 Data.append(deepcopy(tmp_data))
@@ -513,8 +526,7 @@ def coffee_recommend(request, gu_name):
             data.append(d)
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
-    data_sorted = sorted(data, key=lambda x: (
-        -x['revenue_per_one_person'], x['rivalcoffeeshopNumber'], -x['total_infra']))[:5]
+    data_sorted = sorted(data, key=lambda x: (-x['sort_criteria']))[:5]
     return JsonResponse(data_sorted, safe=False)
 
 
@@ -526,11 +538,10 @@ def machine_recommend(request, gu_name):
         'commercialArea': '',
         'commercialAreaName': '',
         'salarymanNumber': 0,
-        'subwayNumber': 0,
-        'busstopNumber': 0,
-        'trainstationNumber': 0,
-        'busterminalNumber': 0,
-        'transportationNumber': 0,
+        'lifePeopleAge10': 0,
+        'lifePeopleAge20': 0,
+        'totalPeople': 0,
+        'apartmentAvgPrice': 0,
         'commercialAreaCenterXPoint': '',
         'commercialAreaCenterYPoint': '',
         'commercialAreaXYPoint': []
@@ -546,16 +557,15 @@ def machine_recommend(request, gu_name):
             tmp_data['commercialAreaCenterYPoint'] = commercial_area.commercialCenterYPoint
             tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint) 
             commercial_company = CommercialAreaCompany.objects.filter(commercialArea = commercial_area.commercialAreaCode)
-            commercial_building = CommercialAreaBuilding.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            apartmentAvgPrice = CommercialAreaApartment.objects.filter(commercialAreaCode = commercial_area.commercialAreaCode)
+            commercialAreaPeople = CommercialAreaPeople.objects.filter(commercialArea = commercial_area.commercialAreaCode)
 
             try:
-                tmp_data['subwayNumber'] = commercial_building[0].subwayNumber
-                tmp_data['trainstationNumber'] = commercial_building[0].chuldoNumber
-                tmp_data['busstopNumber'] = commercial_building[0].busStopNumber
-                tmp_data['busterminalNumber'] = commercial_building[0].busTerminalNumber
-                tmp_data['transportationNumber'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber)
                 tmp_data['salarymanNumber'] = commercial_company[0].companyPeople
-            
+                tmp_data['apartmentAvgPrice'] = apartmentAvgPrice[0].apartmentAvgPrice
+                tmp_data['lifePeopleAge10'] = commercialAreaPeople[0].likePeopleAge10
+                tmp_data['lifePeopleAge20'] = commercialAreaPeople[0].likePeopleAge20
+                tmp_data['totalPeople'] = commercialAreaPeople[0].likePeopleAge10 + commercialAreaPeople[0].likePeopleAge20 + commercial_company[0].companyPeople
             except:
                 pass
             Data.append(deepcopy(tmp_data))
@@ -572,15 +582,15 @@ def machine_recommend(request, gu_name):
                 tmp_data['commercialAreaCenterYPoint'] = commercial_area.commercialCenterYPoint
                 tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint)
                 commercial_company = CommercialAreaCompany.objects.filter(commercialArea = commercial_area.commercialAreaCode)
-                commercial_building = CommercialAreaBuilding.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+                apartmentAvgPrice = CommercialAreaApartment.objects.filter(commercialAreaCode = commercial_area.commercialAreaCode)
+                commercialAreaPeople = CommercialAreaPeople.objects.filter(commercialArea = commercial_area.commercialAreaCode)
 
                 try:
-                    tmp_data['subwayNumber'] = commercial_building[0].subwayNumber
-                    tmp_data['trainstationNumber'] = commercial_building[0].chuldoNumber
-                    tmp_data['busstopNumber'] = commercial_building[0].busStopNumber
-                    tmp_data['busterminalNumber'] = commercial_building[0].busTerminalNumber
-                    tmp_data['transportationNumber'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber)
                     tmp_data['salarymanNumber'] = commercial_company[0].companyPeople
+                    tmp_data['apartmentAvgPrice'] = apartmentAvgPrice[0].apartmentAvgPrice
+                    tmp_data['lifePeopleAge10'] = commercialAreaPeople[0].likePeopleAge10
+                    tmp_data['lifePeopleAge20'] = commercialAreaPeople[0].likePeopleAge20
+                    tmp_data['totalPeople'] = commercialAreaPeople[0].likePeopleAge10 + commercialAreaPeople[0].likePeopleAge20 + commercial_company[0].companyPeople
                 
                 except:
                     pass
@@ -592,7 +602,7 @@ def machine_recommend(request, gu_name):
             data.append(d) 
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
-    data_sorted = sorted(data, key = lambda x: (-x['salarymanNumber'], -x['transportationNumber']))[:5]
+    data_sorted = sorted(data, key = lambda x: (-x['totalPeople'], x['apartmentAvgPrice']))[:5]
     return JsonResponse(data_sorted, safe=False)
 
 @api_view(['GET'])
@@ -605,6 +615,7 @@ def brunch_recommend(request, gu_name):
         'revenue1114': '',
         'numberStore': 0,
         'apartmentNumber': 0,
+        'sort_criteria': 0,
         'commercialAreaCenterXPoint': '',
         'commercialAreaCenterYPoint': '',
         'commercialAreaXYPoint': []  
@@ -622,11 +633,12 @@ def brunch_recommend(request, gu_name):
             commercial_background = CommercialAreaBackground.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             numberStore = CommercialAreaNumber.objects.filter(commercialArea = commercial_area.commercialAreaCode)
-            apartmentNumber = CommercialAreaApartment.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            apartmentNumber = CommercialAreaApartment.objects.filter(commercialAreaCode = commercial_area.commercialAreaCode)
             try:
                 tmp_data['revenue1114'] = commercial_revenue[0].revenue1114
                 tmp_data['numberStore'] = numberStore[0].numberStore
-                tmp_data['apartmentNumber'] = apartmentNumber[0].apartmentNumber
+                tmp_data['apartmentNumber'] = apartmentNumber[0].apartmentCount
+                tmp_data['sort_criteria'] = round((apartmentNumber[0].apartmentCount * commercial_revenue[0].revenue1114) / numberStore[0].numberStore, 3)
                 # tmp_data['avgIncome'] = commercial_background[0].avgIncome
             except:
                 pass
@@ -651,7 +663,8 @@ def brunch_recommend(request, gu_name):
                 try:
                     tmp_data['revenue1114'] = commercial_revenue[0].revenue1114
                     tmp_data['numberStore'] = numberStore[0].numberStore
-                    tmp_data['apartmentNumber'] = apartmentNumber[0].apartmentNumber
+                    tmp_data['apartmentNumber'] = apartmentNumber[0].apartmentCount
+                    tmp_data['sort_criteria'] = round((apartmentNumber[0].apartmentCount * commercial_revenue[0].revenue1114) / numberStore[0].numberStore, 3)
                     # tmp_data['avgIncome'] = commercial_background[0].avgIncome
                 except:
                     pass
@@ -664,8 +677,8 @@ def brunch_recommend(request, gu_name):
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
     # print(data[0])
-    data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['apartmentNumber'], -x['revenue1114'], x['numberStore']))[:5]
-    return JsonResponse(data_sortedby_lifepeople, safe=False)
+    data_sorted = sorted(data, key = lambda x: (-x['sort_criteria']))[:5]
+    return JsonResponse(data_sorted, safe=False)
 
 
 
