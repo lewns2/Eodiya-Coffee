@@ -23,6 +23,7 @@ body {
 .OutLine::-webkit-scrollbar {
     display: none;
 }
+/* InLine 페이지마다 적용되있음*/
 .InLine{
     height : 100vh;
     width : 100vw;
@@ -30,15 +31,26 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-}
-.major {
-    font-size: 40px;
 }
 .section{
     font-size: 50px;
     color: white;
 }
+.major1 {
+    font-size: 40px;
+    margin-bottom: 50px;
+}
+.major {
+    font-size: 40px;
+    /* background-color: blanchedalmond; */
+    margin-bottom: 50px;
+}
+h3{
+    margin-top: 50px;
+    font-size: 25px;
+    font-family: 'BinggraeMelona';
+}
+
 /* .InLine:first-child{
     background:radial-gradient(white, white, rgb(0, 176, 252));
 } */
@@ -82,8 +94,8 @@ body {
     margin-top: 40px;
 }
 .imgSec{
-    height: 200px;
-    width: 200px;
+    height: 250px;
+    width: 350px;
 }
 .imgSec2{
     height: 400px;
