@@ -162,6 +162,7 @@ const setThemeNum = (selecttheme) => {
     }
 }
 
+
 export const actionCreators = {
     setMap,
     addGuArea,

@@ -244,7 +244,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     }
     const handleThemeSelect =(e) => {
         setSelectTheme(e.target.value);
-        console.log(selecttheme);
+        console.log(theme[selecttheme]);       
     }
     const handleCafeDong =(e) => {
         console.log(e.target.value);

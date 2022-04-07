@@ -11,12 +11,19 @@ import Button from '@mui/material/Button';
 import "../../styles/ThemeSide.css";
 import Chart from "react-apexcharts";
 
+const {kakao} = window;
+
 const ThemeSide = () => {
     
+    const { map, themeNum, themeGuData } = useSelector(state => ({
+        map : state.setMap.eodiyaMap.map,
+        themeNum : state.setMap.eodiyaMap.themeNum,
+        themeGuData : state.setMap.eodiyaMap.themeGuData,
+    }))
     // 몇번째 테마인지
-    const themeNum = useSelector(state => state.setMap.eodiyaMap.themeNum);
-    // 백에서 넘겨준 데이터 전부
-    const themeGuData = useSelector(state => state.setMap.eodiyaMap.themeGuData);
+    // const themeNum = useSelector(state => state.setMap.eodiyaMap.themeNum);
+    // // 백에서 넘겨준 데이터 전부
+    // const themeGuData = useSelector(state => state.setMap.eodiyaMap.themeGuData);
     const [series, setSeries] = useState([{
           name: "세대별 이용수 평균",
           data: [0, 0, 0, 0, 0]
@@ -30,8 +37,15 @@ const ThemeSide = () => {
         },
       });
     const moveLoc= (index) =>{
-        console.log(index);
-        console.log(themeGuData);
+        // console.log(index);
+        console.log(themeGuData[index]);
+        var name = themeGuData[index].commercialAreaName;
+        var lng = themeGuData[index].commercialAreaCenterXPoint;
+        var lat = themeGuData[index].commercialAreaCenterYPoint;
+
+        map.setLevel(5);
+        map.panTo(new kakao.maps.LatLng(lat, lng));
+
     }
     const resetData = () =>{
         if (themeNum == 0){
