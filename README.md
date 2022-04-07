@@ -53,16 +53,11 @@
 ## 2. 사용할 기술스택 📖
 
 - Frontend - React
-
 - Backend - Django
-
 - DB - Mysql
-
-- CI/CD - Jenkins, Docker
-
+- CI/CD - Docker
 - Language - Python, JavaScript
-
-- 기타 - Gitlab, Jira
+- 협업툴 - Gitlab, Jira, Figma, ERD Cloud
 
 
 
