@@ -3,7 +3,7 @@ import axios from "axios";
 import actionCreators from "./actionCreators";
 import useDrawArea from "./useDrawArea";
 
-// const BASE = 'http://127.0.0.1:8000/api/v1';
+// const BASE = 'http://127.0.0.1:8000/api/v1' test;
 
 export const useGetArea = (guName) => {
   const dispatch = useDispatch();
