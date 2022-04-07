@@ -169,7 +169,7 @@ const Map=(props)=>{
 
   return (
     <div className="Map">
-      <div id="map" style={{width:"100vw", height:"90vh"}}>
+      <div id="map" style={{width:"100vw", height:"100vh"}}>
         <StyledEngineProvider injectFirst>
           <Search setSearchKeyword={setSearchKeyword}/>
           <Comm cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong}/>

@@ -111,6 +111,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         getSelectedDongData(gu[selectgu], dong[selectgu][selectdong]);
     }
     const handleThemeSide = () =>{
+        dispatch(actionCreators.setIsLoading(true));
         var URL = "recommendation/recommend/"
         if (selecttheme == 0){
             URL = URL + "cafebar/"
@@ -154,6 +155,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 }else{
                     dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
                 }
+                dispatch(actionCreators.setIsLoading(false));
                 dispatch(actionCreators.setIsRightOpen(true), []);
                 dispatch(actionCreators.setRightSideBarMode(2), []);
                 dispatch(actionCreators.setThemeGuData(response.data), []);
