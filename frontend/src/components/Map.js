@@ -98,7 +98,7 @@ const Map=(props)=>{
           geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
             if(status === kakao.maps.services.Status.OK){
               var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-              map.setLevel(6);
+              map.setLevel(4);
               map.panTo(coords);
             }
           })

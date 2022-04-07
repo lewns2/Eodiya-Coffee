@@ -2,15 +2,14 @@ import React from "react";
 import '../styles/Main.css';
 import '../assets/mapread.png';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import { Button, CardActionArea, CardActions } from '@mui/material';
-
+import { Button, Grid } from '@mui/material';
+import back from '../assets/back.png';
 export default function Main(props){
     const zeroRef = React.useRef(null);
     const oneRef = React.useRef(null);
     const twoRef = React.useRef(null);
     const threeRef = React.useRef(null);
-
+    const fourRef = React.useRef(null);
     const wheelTimeout = React.useRef()
 
     React.useEffect(() => {
@@ -30,6 +29,9 @@ export default function Main(props){
     const onThreeClick = () => {
         threeRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
+    const onFourClick = () => {
+        fourRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
     const mainEnd = () => {
         props.mainend();
     }
@@ -44,81 +46,110 @@ export default function Main(props){
             if (e.deltaY > 0) {
                 onTwoClick();
             }else{
-                onZeroClick();
+                onFourClick();
             }
         }else if (a==2){
             if (e.deltaY > 0) {
                 onThreeClick();
             }else{
-                onOneClick();
+                onZeroClick();
             }
         }else if (a==3){
+            if (e.deltaY > 0) {
+                onFourClick();
+            }else{
+                onOneClick();
+            }
+        }else if (a==4){
             if (e.deltaY > 0) {
                 onZeroClick();
             }else{
                 onTwoClick();
             }
         }
-
-        
-        clearTimeout(wheelTimeout.current)
-    
+        clearTimeout(wheelTimeout.current)    
         // flag indicating to lock page scrolling (setTimeout returns a number)
         wheelTimeout.current = setTimeout(() => {
           wheelTimeout.current = false
         }, 300)
     }
+    var sectionStyle = {
+        width: "100%",
+        height: "50vh",
+        backgroundImage: `url(${ back })`
+      };
     return(
         <div className="OutLine">
-            <div className="InLine" ref={zeroRef} onWheel = {(e) =>updown(0, e)}>
-                <img src={require('../assets/Eodiya-removebg-preview.png')} alt="사진"/>
-                <p>저희 Eodiya는 여러분의 빅데이터 분석으로 카페창업의 위치 선정을 도와주는 추천 시스템입니다.</p>
-                <Box
-                sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    '& > :not(style)': {
-                    m: 7,
-                    width: 250,
-                    height: 250,
-                    },
-                }}
-                >
-                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
-                    <img className="imgSec" src={ require('../assets/mapread.png') }  alt="사진"/>
-                    <p className="m-15">카페 창업에 좋은 위치를 알고 싶을때!</p>
-                </Paper>
-                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
-                    <img className="imgSec" src={ require('../assets/checkfile.png') }  alt="사진"/>
-                    <p className="m-15">주변에 어떤 상권 정보가 필요할 때!</p>
-                </Paper>
-                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
-                    <img className="imgSec" src={ require('../assets/caffeetwo.png') }  alt="사진"/>
-                    <p className="m-15">카페의 타겟층을 특정하고 싶을때</p>
-                </Paper>
-                <Paper sx={{display: 'flex', flexDirection:"column", alignItems:"center"}} elevation={3}>
-                    <img className="imgSec" src={ require('../assets/diary.png') }  alt="사진"/>
-                    <p className="m-15">주변 카페 정보를 알고 싶을때!</p>
-                </Paper>
+            <div className="InLine" ref={zeroRef} onWheel = {(e) =>updown(0, e)} style={sectionStyle}>
+                <section className="section"> 
+                    <h2>카페 창업을 준비중이신가요?</h2>
+                </section>
+                <Box sx={{
+                    marginTop: "75px",
+                    width:100,
+                    height: 50,
+                    color: 'white',
+                    // border: '3px dashed white',
+                }} onClick={(e) =>updown(3,e)}>
+                        알아보기
                 </Box>
             </div>
-            <div className="InLine" ref={oneRef} onWheel = {(e) =>updown(1, e)}>
+            <div className="InLine" ref={oneRef} onWheel = {(e) =>updown(1, e)} >
+					<header className="major">
+                        <p>어디야는 빅데이터 분석을 통해 <br/>카페창업의 위치 선정을 도와주는 추천 시스템입니다.</p>
+					</header>
+                    <Grid container spacing={3} padding="100px" marginLeft='200px'>
+                        <Grid item xs={4}>
+                            <img className="imgSec" src={ require('../assets/checkfile.png') } alt="사진"/>
+							<h3>좋은 위치를 알고 싶을 때</h3>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <img className="imgSec" src={ require('../assets/caffeetwo.png') } alt="사진"/>
+							<h3>주변 상권 정보가 필요할 때</h3>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <img className="imgSec" src={ require('../assets/diary.png') } alt="사진"/>
+							<h3>다른 카페 정보를 알고 싶을 때</h3>
+                        </Grid>
+                    </Grid>
+            </div>
+            <div className="InLine" ref={twoRef} onWheel = {(e) =>updown(2, e)} >
                 <div className="innerSec">
-                    <img className="imgSec2" src={require('../assets/검색그래프.png')} alt="사진"/><p className="m-15"> 카페 창업을 위한 위치를 정하고 분석하면 선택 위치의 카페의 개/폐업률, 사용 주 연령대 층, 해당 위치 근처의 주 상권, 근처 편의시설의 수 등의 정보를 확인 하고 있습니다.</p>
+                    <div >
+						<header class="major" >
+							<h3>&#9757; 알고 싶은 동네의 <br />상권 정보를 제공합니다.</h3>
+						</header>
+						<p>매출 지표, 주요 고객층, 주변 생활 인구, 인근 카페 수와 같은 정보를 알 수 있습니다.</p>
+					</div>
+                    <img className="imgSec2" src={require('../assets/검색그래프.png')} alt="사진"/>
                 </div>
             </div>
-            <div className="InLine" ref={twoRef} onWheel = {(e) =>updown(2, e)}>
+            <div className="InLine" ref={threeRef} onWheel = {(e) =>updown(3, e)}>
                 <div className="innerSec2">
-                    <p className="m-15"> 카페 창업을 위한 위치를 정하고 분석하면 선택 위치의 카페의 개/폐업률, 사용 주 연령대 층, 해당 위치 근처의 주 상권, 근처 편의시설의 수 등의 정보를 확인 하고 있습니다.</p><img className="imgSec2" src={require('../assets/검색그래프.png')} alt="사진"/>
+                    <div>
+                        <img className="imgSec2" src={require('../assets/검색그래프.png')} alt="사진"/>
+					</div>
+					<div>
+						<header class="major">
+							<h3>&#9996; 영업 중인 카페 정보를 제공합니다.</h3><br />
+						</header>
+						<p>입지 선정, 컨셉을 기획하기 위해 관심있는 지역의 카페 현황을 알아 보세요.</p>
+					</div>
                 </div>
             </div>
-            <div className="InLineend" ref={threeRef} onWheel = {(e) =>updown(3, e)}>
-                <img src={require('../assets/Eodiya-removebg-preview.png')} alt="사진"/>
-                <Button variant="contained" component="span"  size="large" onClick={mainEnd}>
-                    시작하기
-                </Button>
+            <div className="InLineend" ref={fourRef} onWheel = {(e) =>updown(4, e)}>
+                <header class="major">
+						<h2>시작해볼까요?</h2>
+				</header>
+					<ul className="actionsSpecial">
+						<Button variant="contained" component="span"  size="large" onClick={mainEnd}>
+							시작하기
+						</Button>
+					</ul>
             </div>
-            <p>프론트 : 김동현, 김윤지, 정인수 백 : 박진성, 조영현, 최명재</p>
+            <div style={sectionStyle}>
+                <p>프론트 : 김동현, 김윤지, 정인수 백엔드 : 박진성, 조영현, 최명재</p>
+            </div>
         </div>
     );
 }

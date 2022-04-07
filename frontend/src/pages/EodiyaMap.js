@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import Map from "../components/Map";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 
 // import useGeolocation from "../actions/useGeolocation";
 import useSetMarker from "../actions/useSetMarker";
 import useCafeMarker from "../actions/useCafeMarker";
-
+import actionCreators from '../actions/actionCreators';
 
 
 const EodiyaMap = () => {
@@ -19,7 +19,7 @@ const EodiyaMap = () => {
         dongMarker : state.setMap.eodiyaMap.dongMarker,
         guOverlay : state.setMap.eodiyaMap.guOverlay,
     }))
-
+    const dispatch = useDispatch();
     const {setMarker} = useSetMarker();
     // const { getGeo } = useGeolocation();
        
