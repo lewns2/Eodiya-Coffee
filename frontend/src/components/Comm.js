@@ -111,6 +111,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         getSelectedDongData(gu[selectgu], dong[selectgu][selectdong]);
     }
     const handleThemeSide = () =>{
+        dispatch(actionCreators.setIsLoading(true));
         var URL = "recommendation/recommend/"
         if (selecttheme == 0){
             URL = URL + "cafebar/"
@@ -129,7 +130,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         }else if(selecttheme == 7){
             URL = URL + "dessert/"
         }
-        if(selecttheme == 25){
+        console.log("selectgu:", selectgu)
+        if(selectgu == 25){
             URL = URL + "none"
         }else{
             URL = URL + `${gu[selectgu]}`
@@ -147,9 +149,13 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
             )
             .then((response) => {
                 console.log(response.data, "from theme search");
-                setThemeMarker(response.data);
-                dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
-                dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+                setThemeMarker(response.data, selecttheme);
+                if(selectgu == 25){
+                    dispatch(actionCreators.setGuNum("서울시 전체"), [selectgu]);
+                }else{
+                    dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+                }
+                dispatch(actionCreators.setIsLoading(false));
                 dispatch(actionCreators.setIsRightOpen(true), []);
                 dispatch(actionCreators.setRightSideBarMode(2), []);
                 dispatch(actionCreators.setThemeGuData(response.data), []);
@@ -244,7 +250,6 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     }
     const handleThemeSelect =(e) => {
         setSelectTheme(e.target.value);
-        console.log(selecttheme);
     }
     const handleCafeDong =(e) => {
         console.log(e.target.value);
