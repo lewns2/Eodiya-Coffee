@@ -46,8 +46,8 @@ def study_recommend(request, gu_name):
 
         # 상위20개만 정렬
         coms = sorted(coms, key=lambda x: x['sum1020'], reverse=True)[:20]
-    print(coms)
-    print(len(coms))
+    # print(coms)
+    # print(len(coms))
     # 상권 번호에 해당하는 집객시설 중 schoolNumber2 ~ universityNumber만 뽑아와서 세 학교의 합산수치를 sumSchools라는 새로운 칼럼으로 나타냄
     tmp = []
     for com_idx in coms:
@@ -75,8 +75,8 @@ def study_recommend(request, gu_name):
         # result의 각 항목에 해당하는 데이터 저장
         result[idx]['commercialAreaName'] = commercial_info[0]['commercialAreaName']
         result[idx]['commercialAreaXYPoint'] = tmp_xy
-        result[idx]['commercialCenterXPoint'] = commercial_info[0]['commercialCenterXPoint']
-        result[idx]['commercialCenterYPoint'] = commercial_info[0]['commercialCenterYPoint']
+        result[idx]['commercialAreaCenterXPoint'] = commercial_info[0]['commercialCenterXPoint']
+        result[idx]['commercialAreaCenterYPoint'] = commercial_info[0]['commercialCenterYPoint']
 
         # result에 들어간 상권들에 10 ~ 20대 생활인구 합산 수를 부여하기위한 반복문
         for li_com in list(coms):
@@ -84,7 +84,7 @@ def study_recommend(request, gu_name):
                 result[idx]['sum1020'] = li_com['sum1020']
                 break
     # result가 리스트내의 딕셔너리 형태이므로 바로 Response
-    print(result)
+    # print(result)
     return Response(result)
 
 
@@ -131,7 +131,7 @@ def dessert_recommend(request, gu_name):
         # 상위20개만 정렬
         coms = sorted(
             coms, key=lambda x: x['life_people_female_sum2030'], reverse=True)[:20]
-    print(coms)
+    # print(coms)
     for com_idx in coms:
         # print(com_idx['commercialArea'])
         background_apartmentAvgPrice = CommercialAreaApartment.objects.filter(
@@ -163,8 +163,8 @@ def dessert_recommend(request, gu_name):
             # result의 각 항목에 해당하는 데이터 저장
             re['commercialAreaName'] = commercial_info[0]['commercialAreaName']
             re['commercialAreaXYPoint'] = tmp_xy
-            re['commercialCenterXPoint'] = commercial_info[0]['commercialCenterXPoint']
-            re['commercialCenterYPoint'] = commercial_info[0]['commercialCenterYPoint']
+            re['commercialAreaCenterXPoint'] = commercial_info[0]['commercialCenterXPoint']
+            re['commercialAreaCenterYPoint'] = commercial_info[0]['commercialCenterYPoint']
     print(result)
     # print(background_avgIncome)
     return Response(result)
