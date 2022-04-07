@@ -33,6 +33,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useSetDongMarker from "../actions/useSetDongMarker"
 import IconButton from '@mui/material/IconButton';
 import useSetThemeMarker from "../actions/useSetThemeMarker";
+import useCafeMarker from '../actions/useCafeMarker';
 
 const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
@@ -94,23 +95,40 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
     const dispatch = useDispatch();
     const {getSelectedDongData} = useSelectDongData();
     const { setThemeMarker } = useSetThemeMarker();
+    const { setCafeMarker } = useCafeMarker();
 
-    const { map, guMarker, guOverlay, guArray } = useSelector(state => ({
+    const { map, guMarker, guOverlay, guArray, themeAreaData, cafeMarker } = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
         guMarker : state.setMap.eodiyaMap.guMarker,
         guOverlay : state.setMap.eodiyaMap.guOverlay,
         guArray : state.setMap.eodiyaMap.guArray,
+        themeAreaData : state.setMap.eodiyaMap.themeAreaData,
+        cafeMarker : state.setMap.eodiyaMap.cafeMarker,
     }))
 
     var [displayDivision, setdisplayDivision] = useState(0);
     var [search, setSearch] = useState('outlined');
+    
     const handleSide = () => {
 
         var leftDong = [];
+        console.log("상권 분석하기 눌렀다.");
+
+        themeAreaData.map(value => {
+            value.setMap(null);
+        })
+
+        cafeMarker.map(value => {
+            value.setMap(null);
+        })
+
         console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
         getSelectedDongData(gu[selectgu], dong[selectgu][selectdong]);
+        
+        
     }
     const handleThemeSide = () =>{
+        console.log("테마 분석하기 눌렀다.")
         dispatch(actionCreators.setIsLoading(true));
         var URL = "recommendation/recommend/"
         if (selecttheme == 0){
@@ -148,6 +166,12 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 }
             )
             .then((response) => {
+                themeAreaData.map(value => {
+                    value.setMap(null);
+                })
+                cafeMarker.map(value => {
+                    value.setMap(null);
+                })
                 console.log(response.data, "from theme search");
                 setThemeMarker(response.data, selecttheme);
                 if(selectgu == 25){
@@ -277,7 +301,9 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                     if(res.data.length===1 &&'' ===res.data[0].dongCode){
                         alert('해당 하는 카페가 없어요. 다른 카테고리를 선택해주세요');
                     }else{
+                        setCafeMarker(res.data);
                         dispatch(actionCreators.setCafeList(res.data));
+                        
                     }
                 })
                 .catch(res =>{

@@ -34,7 +34,7 @@ const locationSeoulGu = [
     { lat :37.49664389, lng : 127.0629852, name: "강남구"},
     { lat :37.50561924, lng : 127.115295, name: "송파구"},
     { lat :37.55045024, lng : 127.1470118, name: "강동구"},
-  ];
+];
 
 
 const setMap = (state = {
@@ -82,6 +82,7 @@ const setMap = (state = {
         cafeMarker :[],
         isLoading :false,
         themeArea : [],
+        themeAreaData : [],
     }
 }, action) => {
     console.log("액션 타입 : ", action.type);
@@ -258,6 +259,14 @@ const setMap = (state = {
                 eodiyaMap:{
                     ...state.eodiyaMap,
                     themeArea : action.themeArea,
+                }
+            }
+        case "addThemeArea":
+            return {
+                ...state,
+                eodiyaMap:{
+                    ...state.eodiyaMap,
+                    themeAreaData : action.themeAreaData,
                 }
             }
         default:

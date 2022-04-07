@@ -7,12 +7,13 @@ const {kakao} = window;
 
 export const useSelectDongData = () => {
     const dispatch = useDispatch();
+    
     const { map } = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
     }))
+
     const getSelectedDongData=(guName, dongName) =>{
 
-        console.log("누가 왔니 : ", guName, dongName);
         var leftDong = [];
         axios
             .get(

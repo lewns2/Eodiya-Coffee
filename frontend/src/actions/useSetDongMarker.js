@@ -108,8 +108,8 @@ const useSetDongMarker = () => {
             kakao.maps.event.addListener(polygon, 'click', function() {
                 kakaoMap.setLevel(5);
                 // console.log("구동구동구동구동구동구동구동", guName, dongName);
-                customOverlayInfo.setPosition(new kakao.maps.LatLng(dongLat, dongLng));
-                customOverlayInfo.setMap(kakaoMap)
+                // customOverlayInfo.setPosition(new kakao.maps.LatLng(dongLat, dongLng));
+                // customOverlayInfo.setMap(kakaoMap)
 
                 map.panTo(new kakao.maps.LatLng(dongLat, dongLng));
                 // polygon.setMap(null);           
