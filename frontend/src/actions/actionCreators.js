@@ -21,6 +21,7 @@ const SET_THEMEGUDATA = "setThemeGuData";
 const SET_THEMENUM = "setThemeNum";
 const SET_THEMEAREA = "setThemeArea";
 const ADD_THEMEAREA = "addThemeArea";
+const ADD_SANGGWONAREADATA = "addSanggwonAreaData";
 
 // action method
 const setMap = (map) => {
@@ -178,6 +179,13 @@ const addThemeArea = (data) => {
     }
 }
 
+const addSanggwonAreaData = (data) => {
+    return {
+        type : ADD_SANGGWONAREADATA,
+        sanggwonAreaData : data,
+    }
+}
+
 
 export const actionCreators = {
     setMap,
@@ -202,6 +210,7 @@ export const actionCreators = {
     setThemeNum,
     setThemeArea,
     addThemeArea,
+    addSanggwonAreaData,
 }
 
 // 중요! 하나로 묶어서 보내기. (default)

@@ -8,8 +8,9 @@ const {kakao} = window;
 export const useSelectDongData = () => {
     const dispatch = useDispatch();
     
-    const { map } = useSelector(state => ({
+    const { map, themeAreaData } = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
+        themeAreaData : state.setMap.eodiyaMap.themeAreaData,
     }))
 
     const getSelectedDongData=(guName, dongName) =>{
@@ -40,6 +41,9 @@ export const useSelectDongData = () => {
                 }
             })
             .then(()=> {
+                themeAreaData.map(value => {
+                    value.setMap(null);
+                })
                 if(leftDong.length != 0){
                     map.setLevel(6);
                     map.panTo(new kakao.maps.LatLng(leftDong.dongCenterYPoint, leftDong.dongCenterXPoint));
