@@ -129,7 +129,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         }else if(selecttheme == 7){
             URL = URL + "dessert/"
         }
-        if(selecttheme == 25){
+        console.log("selectgu:", selectgu)
+        if(selectgu == 25){
             URL = URL + "none"
         }else{
             URL = URL + `${gu[selectgu]}`
@@ -148,8 +149,11 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
             .then((response) => {
                 console.log(response.data, "from theme search");
                 setThemeMarker(response.data);
-                dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
-                dispatch(actionCreators.setDongNum(dong[selectgu][selectdong]), [selectdong]);
+                if(selectgu == 25){
+                    dispatch(actionCreators.setGuNum("서울시 전체"), [selectgu]);
+                }else{
+                    dispatch(actionCreators.setGuNum(gu[selectgu]), [selectgu]);
+                }
                 dispatch(actionCreators.setIsRightOpen(true), []);
                 dispatch(actionCreators.setRightSideBarMode(2), []);
                 dispatch(actionCreators.setThemeGuData(response.data), []);
