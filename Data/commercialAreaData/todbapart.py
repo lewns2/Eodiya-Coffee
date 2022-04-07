@@ -19,18 +19,23 @@ tmp_list = []
 for idx, row in file.iterrows():
     new = list(row[1].split(','))
     if new[0] == '2021' and new[1] == '3':
-        tmp_list.append([int(new[20]), int(new[4])])
-
-# print(tmp_list)
-sql = "INSERT INTO commercial_area_commercialareaapartment(commercialAreaCode_id) SELECT commercialAreaCode FROM commercial_area_commercialarea WHERE EXISTS(SELECT commercialAreaCode FROM commercial_area_commercialarea WHERE commercialAreaCode = %s) AND NOT EXISTS(SELECT commercialAreaCode_id FROM commercial_area_commercialareaapartment WHERE commercialAreaCode_id = %s)"
-sql2 = "UPDATE commercial_area_commercialareaapartment SET apartmentAvgPrice=%s WHERE commercialAreaCode_id=%s"
+        a = [int(i) for i in new[7:19] if i != '']
+        # a = list(map(int, new[7:19]))
+        # print(a)
+        # print(sum(a))
+        tmp_list.append([sum(a), new[4]])
+    # print(tmp_list)
+    # sleep(0.1)
+# # print(tmp_list)
+# sql = "INSERT INTO commercial_area_commercialareaapartment(commercialAreaCode_id) SELECT commercialAreaCode FROM commercial_area_commercialarea WHERE EXISTS(SELECT commercialAreaCode FROM commercial_area_commercialarea WHERE commercialAreaCode = %s) AND NOT EXISTS(SELECT commercialAreaCode_id FROM commercial_area_commercialareaapartment WHERE commercialAreaCode_id = %s)"
+sql2 = "UPDATE commercial_area_commercialareaapartment SET apartmentCount=%s WHERE commercialAreaCode_id=%s AND EXISTS(SELECT commercialAreaCode FROM commercial_area_commercialarea WHERE commercialAreaCode = %s)"
 with conn:
     with conn.cursor() as cur:
-        for idx, tmp in enumerate(tmp_list):
+        for tmp in tmp_list:
             # print(tmp[0], tmp[1])
-            cur.execute(sql, (tmp[1], tmp[1]))
+            # cur.execute(sql, (tmp[1], tmp[1]))
             # conn.commit()
-            cur.execute(sql2, (tmp[0], tmp[1]))
+            cur.execute(sql2, (tmp[0], tmp[1], tmp[1]))
             conn.commit()
             # print('ok')
     # print(new)
