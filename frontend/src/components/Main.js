@@ -1,6 +1,5 @@
 import React from "react";
 import '../styles/Main.css';
-import '../assets/mapread.png';
 import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import back from '../assets/back.png';
