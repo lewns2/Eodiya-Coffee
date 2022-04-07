@@ -12,13 +12,13 @@ import TabPanel from '@mui/lab/TabPanel';
 import { Divider } from '@mui/material';
 import Primary from './InnerSide/Primary';
 import Recommend from './InnerSide/Recommend';
+import ThemeSide from './InnerSide/ThemeSide';
 import Visual from './InnerSide/Visual';
 import Facilities from './InnerSide/Facilities';
 import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
 import axios from "axios";
 import useDrawCommArea from '../actions/useDrawCommArea';
-import { red } from '@mui/material/colors';
 // Sidebar 넓이
 const drawerWidth = 600;
 
@@ -157,28 +157,11 @@ const Sidebar = ({getOpen}) => {
                         </TabPanel>
                     </TabContext>
                     }
-                    {/* {RightSideBarMode == 2 &&
-                    <TabContext value={value}>
-                        <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
-                            <Tab label="기본정보" value="1" />
-                            <Tab label="상세정보" value="2" />
-                            <Tab label="위치정보" value="3" />
-                            <Tab label="추천정보" value="4" />
-                        </TabList>
-                        <TabPanel value="1">
-                            <Primary dongData={dongData[0]}/>
-                        </TabPanel>
-                        <TabPanel value="2">
-                            <Visual dongData={dongData[0]}/>
-                        </TabPanel>
-                        <TabPanel value="3">
-                            <Facilities facdongdata={facdongdata}/>
-                        </TabPanel >
-                        <TabPanel value="4">
-                            <Recommend  recoData={recodongdata}/>
-                        </TabPanel>
-                    </TabContext>
-                    } */}
+                    {RightSideBarMode == 2 &&
+                    <Box sx={{ p : 2 }}>
+                        <ThemeSide/>
+                    </Box>
+                    }
                 </Drawer>
             </Box>
         );

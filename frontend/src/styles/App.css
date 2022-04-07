@@ -39,3 +39,8 @@
     font-family: "BinggraeMelona-Bold";
     src: url("../fonts/BinggraeMelona-Bold.ttf");
 }
+
+@font-face {
+    font-family: "BinggraeMelona";
+    src: url("../fonts/BinggraeMelona.ttf");
+}

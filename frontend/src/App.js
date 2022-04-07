@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore } from "redux"; 
 import Main from './components/Main';
-import { ThemeProvider, createMuiTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 // const store = configureStore(reducers, {
 // });
 
@@ -29,7 +29,7 @@ const App = () => {
     setIsMain(false)
   }
 
- const theme = createMuiTheme({
+ const theme = createTheme({
   typography: {
     fontFamily: [
       "BinggraeMelona-Bold"

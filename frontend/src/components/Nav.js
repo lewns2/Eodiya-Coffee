@@ -71,10 +71,11 @@ function Nav() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Eodiya
+                {/* <img src={require('../assets/Eodiya-removebg-preview.png')} style={{width:80, height:80}}  alt="로고"/> */}
+                <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                    어디야
                 </Typography>
-                    <Button color="inherit" onClick={() => setHowToIsOpen(true)}>사용가이드</Button>
+                    <Button color="inherit" onClick={() => setHowToIsOpen(true)}>사용자 가이드</Button>
 
                     {!IsLogin && (
                             <>
@@ -84,7 +85,7 @@ function Nav() {
                         )}
                     {IsLogin &&(
                         <>
-                            <Button color="inherit" onClick={() => setMypageOpen(true)}>마이페이지</Button>
+                            <Button color="inherit" onClick={() => setMypageOpen(true)}>OOO님</Button>
                             <Button color="inherit" onClick={() => LogOut()}>로그아웃</Button>
                         </>
                     )}
