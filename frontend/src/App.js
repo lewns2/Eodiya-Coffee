@@ -44,7 +44,7 @@ const App = () => {
           <EodiyaMap/>
           {/* { !isMain &&
             <Fragment>
-              <Nav/>
+              <Nav mainOpen={mainend}/>
               <EodiyaMap/>
             </Fragment>
           }

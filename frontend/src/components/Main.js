@@ -1,6 +1,5 @@
 import React from "react";
 import '../styles/Main.css';
-import '../assets/mapread.png';
 import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import back from '../assets/back.png';
@@ -141,7 +140,7 @@ export default function Main(props){
             </div>
             <div className="InLineend" ref={fourRef} onWheel = {(e) =>updown(4, e)}>
                 <header class="major">
-						<h2>시작해볼까요?</h2>
+					<img src={require('../assets/Eodiya-removebg-preview.png')}></img>
 				</header>
 					<ul className="actionsSpecial">
 						<Button className="bigbtn" variant="contained" component="span"  size="large" onClick={mainEnd}>

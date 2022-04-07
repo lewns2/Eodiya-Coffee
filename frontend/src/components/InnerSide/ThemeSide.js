@@ -25,11 +25,6 @@ const ThemeSide = () => {
         isLoading : state.setMap.eodiyaMap.isLoading,
     }))
     
-
-    // const isLoading = useSelector(state => state.setMap.eodiyaMap.isLoading);
-    // const guName = useSelector(state => state.setMap.eodiyaMap.guNum);
-    // 몇번째 테마인지
-    // const themeNum = useSelector(state => state.setMap.eodiyaMap.themeNum);
     const [themeName, setThemeName] = useState("");
     const [dataExplain, setDataExplain] = useState("데이터가 넘어오는 중입니다 조금만 기다려주세요!");
 

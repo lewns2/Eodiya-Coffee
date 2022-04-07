@@ -84,8 +84,8 @@ function Primary() {
             <h3 className='m-Y'>해당 동의 연 평균 매출은 
                 <b className="font-red"> {moneyDot(dongData.quarterRevenue)}원</b>
                 이며 주문당 평균 단가는 
-                <b className="font-red">{moneyDot(dongData.perRevenue)}원</b>
-                으로 추정합니다.
+                <b className="font-red"> {moneyDot(dongData.perRevenue)}원</b>
+                입니다.
             </h3>
             <div className='m-Y' id="chart">
                 <Chart
@@ -96,16 +96,16 @@ function Primary() {
                 />
             </div>
             <p>본 데이터는 동 별 평균 데이터이며 몇몇 지역은 크게 차이날 수 있습니다.</p>
-            <h3 className='m-Y'>해당 동의 이용하는 세대는
+            <h3 className='m-Y'>해당 동의 주연령층은
             <b className="font-red"> {dongData.ageGroup}</b>
-            이며 핫 타임은  
-            <b className="font-red"> {dongData.timeGroup} </b>
-            사이입니다.
+            이며<br/> 매출이 가장 높은 시간대는  
+            <b className="font-red"> {dongData.timeGroup}</b>
+            입니다.
             </h3>
             <hr/>
             <h2 className='m-Y'>업종 지표</h2>
 
-            <h3 className='m-Y'>해당 동의 평균 카페의 수는 
+            <h3 className='m-Y'>해당 동의 상권당 평균 카페의 수는 
                 <b className="font-red"> {dongData.numberStore}점포</b>
                  입니다.
             </h3>
@@ -118,11 +118,11 @@ function Primary() {
                 />
             </div>
             <p>본 데이터는 동 별 평균 데이터이며 몇몇 지역은 크게 차이날 수 있습니다.</p>
-            <h3 className='m-Y'>해당 동의 개업 점포수는 평균적으로
+            <h3 className='m-Y'>해당 동의 상권당 분기별 평균 <br/> 개업 점포수는 
                 <b className="font-red"> {dongData.openingStore}점포</b>
                  이며
                 <b className="font-red"> {dongData.openingRate}%</b>
-                 입니다. 폐업 점포수는
+                 입니다. <br/>폐업 점포수는
                 <b className="font-red"> {dongData.closureStore}점포</b>
                  이며
                 <b className="font-red"> {dongData.closureRate}%</b>
@@ -131,7 +131,7 @@ function Primary() {
             <hr/>
             <h2 className='m-Y'>인구 지표</h2>
 
-            <h3 className='m-Y'>해당 동의 평균 생활인구는
+            <h3 className='m-Y'>해당 동의 상권당 평균 생활인구는
                 <b className="font-red"> {dongData.likePeople}명</b>
                  입니다.
             </h3>
@@ -144,9 +144,9 @@ function Primary() {
                 />
             </div>
             <p>본 데이터는 동 별 평균 데이터이며 몇몇 지역은 크게 차이날 수 있습니다.</p>
-            <h3 className='m-Y'>해당 동의 생활인구는 남성이
+            <h3 className='m-Y'>해당 동의 상권당 평균 생활인구는 <br/>남성이
                 <b className="font-red"> {dongData.maleLikePeople}명</b>
-                 이며, 여성이
+                 이며, <br/>여성이
                 <b className="font-red"> {dongData.femaleLikePeople}명</b>
                  입니다.
             </h3>
