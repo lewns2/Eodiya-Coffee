@@ -548,17 +548,17 @@ def machine_recommend(request, gu_name):
             commercial_company = CommercialAreaCompany.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             commercial_building = CommercialAreaBuilding.objects.filter(commercialArea = commercial_area.commercialAreaCode)
 
-        try:
-            tmp_data['subwayNumber'] = commercial_building[0].subwayNumber
-            tmp_data['trainstationNumber'] = commercial_building[0].chuldoNumber
-            tmp_data['busstopNumber'] = commercial_building[0].busStopNumber
-            tmp_data['busterminalNumber'] = commercial_building[0].busTerminalNumber
-            tmp_data['transportationNumber'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber)
-            tmp_data['salarymanNumber'] = commercial_company[0].companyPeople
-        
-        except:
-            pass
-        Data.append(deepcopy(tmp_data))
+            try:
+                tmp_data['subwayNumber'] = commercial_building[0].subwayNumber
+                tmp_data['trainstationNumber'] = commercial_building[0].chuldoNumber
+                tmp_data['busstopNumber'] = commercial_building[0].busStopNumber
+                tmp_data['busterminalNumber'] = commercial_building[0].busTerminalNumber
+                tmp_data['transportationNumber'] = (commercial_building[0].subwayNumber + commercial_building[0].chuldoNumber + commercial_building[0].busStopNumber + commercial_building[0].busTerminalNumber)
+                tmp_data['salarymanNumber'] = commercial_company[0].companyPeople
+            
+            except:
+                pass
+            Data.append(deepcopy(tmp_data))
     else:
         gu_sanggwon = SeoulGuDong.objects.filter(guName = gu_name)
         # print(gu_sanggwon.values())
@@ -603,6 +603,8 @@ def brunch_recommend(request, gu_name):
         'commercialArea': '',
         'commercialAreaName': '',
         'revenue1114': '',
+        'numberStore': 0,
+        'apartmentNumber': 0,
         'commercialAreaCenterXPoint': '',
         'commercialAreaCenterYPoint': '',
         'commercialAreaXYPoint': []  
@@ -619,9 +621,11 @@ def brunch_recommend(request, gu_name):
             tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint) 
             commercial_background = CommercialAreaBackground.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+            numberStore = CommercialAreaNumber.objects.filter(commercialArea = commercial_area.commercialAreaCode)
 
             try:
                 tmp_data['revenue1114'] = commercial_revenue[0].revenue1114
+                tmp_data['numberStore'] = numberStore[0].numberStore
                 # tmp_data['avgIncome'] = commercial_background[0].avgIncome
             except:
                 pass
@@ -640,9 +644,11 @@ def brunch_recommend(request, gu_name):
                 tmp_data['commercialAreaXYPoint'] = eval(commercial_area.commercialAreaXYPoint)
                 commercial_background = CommercialAreaBackground.objects.filter(commercialArea = commercial_area.commercialAreaCode)
                 commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+                numberStore = CommercialAreaNumber.objects.filter(commercialArea = commercial_area.commercialAreaCode)
 
                 try:
                     tmp_data['revenue1114'] = commercial_revenue[0].revenue1114
+                    tmp_data['numberStore'] = numberStore[0].numberStore
                     # tmp_data['avgIncome'] = commercial_background[0].avgIncome
                 except:
                     pass
@@ -655,7 +661,7 @@ def brunch_recommend(request, gu_name):
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
     # print(data[0])
-    data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['revenue1114']))[:5]
+    data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['revenue1114'], x['numberStore']))[:5]
     return JsonResponse(data_sortedby_lifepeople, safe=False)
 
 

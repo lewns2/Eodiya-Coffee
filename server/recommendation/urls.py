@@ -11,5 +11,4 @@ urlpatterns = [
     path('recommend/coffee/<str:gu_name>/', views.coffee_recommend),
     path('recommend/machine/<str:gu_name>/', views.machine_recommend),
     path('recommend/dessert/<str:gu_name>/', views.dessert_recommend),
-    path('recommend/study/<str:gu_name>/', views.study_recommend),
 ]
