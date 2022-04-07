@@ -622,10 +622,11 @@ def brunch_recommend(request, gu_name):
             commercial_background = CommercialAreaBackground.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             numberStore = CommercialAreaNumber.objects.filter(commercialArea = commercial_area.commercialAreaCode)
-
+            apartmentNumber = CommercialAreaApartment.objects.filter(commercialArea = commercial_area.commercialAreaCode)
             try:
                 tmp_data['revenue1114'] = commercial_revenue[0].revenue1114
                 tmp_data['numberStore'] = numberStore[0].numberStore
+                tmp_data['apartmentNumber'] = apartmentNumber[0].apartmentNumber
                 # tmp_data['avgIncome'] = commercial_background[0].avgIncome
             except:
                 pass
@@ -645,10 +646,12 @@ def brunch_recommend(request, gu_name):
                 commercial_background = CommercialAreaBackground.objects.filter(commercialArea = commercial_area.commercialAreaCode)
                 commercial_revenue = CommercialAreaRevenue.objects.filter(commercialArea = commercial_area.commercialAreaCode)
                 numberStore = CommercialAreaNumber.objects.filter(commercialArea = commercial_area.commercialAreaCode)
+                apartmentNumber = CommercialAreaApartment.objects.filter(commercialArea = commercial_area.commercialAreaCode)
 
                 try:
                     tmp_data['revenue1114'] = commercial_revenue[0].revenue1114
                     tmp_data['numberStore'] = numberStore[0].numberStore
+                    tmp_data['apartmentNumber'] = apartmentNumber[0].apartmentNumber
                     # tmp_data['avgIncome'] = commercial_background[0].avgIncome
                 except:
                     pass
@@ -661,7 +664,7 @@ def brunch_recommend(request, gu_name):
     ##########
     # 주요 조건 별로 정렬 후 상위 5개를 출력
     # print(data[0])
-    data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['revenue1114'], x['numberStore']))[:5]
+    data_sortedby_lifepeople = sorted(data, key = lambda x: (-x['apartmentNumber'], -x['revenue1114'], x['numberStore']))[:5]
     return JsonResponse(data_sortedby_lifepeople, safe=False)
 
 
