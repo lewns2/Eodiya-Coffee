@@ -45,6 +45,7 @@ const Recommend = ({recoData}) => {
                         <TableRow>
                             <TableCell>순위</TableCell>
                             <TableCell align="right">지역</TableCell>
+                            <TableCell align="right">동별 평균 매출</TableCell>
                             <TableCell align="right">시장성</TableCell>
                         </TableRow>
                         </TableHead>
@@ -58,6 +59,7 @@ const Recommend = ({recoData}) => {
                                 {index+1}
                             </TableCell>
                             <TableCell align="right">{recommRows.commercialAreaName}</TableCell>
+                            <TableCell align="right">{recommRows.dong_res}</TableCell>
                             <TableCell align="right">{recommRows.시장성}</TableCell>
                             </TableRow>
                         ))}
