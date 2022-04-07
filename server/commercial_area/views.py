@@ -218,7 +218,7 @@ def dong_info(request, guName, dongName):
             likePeople += commercialArea[i].commercialareapeople.likePeople
             numberStore += commercialArea[i].commercialareanumber.numberStore
         
-        seoulGuDong = SeoulGuDong.objects.filter(dongName=dongName)
+        seoulGuDong = SeoulGuDong.objects.filter(guName=guName, dongName=dongName)
         for i in range(len(seoulGuDong)):
             str2 = seoulGuDong[i].dongXYPoint.replace('[', '').replace(']', '')
             lst2 = str2.split(', ')
