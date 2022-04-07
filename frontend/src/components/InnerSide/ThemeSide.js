@@ -17,14 +17,14 @@ const theme =["술카페", "커피전문점", "무인카페", "브런치카페",
 const {kakao} = window;
 
 const ThemeSide = () => {
-    
     const { map, themeNum, themeGuData, guName, isLoading } = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
         themeNum : state.setMap.eodiyaMap.themeNum,
         themeGuData : state.setMap.eodiyaMap.themeGuData,
-        guName : state.setMap.eodiyaMap.guName,
+        guName : state.setMap.eodiyaMap.guNum,
         isLoading : state.setMap.eodiyaMap.isLoading,
     }))
+    
 
     // const isLoading = useSelector(state => state.setMap.eodiyaMap.isLoading);
     // const guName = useSelector(state => state.setMap.eodiyaMap.guNum);

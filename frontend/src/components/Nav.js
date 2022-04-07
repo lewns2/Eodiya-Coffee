@@ -77,7 +77,7 @@ function Nav() {
                 </Typography>
                     <Button color="inherit" onClick={() => setHowToIsOpen(true)}>사용자 가이드</Button>
 
-                    {!IsLogin && (
+                    {/* {!IsLogin && (
                             <>
                                 <Button color="inherit" onClick={() => setLoginOpen(true)}>로그인</Button>
                                 <Button color="inherit" onClick={() => setRegisterIsOpen(true)}>회원가입</Button>
@@ -106,7 +106,7 @@ function Nav() {
                         <div style={modalStyle} className={classes.paper}> 
                             <Register closemodal ={handleCloseModal}/>
                         </div>
-                    </Modal>
+                    </Modal> */}
                     <Modal open={HowToIsOpen}>
                         <div>
                             <HowTo/>

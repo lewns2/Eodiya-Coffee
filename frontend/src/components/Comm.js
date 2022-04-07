@@ -38,7 +38,7 @@ const gu =[
     "강남구","강동구","강북구","강서구","관악구","광진구","구로구",
     "금천구","노원구","도봉구","동대문구","동작구","마포구",
     "서대문구","서초구","성동구","성북구","송파구","양천구",
-    "영등포구","용산구","은평구","종로구","중구","중랑구", "미지정"];
+    "영등포구","용산구","은평구","종로구","중구","중랑구", "서울시 전체"];
 
 const dong = [['신사동', '논현1동', '논현2동', '압구정동', '청담동', '삼성1동', '삼성2동', '대치1동', '대치2동', '대치4동', '역삼1동', '역삼2동', '도곡1동', '도곡2동', '개포1동', '개포2동', '개포4동', '세곡동', '일원본동', '일원1동', '일원2동', '수서동']
         , ['강일동', '상일동', '명일1동', '명일2동', '고덕1동', '고덕2동', '암사1동', '암사2동', '암사3동', '천호1동', '천호2동', '천호3동', '성내1동', '성내2동', '성내3동', '길동', '둔촌1동', '둔촌2동']
@@ -334,7 +334,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             {dongList()}
                         </Select>
                     </FormControl>
-                    <Button variant='outlined' color="secondary" onClick={handleSide} fullWidth>분석하기</Button>
+                    <Button variant='outlined' onClick={handleSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
             <Accordion>
@@ -419,7 +419,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                             {themeList()}
                         </Select>
                     </FormControl>
-                    <Button variant='outlined' color="secondary" onClick={handleThemeSide} fullWidth>분석하기</Button>
+                    <Button variant='outlined' onClick={handleThemeSide} fullWidth>분석하기</Button>
                 </AccordionDetails>
             </Accordion>
         </div>

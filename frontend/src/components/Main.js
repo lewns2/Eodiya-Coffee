@@ -41,31 +41,31 @@ export default function Main(props){
             if (e.deltaY > 0) {
                 onOneClick();
             }else{
-                onThreeClick();
+                onFourClick();
             }
         }else if (a==1){
             if (e.deltaY > 0) {
                 onTwoClick();
             }else{
-                onFourClick();
+                onZeroClick();
             }
         }else if (a==2){
             if (e.deltaY > 0) {
                 onThreeClick();
             }else{
-                onZeroClick();
+                onOneClick();
             }
         }else if (a==3){
             if (e.deltaY > 0) {
                 onFourClick();
             }else{
-                onOneClick();
+                onTwoClick();
             }
         }else if (a==4){
             if (e.deltaY > 0) {
                 onZeroClick();
             }else{
-                onTwoClick();
+                onThreeClick();
             }
         }
         clearTimeout(wheelTimeout.current)    
@@ -83,7 +83,7 @@ export default function Main(props){
         <div className="OutLine"> 
             <div className="InLine" ref={zeroRef} onWheel = {(e) =>updown(0, e)} style={sectionStyle}>
                     <p className="section">어디야는 빅데이터 분석을 통해 <br/>카페창업의 위치 선정을 도와주는 추천 시스템입니다.</p>
-                    <Box sx={{
+                    {/* <Box sx={{
                         marginTop: "150px",
                         width:100,
                         height: 50,
@@ -91,11 +91,11 @@ export default function Main(props){
                         fontSize: '25px'
                     }} onClick={(e) =>updown(3,e)}>
                              CLICK!
-                    </Box>
+                    </Box> */}
             </div>
             <div className="InLine" ref={oneRef} onWheel = {(e) =>updown(1, e)} >
                 <header className="title1">
-                    <h2>카페 창업을 준비중이신가요?</h2>
+                    <h1>카페 창업을 준비중이신가요?</h1>
                 </header>
                 <Grid className="Grid" container spacing={3} padding="100px" marginLeft='100px'>
                     <Grid item xs={4}>
@@ -114,11 +114,11 @@ export default function Main(props){
             </div>
             <div className="InLine" ref={twoRef} onWheel = {(e) =>updown(2, e)} >
                 <div className="innerSec">
-                    <div >
+                    <div  className="fixwidth">
 						<header class="major" >
 							<h2>&#9757; 알고 싶은 동네의 <br/>상권 정보를 제공합니다.</h2>
 						</header>
-						<p>원하는 지역의 매출 지표, 주요 고객층, 인근 점포 수, 생활 인구와 주변 시설 정보를 알아보기 쉽게 제공합니다.
+						<p className="bigfont">원하는 지역의 매출 지표, 주요 고객층, 인근 점포 수, 생활 인구와 주변 시설 정보를 알아보기 쉽게 제공합니다.
 						시장성, 성장성, 안정성을 분석하여 높은 순위의 상권을 알 수 있습니다.</p>
 					</div>
                     <img className="imgSec2" src={require('../assets/분석정보.png')} alt="사진"/>
@@ -129,11 +129,11 @@ export default function Main(props){
                     <div>
                         <img className="imgSec2" src={require('../assets/현황.JPG')} alt="사진"/>
 					</div>
-					<div>
+					<div className="fixwidth">
 						<header class="major">
 							<h2>&#9996;영업 중인 카페정보 제공</h2>
 						</header>
-						<p>입지 선정, 컨셉을 기획하기 위해 관심있는 지역의 카페 현황을 알아 보기 쉽도록
+						<p className="bigfont">입지 선정, 컨셉을 기획하기 위해 관심있는 지역의 카페 현황을 알아 보기 쉽도록
                             지도에서 한 눈에 볼 수 있습니다.
                         </p>
 					</div>
@@ -144,7 +144,7 @@ export default function Main(props){
 						<h2>시작해볼까요?</h2>
 				</header>
 					<ul className="actionsSpecial">
-						<Button variant="contained" component="span"  size="large" onClick={mainEnd}>
+						<Button className="bigbtn" variant="contained" component="span"  size="large" onClick={mainEnd}>
 							시작하기
 						</Button>
 					</ul>
