@@ -1,15 +1,16 @@
 import { useSelector, useDispatch } from "react-redux";
-
+import {useState} from "react";
 import actionCreators from "./actionCreators";
 
 import markerImg from "../assets/marker.png"
+import useSelectDongData from "./useSelectDongData";
 
 const { kakao } = window;
 
 var kakaoMap = {};
 var dongList = [];
 var marker_old = [];
-
+// function goToDetail() {};
 
 const useSetDongMarker = () => {
     
@@ -20,21 +21,19 @@ const useSetDongMarker = () => {
     }))
 
     const dispatch = useDispatch();
+    const { getSelectedDongData } = useSelectDongData();
 
     kakaoMap = map;
     dongList = dongArea;
     marker_old = dongMarker;
     
 
-    const setDongMarker = (polygon) => {
+    const setDongMarker = (polygon, guName) => {
 
         polygon.setMap(null);
-
-        var polygon_new = [];
-        
         let polygons = [];
 
-        console.log(dongList);
+        // console.log("동 정보를 달라 ", dongList);
 
         dongList.map(value => {
             let dongName = value.dongName;
@@ -75,11 +74,28 @@ const useSetDongMarker = () => {
             const customOverlay = new kakao.maps.CustomOverlay({
                 content : content,
             });
+
+            // function goToDetail(gu, dong) {
+            //     console.log("실행되긴하니?")
+            //     getSelectedDongData(gu, dong);
+            // }
+            
+            const contentInfo = 
+                                `<span> ${guName}, ${dongName} </span>` +
+                                `<button onClick={getSelectedDongData(guName, dongName)}'>` + 
+                                `상권 상세 보기` + 
+                                `</button>`;
+
+            
+
+            const customOverlayInfo = new kakao.maps.CustomOverlay({
+                content : contentInfo,
+            });
                                 
             kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
                 polygon.setOptions({ fillColor: '#09f' });
                         
-                customOverlay.setPosition(new kakao.maps.LatLng(dongLat, dongLng));
+                customOverlay.setPosition(new kakao.maps.LatLng(dongLat + 0.0010, dongLng));
                 customOverlay.setMap(kakaoMap);
             });
 
@@ -91,12 +107,15 @@ const useSetDongMarker = () => {
             // # 2.6 다각형 클릭 시, 줌인
             kakao.maps.event.addListener(polygon, 'click', function() {
                 kakaoMap.setLevel(5);
+                // console.log("구동구동구동구동구동구동구동", guName, dongName);
+                customOverlayInfo.setPosition(new kakao.maps.LatLng(dongLat, dongLng));
+                customOverlayInfo.setMap(kakaoMap)
+
                 map.panTo(new kakao.maps.LatLng(dongLat, dongLng));
                 // polygon.setMap(null);           
             });
         })
-
-        dispatch(actionCreators.addDongMarker(polygon_new));        
+        dispatch(actionCreators.addDongMarker(polygons));        
     };
     return {setDongMarker};
 }
@@ -104,6 +123,9 @@ const useSetDongMarker = () => {
     // console.log(markers);
 
 export default useSetDongMarker;
+
+// 실패 함수
+// `<button onClick={()=>${getSelectedDongData(guName, dongName)}}'>
 
 /*
 import { useSelector, useDispatch } from "react-redux";

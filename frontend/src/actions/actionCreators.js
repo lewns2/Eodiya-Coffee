@@ -16,6 +16,7 @@ const SET_CAFELIST = "setCafeList";
 const SET_GUOVERLAY = "setGuOverlay";
 const SET_ISLOADING = "setIsLoading";
 const SET_CAFEMARKER = "setCafeMarker";
+const SET_GUPOLY = "setGuPoly"
 const SET_THEMEGUDATA = "setThemeGuData";
 const SET_THEMENUM = "setThemeNum";
 
@@ -139,6 +140,13 @@ const setIsLoading = (isLoading) =>{
         isLoading : isLoading
     }
 }
+
+const setGuPoly = (data) => {
+    return {
+        type : SET_GUPOLY,
+        guPoly : data,
+    }
+}
 const setThemeGuData = (data) => {
     return {
         type: SET_THEMEGUDATA,
@@ -172,6 +180,7 @@ export const actionCreators = {
     setGuOverlay,
     setIsLoading,
     setCafeMarker,
+    setGuPoly,
     setThemeGuData,
     setThemeNum,
 }
