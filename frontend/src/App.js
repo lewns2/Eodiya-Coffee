@@ -40,9 +40,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <div>
-          {/* <Nav/> */}
-          {/* <EodiyaMap/> */}
-          <Main/>
+          <Nav/>
+          <EodiyaMap/>
+          {/* <Main/> */}
         </div>
       </Provider>
     </ThemeProvider>
