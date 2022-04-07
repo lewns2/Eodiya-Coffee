@@ -26,11 +26,11 @@
 
 ### Backend
 
-| Name   | Version |
-| ------ | ------- |
-| python | 3.7.9   |
-| MySQL  | latest  |
-|        |         |
+| Name   | Version                 |
+| ------ | ----------------------- |
+| python | 3.7.9                   |
+| MySQL  | 8.0.28-0ubuntu0.20.04.3 |
+|        |                         |
 
 ### DevOps
 
