@@ -141,7 +141,7 @@ export default function Main(props){
             </div>
             <div className="InLineend" ref={fourRef} onWheel = {(e) =>updown(4, e)}>
                 <header class="major">
-						<h2>시작해볼까요?</h2>
+					<img src={require('../assets/Eodiya-removebg-preview.png')}></img>
 				</header>
 					<ul className="actionsSpecial">
 						<Button className="bigbtn" variant="contained" component="span"  size="large" onClick={mainEnd}>

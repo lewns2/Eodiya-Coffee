@@ -6,6 +6,7 @@ import img1 from '../assets/caffeetwo.png';
 import img2 from '../assets/diary.png';
 import img3 from '../assets/checkfile.png';
 import img4 from '../assets/mapread.png';
+import Card from '@material-ui/core/Card';
 
 
 export default class HowTo extends Component {
@@ -20,7 +21,7 @@ export default class HowTo extends Component {
     return ( 
     <div> 
       <Slider {...settings}> 
-        <div > 
+        <div sx={{ display: 'flex', alignItems:"center" }}>
           <img src={img1} alt={1} height={400}/>
         </div> 
         <div> 

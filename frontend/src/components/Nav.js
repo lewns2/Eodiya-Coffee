@@ -39,45 +39,48 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Nav() {
-    const [LoginIsOpen, setLoginOpen] = useState(false);
-    const [MypageIsOpen, setMypageOpen] = useState(false);
-    const [RegisterIsOpen, setRegisterIsOpen] = useState(false);
-    const [HowToIsOpen, setHowToIsOpen] = useState(false);
-    const [IsLogin, setIsLogin] = useState(false);
-    const classes = useStyles();
+function Nav(props) {
+    // const [LoginIsOpen, setLoginOpen] = useState(false);
+    // const [MypageIsOpen, setMypageOpen] = useState(false);
+    // const [RegisterIsOpen, setRegisterIsOpen] = useState(false);
+    // const [HowToIsOpen, setHowToIsOpen] = useState(false);
+    // const [IsLogin, setIsLogin] = useState(false);
+    // const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
-    const [modalStyle] = React.useState(getModalStyle);
+    // const [modalStyle] = React.useState(getModalStyle);
 
 
-    const handleCloseModal = ()=> {
-        setLoginOpen(false);
-        setMypageOpen(false);
-        setRegisterIsOpen(false);
-        setHowToIsOpen(false);
-        setIsLogin(CheckLogin);
+    // const handleCloseModal = ()=> {
+    //     setLoginOpen(false);
+    //     setMypageOpen(false);
+    //     setRegisterIsOpen(false);
+    //     setHowToIsOpen(false);
+    //     setIsLogin(CheckLogin);
+    // }
+    // const CheckLogin= () => {
+    //     if(window.localStorage.getItem("jwt")){
+    //         return true
+    //     }
+    //     return false
+    // }
+    const mainOpen =() =>{
+        props.mainOpen();
     }
-    const CheckLogin= () => {
-        if(window.localStorage.getItem("jwt")){
-            return true
-        }
-        return false
-    }
-    const LogOut= () => {
-        window.localStorage.removeItem("jwt");
-        handleCloseModal();
-    }
+    // const LogOut= () => {
+    //     window.localStorage.removeItem("jwt");
+    //     handleCloseModal();
+    // }
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
                 {/* <img src={require('../assets/Eodiya-removebg-preview.png')} style={{width:80, height:80}}  alt="로고"/> */}
-                <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                <Typography style={{ cursor: 'pointer' }} onClick={() =>mainOpen()} variant="h5" component="div" sx={{ flexGrow: 1 }}>
                     어디야
                 </Typography>
-                    <Button color="inherit" onClick={() => setHowToIsOpen(true)}>사용자 가이드</Button>
+                    {/* <Button color="inherit" onClick={() => setHowToIsOpen(true)}>사용자 가이드</Button>
 
-                    {/* {!IsLogin && (
+                    {!IsLogin && (
                             <>
                                 <Button color="inherit" onClick={() => setLoginOpen(true)}>로그인</Button>
                                 <Button color="inherit" onClick={() => setRegisterIsOpen(true)}>회원가입</Button>
@@ -106,12 +109,12 @@ function Nav() {
                         <div style={modalStyle} className={classes.paper}> 
                             <Register closemodal ={handleCloseModal}/>
                         </div>
-                    </Modal> */}
+                    </Modal>
                     <Modal open={HowToIsOpen}>
                         <div>
                             <HowTo/>
                         </div>
-                    </Modal>
+                    </Modal> */}
                 </Toolbar>
             </AppBar>
         </Box>
