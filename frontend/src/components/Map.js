@@ -14,7 +14,7 @@ import '../styles/Map.css';
 import '../styles/Location.css'
 
 import { useDispatch, useSelector } from "react-redux";
-import useCafeMarker from '../actions/useCafeMarker';
+// import useCafeMarker from '../actions/useCafeMarker';
 
 const { kakao } = window;
 var kakaoMap = {};
@@ -64,7 +64,7 @@ const Map=(props)=>{
     // 2. 검색 키워드를 관리하는 훅
     const [searchKeyword, setSearchKeyword] = useState("");
   const dispatch = useDispatch();
-  useCafeMarker();
+  // useCafeMarker();
 
   const { map } = useSelector(state => ({
     map : state.setMap.eodiyaMap.map,

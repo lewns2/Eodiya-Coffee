@@ -13,15 +13,13 @@
 
 - VSCode
 
-
-
 ### Frontend
 
 | Name       | Version      |
 | ---------- | ------------ |
 | React      |              |
 | Javascript |              |
-| redux      |              |
+| redux      | 16.14.0      |
 | Nginx      | nginx-1.21.6 |
 
 ### Backend
@@ -38,8 +36,6 @@
 - NginX
 - Docker
 
-
-
 ### 협업 툴
 
 - Gitlab
@@ -48,8 +44,6 @@
 - Mattermost
 - Webex
 - Figma
-
-
 
 ### 2. 빌드 시 사용되는 환경 변수 등의 주요 내용 상세 기재
 
@@ -117,12 +111,12 @@ server {
 
     root /usr/share/nginx/html;
     index index.html;
-	
+
     # 기본적으로는 요청 그대로 진행
     location / {
         try_files $uri $uri/ /index.html;
     }
-	
+
     # 약속된 루트인 /api로 요청이 왔을 경우 요청을 보내는 위치를 proxy_pass로 바꿔줌
     location /api {
         proxy_pass http://j6e203.p.ssafy.io:8000;
@@ -141,24 +135,24 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get -y update
 # docker 안에서 vim설치를 안하도록
-RUN apt-get -y install vim 
+RUN apt-get -y install vim
 
 # mysql 추가
 # RUN apt-get install -y libmysqlclient-dev=5.7.31-0ubuntu0.18.04.1
 # RUN pip install mysqlclient
 
 # docker안에서 srv/docker-server 폴더 생성
-RUN mkdir /srv/docker-server 
+RUN mkdir /srv/docker-server
 # 현재 디렉토리를 통째로 srv/docker-server폴더에 복사
-ADD . /srv/docker-server 
+ADD . /srv/docker-server
 
 # 작업 디렉토리 설정
-WORKDIR /srv/docker-server 
+WORKDIR /srv/docker-server
 
 # pip 업그레이드
 RUN pip install --upgrade pip
 # 필수 패키지 설치
-RUN pip install -r requirements.txt 
+RUN pip install -r requirements.txt
 # migrate
 RUN python manage.py makemigrations
 RUN python manage.py migrate
@@ -167,14 +161,8 @@ RUN python manage.py migrate
 EXPOSE 8000
 
 # 장고 실행 명령어. 0.0.0.0:8000은 모든 호스트에서 8000번 포트로 오는 요청은 모두 받아준다는 뜻
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"] 
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 ```
-
-
-
-
-
-
 
 ### 3. 배포 시 특이사항 기재
 
@@ -188,33 +176,26 @@ frontend/
 Dockerfile과 같은 위치에서
 
 로컬 터미널//
-1.
-docker build -t (dockerhub명)/(사용할이미지명):(사용할버전태그)
+
+1.  docker build -t (dockerhub명)/(사용할이미지명):(사용할버전태그)
 
 이미지 명과 버전 태그는 항상 임의로 설정하면 된다. 편의성을 위해 이미지명은 그대로 두고, 버전 태그만 바꾸는 것을 추천한다.
 태그를 항상 바꿔주는 것이 귀찮다면 latest를 활용해도 된다.
 
-2.
-docker push (dockerhub명)/(사용할이미지명):(사용할버전태그)
+2.  docker push (dockerhub명)/(사용할이미지명):(사용할버전태그)
 
 여기서 이미지 명과 버전 태그는 위에서 빌드한 그대로 사용해야 한다. 아니면 다른 이미지가 올라갈 수 있다.
 
-EC2 환경
-3.
+EC2 환경 3.
 sudo docker pull (dockerhub명)/(사용할이미지명):(사용할버전태그)
 
-4.
-(프론트엔드 이미지 런)
-sudo docker run -d --rm -p 80:80 -p 443:443 -v /home/ubuntu/docker-volume/ssl:/var/www/html (dockerhub명)/(사용할이미지명):(사용할버전태그)
-(백엔드 이미지 런)
-sudo docker run -d --rm -p 8000:8000 (dockerhub명)/(사용할이미지명):(사용할버전태그)
+4.  (프론트엔드 이미지 런)
+    sudo docker run -d --rm -p 80:80 -p 443:443 -v /home/ubuntu/docker-volume/ssl:/var/www/html (dockerhub명)/(사용할이미지명):(사용할버전태그)
+    (백엔드 이미지 런)
+    sudo docker run -d --rm -p 8000:8000 (dockerhub명)/(사용할이미지명):(사용할버전태그)
 
 프론트 엔드는 nginx도 함께 사용하기 때문에 볼륨을 설정해줘야 하는데, ssl 보안 관련 설정은 되어있으니 걱정말자!
 ```
-
-
-
-
 
 ### 4. DB 접속 정보 등 프로젝트(ERD)에 활용되는 주요 계정 및 프로퍼티가 정의된 파일 목록
 
@@ -222,9 +203,6 @@ sudo docker run -d --rm -p 8000:8000 (dockerhub명)/(사용할이미지명):(사
 
 ![화면 캡처 2022-04-07 234003](C:\Users\SSAFY\Desktop\S06P22E203\exec\Docs\화면 캡처 2022-04-07 234003.png)
 
-
-
 - erd
 
 ![화면 캡처 2022-04-07 234533](C:\Users\SSAFY\Desktop\S06P22E203\exec\Docs\화면 캡처 2022-04-07 234533.png)
-

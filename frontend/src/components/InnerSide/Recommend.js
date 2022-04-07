@@ -66,7 +66,7 @@ const Recommend = ({recoData}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <p>시장성: 동 분기 매출액 / 점포수 -( (구 분기 매출액 / 점포수)/해당 구의 상권수)</p>
+                <p>시장성: 동 분기 매출액 / 점포수 - 구 분기 매출액 / 점포수</p>
                 <h3 className='mm-15'>성장성 상권</h3>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 500 }} aria-label="simple table">
@@ -93,34 +93,34 @@ const Recommend = ({recoData}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            <p>성장성: 이번 분기 매출액 / 전 분기 매출액</p>
-            <h3 className='mm-15'>안전성 상권</h3>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 500 }} aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>순위</TableCell>
-                        <TableCell align="right">지역</TableCell>
-                        <TableCell align="right">안정성</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {dongData3.map((recommRows, index) => (
-                        <TableRow
-                        key={index}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                        <TableCell component="th" scope="row">
-                            {index+1}
-                        </TableCell>
-                        <TableCell align="right">{recommRows.commercialAreaName}</TableCell>
-                        <TableCell align="right">{recommRows.안정성}</TableCell>
+                <p>성장성: 이번 분기 매출액 / 전 분기 매출액</p>
+                <h3 className='mm-15'>안전성 상권</h3>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell>순위</TableCell>
+                            <TableCell align="right">지역</TableCell>
+                            <TableCell align="right">안정성</TableCell>
                         </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <p>안정성:  1 - (폐업 점포수 / 신규 점포수)(신규 점포가 없을때 1로 고정)</p>
+                        </TableHead>
+                        <TableBody>
+                        {dongData3.map((recommRows, index) => (
+                            <TableRow
+                            key={index}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                            <TableCell component="th" scope="row">
+                                {index+1}
+                            </TableCell>
+                            <TableCell align="right">{recommRows.commercialAreaName}</TableCell>
+                            <TableCell align="right">{recommRows.안정성}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <p>안정성:  1 - (폐업 점포수 / 신규 점포수)(신규 점포가 없을때 1로 고정)</p>
             </>
             }
         </Fragment>

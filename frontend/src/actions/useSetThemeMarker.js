@@ -104,12 +104,6 @@ const useSetThemeMarker = () => {
             
             var content;
             switch (theme[category]) {
-                case "브런치카페":
-                    content = `<div>
-                                    <span class="left"></span><span class="center">${value.commercialAreaName}</span>
-                                    <div>11시 ~ 14시 매출 : ${value.revenue1114} 원</div>
-                                </div>`
-                    break;
                 case "스터디카페":
                     content = `
                                 <style>
@@ -140,8 +134,218 @@ const useSetThemeMarker = () => {
                                     </div>
                                 </div>`
                     break;
-                default:
-                    break;
+                    case "디저트카페":
+                        content = `
+                                    <style>
+                                        .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+                                        .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+                                        .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+                                        .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+                                        .info .body {position: relative;overflow: hidden;}
+                                        .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+                                        .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                                        .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+                                        .body .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+                                        .body .link {color: #5085BB;}
+                                    </style>
+                                    <div class="wrap" style="background: #fff">
+                                        <div class = "info">
+                                            <div class="title"> 
+                                            (${rank-1}위) ${value.commercialAreaName}
+                                            </div>
+                                        <div>
+                                        <div>
+                                            <div class="addr">주변 정보</div>
+                                            <div class="addr">20대 생활 인구, 30대 생활 인구 : ${value.lifePeopleAge20} 명, ${value.lifePeopleAge30} 명</div>
+                                            <div class="addr">아파트 평균 시세 : 총 ${value.maleLifePeople} 개</div>
+                                            <div class="addr">대학교 + 극장 수  : 총 ${value.visitor_facilities} 개</div>
+                                            <div class="addr">여성 생활 인구 : ${value.femaleLifePeople} 명</div>
+                                            <div class="addr">극장 수 : 총 ${value.theaterCount} 개</div>
+                                            <div class="addr">20대, 30대 여성 생활 인구 : ${value.life_people_female_sum2030} 명</div>
+                                            <div class="addr">상권 주변 대학교 총 합 : 총 ${value.universityCount} 개</div>
+                                        </div>
+                                    </div>`
+                        break;
+                        case "술카페":
+                            content = `
+                                        <style>
+                                            .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+                                            .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+                                            .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+                                            .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+                                            .info .body {position: relative;overflow: hidden;}
+                                            .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+                                            .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                                            .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+                                            .body .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+                                            .body .link {color: #5085BB;}
+                                        </style>
+                                        <div class="wrap" style="background: #fff">
+                                            <div class = "info">
+                                                <div class="title"> 
+                                                (${rank-1}위) ${value.commercialAreaName}
+                                                </div>
+                                            <div>
+                                            <div>
+                                                <div class="addr">주변 정보</div>
+                                                <div class="addr">20대 생활 인구, 30대 생활 인구 : ${value.lifePeople_20} 명, ${value.lifePeople_30} 명</div>
+                                                <div class="addr">10대, 20대 생활인구수의 합 : 총 ${value.peopleTotal} 명</div>
+                                                <div class="addr">분기 매출 : 총 ${value.quarterRevenue} 원</div>
+                                                <div class="addr">17-21시 매출 : ${value.revenue_1721} 원</div>
+                                                <div class="addr">21-24시 매출 : 총 ${value.revenue_2124} 원</div>
+                                                <div class="addr">저녁 총매출(17-24시) : ${value.revenue_in_night} 원</div>
+                                            </div>
+                                        </div>`
+                            break;
+                            case "커피전문점":
+                                content = `
+                                            <style>
+                                                .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+                                                .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+                                                .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+                                                .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+                                                .info .body {position: relative;overflow: hidden;}
+                                                .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+                                                .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                                                .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+                                                .body .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+                                                .body .link {color: #5085BB;}
+                                            </style>
+                                            <div class="wrap" style="background: #fff">
+                                                <div class = "info">
+                                                    <div class="title"> 
+                                                    (${rank-1}위) ${value.commercialAreaName}
+                                                    </div>
+                                                <div>
+                                                <div>
+                                                    <div class="addr">주변 정보</div>
+                                                    <div class="addr">20대 생활 인구, 30대 생활 인구 : ${value.lifePeople_20} 명, ${value.lifePeople_30} 명</div>
+                                                    <div class="addr">10대, 20대 생활인구수의 합 : 총 ${value.peopleTotal} 명</div>
+                                                    <div class="addr">분기 매출 : 총 ${value.quarterRevenue} 원</div>
+                                                    <div class="addr">17-21시 매출 : ${value.revenue_1721} 원</div>
+                                                    <div class="addr">21-24시 매출 : 총 ${value.revenue_2124} 원</div>
+                                                    <div class="addr">저녁 총매출(17-24시) : ${value.revenue_in_night} 원</div>
+                                                </div>
+                                            </div>`
+                                break;
+                                case "무인카페":
+                                    content = `
+                                                <style>
+                                                    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+                                                    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+                                                    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+                                                    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+                                                    .info .body {position: relative;overflow: hidden;}
+                                                    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+                                                    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                                                    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+                                                    .body .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+                                                    .body .link {color: #5085BB;}
+                                                </style>
+                                                <div class="wrap" style="background: #fff">
+                                                    <div class = "info">
+                                                        <div class="title"> 
+                                                        (${rank-1}위) ${value.commercialAreaName}
+                                                        </div>
+                                                    <div>
+                                                    <div>
+                                                        <div class="addr">주변 정보</div>
+                                                        <div class="addr">상권 주변 회사원 수 : ${value.salarymanNumber} 명 </div>
+                                                        <div class="addr">상권 주변 지하철역 수 : ${value.subwayNumber} 개</div>
+                                                        <div class="addr">상권 주변 기차역 수 : ${value.trainstationNumber} 개</div>
+                                                        <div class="addr">상권 주변 교통수단 수 : ${value.transportationNumber} 개</div>
+                                                    </div>
+                                                </div>`
+                                    break;
+                                    case "브런치카페":
+                                        content = `
+                                                    <style>
+                                                        .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+                                                        .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+                                                        .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+                                                        .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+                                                        .info .body {position: relative;overflow: hidden;}
+                                                        .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+                                                        .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                                                        .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+                                                        .body .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+                                                        .body .link {color: #5085BB;}
+                                                    </style>
+                                                    <div class="wrap" style="background: #fff">
+                                                        <div class = "info">
+                                                            <div class="title"> 
+                                                            (${rank-1}위) ${value.commercialAreaName}
+                                                            </div>
+                                                        <div>
+                                                        <div>
+                                                            <div class="addr">주변 정보</div>
+                                                            <div class="addr">11~14시 생활인구 : ${value.revenue1114} 명 </div>
+                                                        </div>
+                                                    </div>`
+                                        break;
+                                        case "키즈카페":
+                                            content = `
+                                                        <style>
+                                                            .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+                                                            .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+                                                            .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+                                                            .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+                                                            .info .body {position: relative;overflow: hidden;}
+                                                            .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+                                                            .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                                                            .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+                                                            .body .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+                                                            .body .link {color: #5085BB;}
+                                                        </style>
+                                                        <div class="wrap" style="background: #fff">
+                                                            <div class = "info">
+                                                                <div class="title"> 
+                                                                (${rank-1}위) ${value.commercialAreaName}
+                                                                </div>
+                                                            <div>
+                                                            <div>
+                                                                <div class="addr">주변 정보</div>
+                                                                <div class="addr">상권 주변의 유치원 수 : ${value.kindergardenNumber} 개 </div>
+                                                                <div class="addr">30대 생활인구 : ${value.lifePeople_30} 명 </div>
+                                                                <div class="addr">상권 주변의 초등학교 수 : ${value.schoolNumber} 개 </div>
+                                                                <div class="addr">상권 주변 학교들의 수(초등학교 + 유치원) : ${value.schoolTotal} 개 </div>
+                                                            </div>
+                                                        </div>`
+                                            break;
+                                            case "보드게임카페":
+                                                content = `
+                                                            <style>
+                                                                .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+                                                                .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+                                                                .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+                                                                .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+                                                                .info .body {position: relative;overflow: hidden;}
+                                                                .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+                                                                .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                                                                .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+                                                                .body .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+                                                                .body .link {color: #5085BB;}
+                                                            </style>
+                                                            <div class="wrap" style="background: #fff">
+                                                                <div class = "info">
+                                                                    <div class="title"> 
+                                                                    (${rank-1}위) ${value.commercialAreaName}
+                                                                    </div>
+                                                                <div>
+                                                                <div>
+                                                                    <div class="addr">주변 정보</div>
+                                                                    <div class="addr">10대 생활인구 : ${value.lifePeople_10} 개 </div>
+                                                                    <div class="addr">20대 생활인구 : ${value.lifePeople_20} 명 </div>
+                                                                    <div class="addr">생활인구수의 합(10대 + 20대) : ${value.peopleTotal} 개 </div>
+                                                                    <div class="addr">상권 주변의 중학교 수 : ${value.schoolNumber2} 개 </div>
+                                                                    <div class="addr">상권 주변의 고등학교 수 : ${value.schoolNumber3} 개 </div>
+                                                                    <div class="addr">상권 주변 학교들의 수(중학교 + 고등학교 + 대학교) : ${value.schoolTotal} 개 </div>
+                                                                    <div class="addr">상권 주변의 대학교 수 : ${value.universityNumber} 개 </div>
+                                                                </div>
+                                                            </div>`
+                                                break;
+                                    default:
+                                        break;
             }
 
             polygons.push(polygon);
@@ -163,7 +367,7 @@ const useSetThemeMarker = () => {
                 customOverlay.setMap(null);
             });
         })
-        dispatch(actionCreators.addDongMarker(polygons));     
+        dispatch(actionCreators.addThemeArea(polygons));     
     };
     return {setThemeMarker}; 
 }

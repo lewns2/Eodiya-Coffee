@@ -22,7 +22,7 @@ function Facilities({facdongdata}) {
         <div>
             <h2 className='infoTable'>편의 시설</h2>
             <TableContainer className='infoTable' component={Paper}>
-                <Table sx={{ minWidth: 550 }} aria-label="simple table">
+                <Table sx={{ minWidth: 520 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
                         <TableCell>병원</TableCell>
@@ -47,7 +47,7 @@ function Facilities({facdongdata}) {
             </TableContainer>
             <h2 className='infoTable'>교육 시설</h2>
             <TableContainer className='infoTable' component={Paper}>
-                <Table sx={{ minWidth: 550 }} aria-label="simple table">
+                <Table sx={{ minWidth: 520 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
                         <TableCell>유치원</TableCell>
@@ -70,7 +70,7 @@ function Facilities({facdongdata}) {
             </TableContainer>
             <h2 className='infoTable'>교통 시설</h2>
             <TableContainer className='infoTable' component={Paper}>
-                <Table sx={{ minWidth: 550 }} aria-label="simple table">
+                <Table sx={{ minWidth: 520 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
                         <TableCell>버스터미널</TableCell>
@@ -93,7 +93,7 @@ function Facilities({facdongdata}) {
             </TableContainer>
             <h2 className='infoTable'>기타 시설</h2>
             <TableContainer className='infoTable' component={Paper}>
-                <Table sx={{ minWidth: 550 }} aria-label="simple table">
+                <Table sx={{ minWidth: 520 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
                         <TableCell>백화점</TableCell>
@@ -114,6 +114,7 @@ function Facilities({facdongdata}) {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <p>위 데이터는 해당 동의 상권 기반 데이터로 몇몇 장소는 상권에 포함되지 않아 누락될 수 있습니다.</p>
         </div>
     );
 }

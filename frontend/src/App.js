@@ -24,10 +24,10 @@ const App = () => {
   const mainend = () => {
     setIsMain(!isMain)
   }
-  const ssd = () => {
-    alert(isMain)
-    setIsMain(false)
-  }
+  // const ssd = () => {
+  //   alert(isMain)
+  //   setIsMain(false)
+  // }
 
  const theme = createTheme({
   typography: {
@@ -40,16 +40,17 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <div>
-          { !isMain &&
+          <Nav/>
+          <EodiyaMap/>
+          {/* { !isMain &&
             <Fragment>
-              <Nav/>
+              <Nav mainOpen={mainend}/>
               <EodiyaMap/>
             </Fragment>
           }
           { isMain &&
-            
               <Main mainend={mainend}/>
-          }
+          } */}
         </div>
       </Provider>
     </ThemeProvider>

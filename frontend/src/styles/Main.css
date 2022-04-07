@@ -101,3 +101,16 @@ h3{
     height: 400px;
     width: 800px;
 }
+.bigfont{
+    font-size: 25px;
+}
+.fixwidth{
+    width: 60%;
+    margin: auto;
+}
+.bigbtn{
+    width: 180px;
+    border-radius: 18px;
+    height: 100px;
+    font-size: 35px;
+}
