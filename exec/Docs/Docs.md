@@ -17,8 +17,8 @@
 
 | Name       | Version      |
 | ---------- | ------------ |
-| React      |              |
-| Javascript |              |
+| React      | 17.0.2       |
+| Javascript | ES6이상      |
 | redux      | 16.14.0      |
 | Nginx      | nginx-1.21.6 |
 
@@ -29,10 +29,10 @@
 | python | 3.7.9                   |
 | MySQL  | 8.0.28-0ubuntu0.20.04.3 |
 | Docker | 20.10.12                |
+| Django | 3.2.12                  |
 
 ### DevOps
 
-- Jenkins
 - NginX
 - Docker
 
@@ -44,6 +44,7 @@
 - Mattermost
 - Webex
 - Figma
+- ERD Cloud
 
 ### 2. 빌드 시 사용되는 환경 변수 등의 주요 내용 상세 기재
 
