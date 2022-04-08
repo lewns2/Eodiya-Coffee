@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -13,7 +13,6 @@ import Stack from '@mui/material/Stack';
 import '../styles/Comm.css';
 import GuDong from '../utils/GuDong.json';
 import axios from 'axios';
-// import { useDispatch, useSelector } from "react-redux";
 import actionCreators from '../actions/actionCreators';
 import useSelectDongData from '../actions/useSelectDongData';
 
@@ -30,8 +29,6 @@ import RollerSkatingRoundedIcon from '@mui/icons-material/RollerSkatingRounded';
 import SportsBarRoundedIcon from '@mui/icons-material/SportsBarRounded';
 
 import { useSelector, useDispatch } from "react-redux";
-import useSetDongMarker from "../actions/useSetDongMarker"
-import IconButton from '@mui/material/IconButton';
 import useSetThemeMarker from "../actions/useSetThemeMarker";
 import useCafeMarker from '../actions/useCafeMarker';
 
@@ -106,15 +103,8 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         cafeMarker : state.setMap.eodiyaMap.cafeMarker,
         sanggwonAreaData : state.setMap.eodiyaMap.sanggwonAreaData,
     }))
-
-    var [displayDivision, setdisplayDivision] = useState(0);
-    var [search, setSearch] = useState('outlined');
     
     const handleSide = () => {
-
-        var leftDong = [];
-        console.log("상권 분석하기 눌렀다.");
-
         themeAreaData.map(value => {
             value.setMap(null);
         })
@@ -130,13 +120,11 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         if(selectgu == 25){
             alert("지역을 선택해주세요");
         }else{
-            console.log(`/search/${gu[selectgu]}/${dong[selectgu][selectdong]}`)
             getSelectedDongData(gu[selectgu], dong[selectgu][selectdong]);
         }
         
     }
     const handleThemeSide = () =>{
-        console.log("테마 분석하기 눌렀다.")
         dispatch(actionCreators.setIsLoading(true));
         var URL = "recommendation/recommend/"
         if (selecttheme == 0){
@@ -156,13 +144,11 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         }else if(selecttheme == 7){
             URL = URL + "dessert/"
         }
-        console.log("selectgu:", selectgu)
         if(selectgu == 25){
             URL = URL + "none"
         }else{
             URL = URL + `${gu[selectgu]}`
         }
-        console.log("url:", URL);
         axios
             .get(
                 URL,
@@ -183,7 +169,6 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 sanggwonAreaData.map(value => {
                     value.setMap(null);
                 })
-                console.log(response.data, "from theme search");
                 setThemeMarker(response.data, selecttheme);
                 if(selectgu == 25){
                     dispatch(actionCreators.setGuNum("서울시 전체"), [selectgu]);
@@ -205,7 +190,6 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 })
                 guArray.map(value => {
                     if(value.name === gu[selectgu]) {
-                        console.log(value.name, gu[selectgu]);
                         map.setLevel(6);
                         map.panTo(new kakao.maps.LatLng(value.lat, value.lng));
                     }
@@ -243,9 +227,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         return result;
     }
     const handleCafeSelect = (e) => {
-        console.log("카페 클릭: "+e.target.value);
         getCafeGu(e.target.value);
-        //구 누르면 동 초기화
         if(cafeDong !== ""){
             getCafeDong("");
         }
@@ -254,7 +236,7 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         const arr = [];
         for(let i=0; i<GuDong.length; i++){
             if(GuDong[i][0] === cafeGu){
-                arr.push(<MenuItem value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
+                arr.push(<MenuItem key={i} value={GuDong[i][1]}>{GuDong[i][1]}</MenuItem>)
             }
         }
         return arr;
@@ -266,28 +248,18 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         }
         return cafeGu;
     }
-
-    const handleDisplay = () => {
-        displayDivision ^= 1;
-        console.log("행정구 활성화 버튼", displayDivision);
-        setdisplayDivision(displayDivision);
-        // props.setdisplayDivision(displayDivision);
-    }
     
     const handleGuSelect =(e) => {
-        console.log("select: "+e.target.value);
         setSelectGu(e.target.value);
     }
 
     const handleDongSelect =(e) => {
         setSelectDong(e.target.value);
-        console.log(selectdong)
     }
     const handleThemeSelect =(e) => {
         setSelectTheme(e.target.value);
     }
     const handleCafeDong =(e) => {
-        console.log(e.target.value);
         getCafeDong(e.target.value);
         dispatch(actionCreators.setCafeList([]));
     }
@@ -298,7 +270,6 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
         }else if(cafeDong === ""){
             alert("지역을 선택해주세요");
         }else{
-            console.log("Click...."+cafeGu+", "+cafeDong+", "+t);
             axios
                 .get(`/cafes/${cafeGu}/${cafeDong}/${t}`,
                 {
@@ -308,7 +279,6 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                 }
                 )
                 .then(res =>{
-                    console.log("카페 응답", res.data);
                     if(res.data.length===1 &&'' ===res.data[0].dongCode){
                         alert('해당 하는 카페가 없어요. 다른 카테고리를 선택해주세요');
                     }else{
@@ -412,9 +382,6 @@ const Comm =({cafeGu, getCafeGu, cafeDong, getCafeDong}) =>{
                         </Select>
                     </FormControl>
                     <Stack spacing={0.3} justifyContent="center">
-                            {/* {tags.map((list, index) =>(
-                                <Button variant='outlined' key={index} onClick={() => CafeList(list.tag)}>{list}</Button>
-                            ))} */}
                             {btnList()}
                     </Stack>
                 </AccordionDetails>

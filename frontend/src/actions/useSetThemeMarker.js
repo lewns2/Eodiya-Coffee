@@ -1,11 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import actionCreators from "./actionCreators";
-import {useState, useEffect } from 'react';
 
 const { kakao } = window;
 
 var kakaoMap = {};
-var commAreaList = [];
 var old_Area = [];
 
 const theme =["술카페", "커피전문점", "무인카페", "브런치카페", "키즈카페", "스터디카페", "보드게임카페", "디저트카페"];
@@ -24,8 +22,6 @@ const useSetThemeMarker = () => {
     old_Area = themeArea;
 
     const setThemeMarker = (data, category) => {
-        console.log("여기서 정보를", data, theme[category]);
-
         old_Area.map(value => {
             value.setMap(null);
         })
@@ -34,8 +30,6 @@ const useSetThemeMarker = () => {
         let rank = 1;
         data.map(value => {
             let state = rank;
-            let commName = value.commercialAreaName;
-            console.log("테슽으", commName, state);
             rank++;
             let path = [];
             let points = [];
@@ -156,13 +150,10 @@ const useSetThemeMarker = () => {
                                         <div>
                                         <div>
                                             <div class="addr">주변 정보</div>
-                                            <div class="addr">20대 생활 인구, 30대 생활 인구 : ${value.lifePeopleAge20} 명, ${value.lifePeopleAge30} 명</div>
-                                            <div class="addr">아파트 평균 시세 : 총 ${value.maleLifePeople} 개</div>
-                                            <div class="addr">대학교 + 극장 수  : 총 ${value.visitor_facilities} 개</div>
-                                            <div class="addr">여성 생활 인구 : ${value.femaleLifePeople} 명</div>
-                                            <div class="addr">극장 수 : 총 ${value.theaterCount} 개</div>
+                                            <div class="addr">상권 내 아파트 평균 시세 : 평균 ${value.apartmentAvgPrice} 원</div>
                                             <div class="addr">20대, 30대 여성 생활 인구 : ${value.life_people_female_sum2030} 명</div>
-                                            <div class="addr">상권 주변 대학교 총 합 : 총 ${value.universityCount} 개</div>
+                                            <div class="addr">대학교 수 : 총 ${value.universityCount} 개</div>
+                                            <div class="addr">극장 수 : 총 ${value.theaterCount} 개</div>
                                         </div>
                                     </div>`
                         break;

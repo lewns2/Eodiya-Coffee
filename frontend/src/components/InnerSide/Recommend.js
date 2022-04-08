@@ -66,7 +66,7 @@ const Recommend = ({recoData}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <p>시장성: 동 분기 매출액 / 점포수 - 구 분기 매출액 / 점포수</p>
+                <p>시장성: 상권 분기 매출액 / 점포수 - 동 분기 매출액 / 점포수</p>
                 <h3 className='mm-15'>성장성 상권</h3>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 500 }} aria-label="simple table">
@@ -120,7 +120,7 @@ const Recommend = ({recoData}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <p>안정성:  1 - (폐업 점포수 / 신규 점포수)(신규 점포가 없을때 1로 고정)</p>
+                <p>안정성: 1 - (폐업 점포수 / 신규 점포수)(신규 점포가 없을때 0.5로 고정)</p>
             </>
             }
         </Fragment>

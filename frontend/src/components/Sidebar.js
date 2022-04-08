@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -13,7 +13,6 @@ import { Divider } from "@mui/material";
 import Primary from "./InnerSide/Primary";
 import Recommend from "./InnerSide/Recommend";
 import ThemeSide from "./InnerSide/ThemeSide";
-import Visual from "./InnerSide/Visual";
 import Facilities from "./InnerSide/Facilities";
 import { useDispatch, useSelector } from "react-redux";
 import actionCreators from "../actions/actionCreators";
@@ -22,7 +21,7 @@ import useDrawCommArea from "../actions/useDrawCommArea";
 // Sidebar 넓이
 const drawerWidth = 600;
 
-const Sidebar = ({ getOpen }) => {
+const Sidebar = () => {
   const [value, setValue] = React.useState("1");
   const [facdongdata, setFacdongdata] = React.useState();
   const [recodongdata, setRecodongdata] = React.useState();
@@ -50,7 +49,6 @@ const Sidebar = ({ getOpen }) => {
         },
       })
       .then((response) => {
-        console.log(response.data.locationInfo[0], "from search");
         setFacdongdata(response.data.locationInfo[0]);
       })
       .catch((response) => {
@@ -69,8 +67,6 @@ const Sidebar = ({ getOpen }) => {
         },
       })
       .then((response) => {
-        console.log(response.data, "from reco");
-        console.log(response.data.commercialAreaInfo);
         dispatch(actionCreators.setCommArea(response.data.commercialAreaInfo));
         dispatch(actionCreators.setIsLoading(false));
         setRecodongdata(response.data);
@@ -85,13 +81,11 @@ const Sidebar = ({ getOpen }) => {
   };
   // const [faciData, setFaciData] = React.useState([]);
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     if (newValue == 3) {
       getFacData(guselectName, dongselectName);
       // }
     } else if (newValue == 4) {
       getRecoData(guselectName, dongselectName);
-      console.log("asdasdasdas");
     }
     setValue(newValue);
   };
@@ -143,16 +137,12 @@ const Sidebar = ({ getOpen }) => {
               centered
             >
               <Tab label="기본정보" value="1" />
-              {/* <Tab label="상세정보" value="2" /> */}
               <Tab label="위치정보" value="3" />
               <Tab label="추천정보" value="4" />
             </TabList>
             <TabPanel value="1">
               <Primary />
             </TabPanel>
-            {/* <TabPanel value="2">
-                            <Visual dongData={dongData[0]}/>
-                        </TabPanel> */}
             <TabPanel value="3">
               <Facilities facdongdata={facdongdata} />
             </TabPanel>

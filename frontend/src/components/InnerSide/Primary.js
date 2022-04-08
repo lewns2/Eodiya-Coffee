@@ -1,6 +1,6 @@
 import "../../styles/Primary.css"
 
-import React, {  Fragment, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import Chart from "react-apexcharts";
 import { useSelector } from "react-redux";
 
@@ -81,7 +81,7 @@ function Primary() {
             
             <h2 className='m-Y'>매출 지표</h2>
 
-            <h3 className='m-Y'>해당 동의 연 평균 매출은 
+            <h3 className='m-Y'>해당 동의 분기별 평균 매출은 
                 <b className="font-red"> {moneyDot(dongData.quarterRevenue)}원</b>
                 이며 주문당 평균 단가는 
                 <b className="font-red"> {moneyDot(dongData.perRevenue)}원</b>

@@ -1,4 +1,3 @@
-import markerImg from "../assets/marker.png"
 
 const {kakao} = window;
 
