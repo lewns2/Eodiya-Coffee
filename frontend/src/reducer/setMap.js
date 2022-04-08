@@ -85,11 +85,8 @@ const setMap = (state = {
         themeAreaData : [],
     }
 }, action) => {
-    console.log("액션 타입 : ", action.type);
-    console.log(state);
     switch (action.type) {
         case "setMap":
-            console.log("setting...", action);
             return {
                 ...state,
                 eodiyaMap : {

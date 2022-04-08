@@ -1,17 +1,13 @@
 import React, { useEffect } from "react";
 import Map from "../components/Map";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-// import useGeolocation from "../actions/useGeolocation";
+
 import useSetMarker from "../actions/useSetMarker";
-import useCafeMarker from "../actions/useCafeMarker";
-import actionCreators from '../actions/actionCreators';
 
 
 const EodiyaMap = () => {
-
     // useSelector는 reducer에 정의되어 있는 것을 가져온다.
-    // const map = useSelector(state => state.setMap.map);
     const { map, mapLevel, guMarker, dongMarker, guOverlay} = useSelector(state => ({
         map : state.setMap.eodiyaMap.map,
         mapLevel : state.setMap.eodiyaMap.mapLevel,
@@ -19,11 +15,9 @@ const EodiyaMap = () => {
         dongMarker : state.setMap.eodiyaMap.dongMarker,
         guOverlay : state.setMap.eodiyaMap.guOverlay,
     }))
-    const dispatch = useDispatch();
     const {setMarker} = useSetMarker();
        
     useEffect(() => {
-        console.log(mapLevel);
         if(mapLevel >= 9) {
             guMarker.map(value => {
                 value.setMap(null);
@@ -39,7 +33,6 @@ const EodiyaMap = () => {
             setMarker();
         }
         else if(mapLevel <= 6) {
-            console.log(guMarker);
             guMarker.map(value => {
                 value.setMap(null);
             })

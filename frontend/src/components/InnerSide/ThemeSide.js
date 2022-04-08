@@ -63,9 +63,6 @@ const ThemeSide = () => {
         },
       });
     const moveLoc= (index) =>{
-        console.log(themeName);
-        console.log(themeGuData[index]);
-        var name = themeGuData[index].commercialAreaName;
         var lng = themeGuData[index].commercialAreaCenterXPoint;
         var lat = themeGuData[index].commercialAreaCenterYPoint;
         

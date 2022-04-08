@@ -1,14 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import actionCreators from "./actionCreators";
-// import basic from '../assets/basic.png';
-// import black from '../assets/black.png';
-// import plus from '../assets/plus.png';
-// import red from '../assets/red.png';
 const {kakao} = window;
 
 
 const useCafeMarker = () =>{
-    const { map, cafeList, cafeMarker} = useSelector(state => ({
+    const { map, cafeMarker} = useSelector(state => ({
         map: state.setMap.eodiyaMap.map,
         cafeList: state.setMap.eodiyaMap.cafeList,
         cafeMarker: state.setMap.eodiyaMap.cafeMarker,
@@ -19,21 +15,17 @@ const useCafeMarker = () =>{
     var markerList = [];
 
     const setCafeMarker = (list) => {
-        console.log("useCafeMarker.............");
-        // const list = cafeList;
         const kakaoMap = map;
         
         cafeMarker.map(value => {
             value.setMap(null);
         })
         
-        // var markerList =[];
         list.map(value => {
             var markerPosition = new kakao.maps.LatLng(value.cafePoint[1], value.cafePoint[0]);
             var marker = new kakao.maps.Marker({
                 position:  markerPosition
             });
-            console.log(value.cafeTag);
             //contents는 HTML 문자열이나 document element 가능
             var contents = ` 
                     <style>
