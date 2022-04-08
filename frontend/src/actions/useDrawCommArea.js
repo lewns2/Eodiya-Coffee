@@ -17,15 +17,11 @@ const useDrawCommArea = () => {
     const dispatch = useDispatch();
 
     const drawCommArea = () => {
-        console.log(commAreaList);
-        var polygon_new = [];
-        
         let polygons = [];
         
         commAreaList.map(value => {
             let state = value.grade;
             let commName = value.commercialAreaName;
-            let commCode = value.commercialAreaCode;
 
             let path = [];
             let points = [];

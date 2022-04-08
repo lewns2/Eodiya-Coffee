@@ -9,7 +9,6 @@ import RightSide from '../components/Sidebar';
 
 import actionCreators from '../actions/actionCreators';
 
-import useGetArea from '../actions/useGetArea';
 import '../styles/Map.css';
 import '../styles/Location.css'
 
@@ -17,40 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 // import useCafeMarker from '../actions/useCafeMarker';
 
 const { kakao } = window;
-var kakaoMap = {};
 const Map=(props)=>{
     //분석하기 클릭하면 
-    const [open, setOpen] = React.useState(false);
-    const [dongData, setDongData] = React.useState([
-      {
-        quarterRevenue: 0,
-        perRevenue: 0,
-        ageGroup: 0,
-        timeGroup: 0,
-        numberStore: 0,
-        openingStore: 0,
-        closureStore: 0,
-        openingRate: 0,
-        closureRate: 0,
-        likePeople: 0,
-        maleLikePeople: 0,
-        femaleLikePeople: 0,
-        likePeople: 0,
-        likePeopleAge10: 0,
-        likePeopleAge20: 0,
-        likePeopleAge30: 0,
-        likePeopleAge40: 0,
-        likePeopleAge50: 0,
-        likePeopleAge60: 0
-      }
-    ]);
-    const getOpenfromsearch = (data) =>{
-      setDongData(data);
-      console.log("맵:",data);
-    }
-    const getOpen = (isopen) =>{
-      setOpen(isopen);
-    } 
     //카페 현황
     const [cafeGu, setCafeGu] = React.useState("");
     const [cafeDong, setCafeDong] = React.useState("");
@@ -69,7 +36,6 @@ const Map=(props)=>{
   const { map } = useSelector(state => ({
     map : state.setMap.eodiyaMap.map,
   }))
-  kakaoMap = map;
   useEffect(() => {
       
       // 1. 지도 객체 생성
@@ -79,30 +45,6 @@ const Map=(props)=>{
         level : 8,
       };
       const map = new kakao.maps.Map(container, options);
-
-
-      // #3.1 장소 검색 객체를 생성
-      const ps = new window.kakao.maps.services.Places();
-
-      // #3.2 키워드로 장소를 검색
-      ps.keywordSearch(searchKeyword, placesSearchCB);
-
-      // #3.3 키워드 검색 완료 시 호출되는 콜백함수
-      function placesSearchCB(data, status, pagination) {
-        if (status === kakao.maps.services.Status.OK) {
-          
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-          // LatLngBounds 객체에 좌표를 추가
-          let bounds = new kakao.maps.LatLngBounds();
-
-          for (let i=0; i<data.length; i++) {
-              bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-          }       
-
-          // 3.4 검색된 장소 위치를 기준으로 지도 범위를 재설정
-          map.setBounds(bounds);
-        }
-      }
 
       // 2. 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
       var zoomControl = new kakao.maps.ZoomControl();
@@ -125,7 +67,6 @@ const Map=(props)=>{
 
       function move() {
         if(cafeGu !== "" && cafeDong !== ""){
-          console.log('이동...........')
           geocoder.addressSearch(cafeGu+' '+cafeDong, function(result, status){
             if(status === kakao.maps.services.Status.OK){
               var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
@@ -173,7 +114,7 @@ const Map=(props)=>{
         <StyledEngineProvider injectFirst>
           <Search setSearchKeyword={setSearchKeyword}/>
           <Comm cafeGu={cafeGu} getCafeGu={getCafeGu} cafeDong={cafeDong} getCafeDong={getCafeDong}/>
-          <RightSide getOpen={getOpen}/>
+          <RightSide/>
         </StyledEngineProvider >
       </div>
       {searchKeyword}

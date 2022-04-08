@@ -1,4 +1,3 @@
-from gettext import npgettext
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import JsonResponse
 from django.db.models import Q
