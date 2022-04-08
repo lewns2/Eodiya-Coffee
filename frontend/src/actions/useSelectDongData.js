@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import actionCreators from "./actionCreators";
-import { useEffect, useState } from "react";
 
 const {kakao} = window;
 
@@ -27,7 +26,6 @@ export const useSelectDongData = () => {
                 }
             )
             .then((response) => {
-                console.log(response.data, "from search");
                 if (response.data.detail[0] != "상권이 없습니다."){
                     leftDong = response.data.XYInfo[0];
                     dispatch(actionCreators.setGuNum(guName), [guName]);

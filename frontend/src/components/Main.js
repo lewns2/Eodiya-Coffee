@@ -1,9 +1,7 @@
 import React from "react";
 import '../styles/Main.css';
-import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import back from '../assets/back.png';
-import { blue } from "@mui/material/colors";
 export default function Main(props){
     const zeroRef = React.useRef(null);
     const oneRef = React.useRef(null);
@@ -68,7 +66,6 @@ export default function Main(props){
             }
         }
         clearTimeout(wheelTimeout.current)    
-        // flag indicating to lock page scrolling (setTimeout returns a number)
         wheelTimeout.current = setTimeout(() => {
           wheelTimeout.current = false
         }, 300)
@@ -82,15 +79,6 @@ export default function Main(props){
         <div className="OutLine"> 
             <div className="InLine" ref={zeroRef} onWheel = {(e) =>updown(0, e)} style={sectionStyle}>
                     <p className="section">어디야는 빅데이터 분석을 통해 <br/>카페창업의 위치 선정을 도와주는 추천 시스템입니다.</p>
-                    {/* <Box sx={{
-                        marginTop: "150px",
-                        width:100,
-                        height: 50,
-                        color: 'white',
-                        fontSize: '25px'
-                    }} onClick={(e) =>updown(3,e)}>
-                             CLICK!
-                    </Box> */}
             </div>
             <div className="InLine" ref={oneRef} onWheel = {(e) =>updown(1, e)} >
                 <header className="title1">
@@ -114,7 +102,7 @@ export default function Main(props){
             <div className="InLine" ref={twoRef} onWheel = {(e) =>updown(2, e)} >
                 <div className="innerSec">
                     <div  className="fixwidth">
-						<header class="major" >
+						<header className="major" >
 							<h2>&#9757; 알고 싶은 동네의 <br/>상권 정보를 제공합니다.</h2>
 						</header>
 						<p className="bigfont">원하는 지역의 매출 지표, 주요 고객층, 인근 점포 수, 생활 인구와 주변 시설 정보를 알아보기 쉽게 제공합니다.
@@ -129,7 +117,7 @@ export default function Main(props){
                         <img className="imgSec2" src={require('../assets/현황.JPG')} alt="사진"/>
 					</div>
 					<div className="fixwidth">
-						<header class="major">
+						<header className="major">
 							<h2>&#9996;영업 중인 카페정보 제공</h2>
 						</header>
 						<p className="bigfont">입지 선정, 컨셉을 기획하기 위해 관심있는 지역의 카페 현황을 알아 보기 쉽도록
@@ -139,7 +127,7 @@ export default function Main(props){
                 </div>
             </div>
             <div className="InLineend" ref={fourRef} onWheel = {(e) =>updown(4, e)}>
-                <header class="major">
+                <header className="major">
 					<img src={require('../assets/Eodiya-removebg-preview.png')}></img>
 				</header>
 					<ul className="actionsSpecial">
